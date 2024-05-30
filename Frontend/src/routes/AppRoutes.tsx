@@ -20,7 +20,7 @@ export default function AppRoutes() {
 					<Route path='/login' element={<LoginModal />} />
 					<Route path='/register' element={<SignUpModal />} />
 				</Route>
-				<Route path='/home' element={<Home />}></Route>
+				<Route path='/home' element={<Home />}/>
 			</Routes>
 		</BrowserRouter>
 	)
