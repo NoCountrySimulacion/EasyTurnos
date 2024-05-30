@@ -2,7 +2,12 @@ import { useState, useContext } from 'react'
 import { useId } from 'react'
 import '@material/web/textfield/outlined-text-field.js'
 import { useNavigate } from 'react-router-dom'
-import { FacebookLogo, GoogleLogo, Ojo_password } from '../icons/Icons'
+import {
+	CloseEyePassword,
+	FacebookLogo,
+	GoogleLogo,
+	OpenEyePassword
+} from '../icons/Icons'
 import { ErrorMessage, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import { registerSchema } from '../../utils/validation'
@@ -12,7 +17,8 @@ import { AuthContextType, LoginFormValues } from '../../typescript/interface'
 const { userEmail, userPassword } = registerSchema.fields
 
 export default function Login(): React.ReactElement {
-	const [mostrar, setMostrar] = useState(false)
+	const [showPassword, setshowPassword] = useState(false)
+
 	const id = useId()
 	const authContext = useContext<AuthContextType | undefined>(AuthContext)
 
@@ -83,35 +89,45 @@ export default function Login(): React.ReactElement {
 										onBlur={handleBlur}
 										class='rounded-lg w-[100%] h-[56px]'
 									/>
-									<ErrorMessage
-										name='userEmail'
-										component='small'
-										className='text-red-500 text-sm '
-									/>
+									<div className='h-[8px] flex'>
+										<ErrorMessage
+											name='userEmail'
+											component='small'
+											className='text-[#FF8682] text-[12px] '
+										/>
+									</div>
 								</div>
 								<div className='relative w-full flex flex-col'>
-									<md-outlined-text-field
-										label='Contraseña'
-										id={id + 'userPassword'}
-										type={mostrar ? 'text' : 'password'}
-										name='userPassword'
-										value={values.userPassword}
-										onInput={handleChange}
-										onBlur={handleBlur}
-										class='w-[100%] h-[56px] rounded-lg'
-									/>
-									<button
-										type='button'
-										onClick={() => setMostrar(!mostrar)}
-										className='absolute right-3 top-1/2 transform -translate-y-1/2 bg-transparent border-none focus:outline-none'
-									>
-										<Ojo_password width={20} height={20} />
-									</button>
-									<ErrorMessage
-										name='userPassword'
-										component='small'
-										className='text-red-500 text-sm '
-									/>
+									<div className='h-full flex items-center justify-center'>
+										<md-outlined-text-field
+											label='Contraseña'
+											id={id + 'password'}
+											type={showPassword ? 'text' : 'password'}
+											name='userPassword'
+											value={values.userPassword}
+											onInput={handleChange}
+											onBlur={handleBlur}
+											class='w-full flex items-center text-[12px]'
+										/>
+										<button
+											type='button'
+											onClick={() => setshowPassword(!showPassword)}
+											className='absolute right-3'
+										>
+											{showPassword ? (
+												<OpenEyePassword width={18} height={18} />
+											) : (
+												<CloseEyePassword width={18} height={18} />
+											)}
+										</button>
+									</div>
+									<div className='h-[8px] flex '>
+										<ErrorMessage
+											name='userPassword'
+											component='small'
+											className='text-[#FF8682] text-[12px]'
+										/>
+									</div>
 								</div>
 							</div>
 							<div className='flex items-center justify-between'>
@@ -139,7 +155,7 @@ export default function Login(): React.ReactElement {
 								<button
 									type='submit'
 									disabled={isSubmitting}
-									className='w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#FD8847] hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+									className='w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#FD8847] hover:bg-orange-700 '
 								>
 									{isSubmitting ? (
 										<>
@@ -193,7 +209,7 @@ export default function Login(): React.ReactElement {
 				</Formik>
 			</div>
 			<div className=' w-[416px] h-[516px]'>
-				<img src="./images/LoginImg.webp" alt="login" />
+				<img src='./images/LoginImg.webp' alt='login' />
 			</div>
 		</div>
 	)

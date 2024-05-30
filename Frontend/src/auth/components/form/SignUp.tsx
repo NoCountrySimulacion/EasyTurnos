@@ -1,8 +1,13 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { useId } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import '@material/web/textfield/outlined-text-field.js'
-import { FacebookLogo, GoogleLogo } from '../icons/Icons'
+import {
+	CloseEyePassword,
+	FacebookLogo,
+	GoogleLogo,
+	OpenEyePassword
+} from '../icons/Icons'
 import { ErrorMessage, Formik, FormikHelpers } from 'formik'
 import { initialValues, registerSchema } from '../../utils/validation'
 import { AuthContext } from '../../context/AuthProvider'
@@ -13,8 +18,10 @@ interface SignUpProps {
 	onRegisterSuccess: () => void
 }
 
-
 function SignUp({ onRegisterSuccess }: SignUpProps): React.ReactElement {
+	const [showPassword, setshowPassword] = useState(false)
+	const [showConfirmPassword, setshowConfirmPassword] = useState(false)
+
 	const navigate = useNavigate()
 	const id = useId()
 	const authContext = useContext<AuthContextType | undefined>(AuthContext)
@@ -40,8 +47,7 @@ function SignUp({ onRegisterSuccess }: SignUpProps): React.ReactElement {
 			)
 			setSubmitting(false)
 			onRegisterSuccess()
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		} catch (error: any) {
+		} catch (error) {
 			console.error('Error registering user:', error)
 			setSubmitting(false)
 			Swal.fire({
@@ -56,7 +62,7 @@ function SignUp({ onRegisterSuccess }: SignUpProps): React.ReactElement {
 	return (
 		<section className='flex font-montserrat gap-6'>
 			<section className=' w-2/3 flex items-center justify-center rounded-lg'>
-				<img src="/images/RegisterImg.webp" alt="registro" />
+				<img src='/images/RegisterImg.webp' alt='registro' />
 			</section>
 			<section className='w-2/3 flex flex-col justify-center'>
 				<header>
@@ -80,7 +86,7 @@ function SignUp({ onRegisterSuccess }: SignUpProps): React.ReactElement {
 						handleSubmit
 					}) => (
 						<form className='space-y-4 text-[#1C1B1F]' onSubmit={handleSubmit}>
-							<div className='flex gap-[12px]'>
+							<div className='flex gap-3'>
 								<div className='w-full'>
 									<md-outlined-text-field
 										label='Nombre'
@@ -90,13 +96,15 @@ function SignUp({ onRegisterSuccess }: SignUpProps): React.ReactElement {
 										value={values.userName}
 										onInput={handleChange}
 										onBlur={handleBlur}
-										class='w-full flex items-center rounded-lg text-[12px]'
+										class='w-full flex items-center text-[12px]'
 									/>
-									<ErrorMessage
-										name='userName'
-										component='div'
-										className='text-red-500 text-sm'
-									/>
+									<div className='h-[8px] flex '>
+										<ErrorMessage
+											name='userName'
+											component='small'
+											className='text-[#FF8682] text-[12px]'
+										/>
+									</div>
 								</div>
 								<div className='w-full'>
 									<md-outlined-text-field
@@ -107,16 +115,18 @@ function SignUp({ onRegisterSuccess }: SignUpProps): React.ReactElement {
 										value={values.userLastName}
 										onInput={handleChange}
 										onBlur={handleBlur}
-										class='w-full flex items-center rounded-lg text-[12px]'
+										class='w-full flex items-center text-[12px]'
 									/>
-									<ErrorMessage
-										name='userLastName'
-										component='div'
-										className='text-red-500 text-sm'
-									/>
+									<div className='h-[8px] flex '>
+										<ErrorMessage
+											name='userLastName'
+											component='small'
+											className='text-[#FF8682] text-[12px]'
+										/>
+									</div>
 								</div>
 							</div>
-							<div className='flex gap-[12px]'>
+							<div className='flex gap-3'>
 								<div className='w-full'>
 									<md-outlined-text-field
 										label='Email'
@@ -126,13 +136,15 @@ function SignUp({ onRegisterSuccess }: SignUpProps): React.ReactElement {
 										value={values.userEmail}
 										onInput={handleChange}
 										onBlur={handleBlur}
-										class='w-full flex items-center rounded-lg text-[12px]'
+										class='w-full flex items-center text-[12px]'
 									/>
-									<ErrorMessage
-										name='userEmail'
-										component='div'
-										className='text-red-500 text-sm'
-									/>
+									<div className='h-[8px] flex '>
+										<ErrorMessage
+											name='userEmail'
+											component='small'
+											className='text-[#FF8682] text-[12px]'
+										/>
+									</div>
 								</div>
 								<div className='w-full'>
 									<md-outlined-text-field
@@ -143,50 +155,82 @@ function SignUp({ onRegisterSuccess }: SignUpProps): React.ReactElement {
 										value={values.userPhoneNumber}
 										onInput={handleChange}
 										onBlur={handleBlur}
-										class='w-full flex items-center rounded-lg text-[12px]'
+										class='w-full flex items-center text-[12px]'
 									/>
+									<div className='h-[8px] flex '>
+										<ErrorMessage
+											name='userPhoneNumber'
+											component='small'
+											className='text-[#FF8682] text-[12px]'
+										/>
+									</div>
+								</div>
+							</div>
+							<div className='relative w-full flex flex-col '>
+								<div className='h-full flex items-center justify-center'>
+									<md-outlined-text-field
+										label='Contraseña'
+										id={id + 'password'}
+										type={showPassword ? 'text' : 'password'}
+										name='userPassword'
+										value={values.userPassword}
+										onInput={handleChange}
+										onBlur={handleBlur}
+										class='w-full flex items-center text-[12px]'
+									/>
+									<button
+										type='button'
+										onClick={() => setshowPassword(!showPassword)}
+										className='absolute right-3'
+									>
+										{showPassword ? (
+											<OpenEyePassword width={18} height={18} />
+										) : (
+											<CloseEyePassword width={18} height={18} />
+										)}
+									</button>
+								</div>
+								<div className='h-[8px] flex '>
 									<ErrorMessage
-										name='userPhoneNumber'
-										component='div'
-										className='text-red-500 text-sm'
+										name='userPassword'
+										component='small'
+										className='text-[#FF8682] text-[12px]'
 									/>
 								</div>
 							</div>
-							<div className='w-full'>
-								<md-outlined-text-field
-									label='Contraseña'
-									id={id + 'password'}
-									type='password'
-									name='userPassword'
-									value={values.userPassword}
-									onInput={handleChange}
-									onBlur={handleBlur}
-									class='w-full flex items-center rounded-lg text-[12px]'
-								/>
-								<ErrorMessage
-									name='userPassword'
-									component='div'
-									className='text-red-500 text-sm'
-								/>
+							<div className='w-full relative flex flex-col '>
+								<div className='flex items-center justify-center'>
+									<md-outlined-text-field
+										label='Confirmar Contraseña'
+										id={id + 'confirm-password'}
+										type={showConfirmPassword ? 'text' : 'password'}
+										name='userPasswordConfirm'
+										value={values.userPasswordConfirm}
+										onInput={handleChange}
+										onBlur={handleBlur}
+										class='w-full flex items-center text-[12px]'
+									/>
+									<button
+										type='button'
+										onClick={() => setshowConfirmPassword(!showConfirmPassword)}
+										className='absolute right-3'
+									>
+										{showConfirmPassword ? (
+											<OpenEyePassword width={18} height={18} />
+										) : (
+											<CloseEyePassword width={18} height={18} />
+										)}
+									</button>
+								</div>
+								<div className='h-[6px] flex '>
+									<ErrorMessage
+										name='userPasswordConfirm'
+										component='small'
+										className='text-[#FF8682] text-[12px]'
+									/>
+								</div>
 							</div>
-							<div className='w-full'>
-								<md-outlined-text-field
-									label='Confirmar Contraseña'
-									id={id + 'confirm-password'}
-									type='password'
-									name='userPasswordConfirm'
-									value={values.userPasswordConfirm}
-									onInput={handleChange}
-									onBlur={handleBlur}
-									class='w-full flex items-center rounded-lg text-[12px]'
-								/>
-								<ErrorMessage
-									name='userPasswordConfirm'
-									component='div'
-									className='text-red-500 text-sm'
-								/>
-							</div>
-							<div className='flex items-center'>
+							<div className='flex items-center '>
 								<input
 									type='checkbox'
 									id={id + 'terms'}
@@ -219,7 +263,7 @@ function SignUp({ onRegisterSuccess }: SignUpProps): React.ReactElement {
 							<button
 								type='submit'
 								disabled={isSubmitting}
-								className='w-full h-[40px] rounded-[4px] bg-[#FD8847] text-[14px] flex justify-center items-center'
+								className='w-full h-[40px] rounded-[4px] bg-[#FD8847] text-[14px] flex justify-center items-center text-white hover:bg-orange-700 '
 							>
 								{isSubmitting ? (
 									<>
@@ -246,15 +290,13 @@ function SignUp({ onRegisterSuccess }: SignUpProps): React.ReactElement {
 										</span>
 									</>
 								) : (
-									<span className='font-semibold text-[#F3F3F3]'>
-										Crear Cuenta
-									</span>
+									<span className='font-semibold'>Crear Cuenta</span>
 								)}
 							</button>
 						</form>
 					)}
 				</Formik>
-				<footer className='flex flex-col gap-6 mt-4 items-center w-full'>
+				<footer className='flex flex-col gap-2 mt-2 items-center w-full'>
 					<small className='text-[12px] font-medium'>
 						Ya tienes una cuenta?{' '}
 						<button
@@ -269,7 +311,7 @@ function SignUp({ onRegisterSuccess }: SignUpProps): React.ReactElement {
 					<div className='flex items-center justify-between w-full'>
 						<hr className='w-[100px]' />
 						<small className='text-[12px] font-medium opacity-50'>
-							O inicia sesión con
+							O regístrate con
 						</small>
 						<hr className='w-[100px]' />
 					</div>
