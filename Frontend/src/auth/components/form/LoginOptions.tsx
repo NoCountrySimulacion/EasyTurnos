@@ -1,11 +1,8 @@
-import { useState, useContext } from 'react'
-import { useId } from 'react'
+import {  useContext } from 'react'
 import '@material/web/textfield/outlined-text-field.js'
 import { useNavigate } from 'react-router-dom'
-import { FacebookLogo, GoogleLogo, Ojo_password } from '../icons/Icons'
-import { ErrorMessage, Formik, FormikHelpers } from 'formik'
-import * as Yup from 'yup'
-import { registerSchema } from '../../utils/validation'
+
+
 import { AuthContext } from '../../context/AuthProvider'
 import { AuthContextType } from '../../typescript/interface'
 
