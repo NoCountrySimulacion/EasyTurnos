@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
 	AdministrarNegocio,
@@ -11,21 +11,14 @@ import {
 	Servicios,
 	Usuarios
 } from '../../Icons/Icons'
-import { AuthContext } from '../../../auth/context/AuthProvider'
-import { AuthContextType } from '../../../auth/typescript/interface'
+import { useAuth } from '../../../auth/hooks/useAuth'
 
 export function Sidemenu(): JSX.Element {
 	const [selectedPage, setSelectedPage] = useState<string>(
 		() => localStorage.getItem('selectedPage') || 'Home'
 	)
-	const authContext = useContext<AuthContextType | undefined>(AuthContext)
+	const { logout } = useAuth()
 	const navigate = useNavigate()
-
-	if (!authContext) {
-		throw new Error('AuthContext must be used within an AuthProvider')
-	}
-
-	const { logout } = authContext
 
 	useEffect(() => {
 		localStorage.setItem('selectedPage', selectedPage)
