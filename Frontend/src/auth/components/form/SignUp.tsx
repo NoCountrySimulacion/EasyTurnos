@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import { useId } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import '@material/web/textfield/outlined-text-field.js'
@@ -10,9 +10,9 @@ import {
 } from '../icons/Icons'
 import { ErrorMessage, Formik, FormikHelpers } from 'formik'
 import { initialValues, registerSchema } from '../../utils/validation'
-import { AuthContext } from '../../context/AuthProvider'
 import { FormValues } from '../../typescript/interface'
 import Swal from 'sweetalert2'
+import { useAuth } from '../../hooks/useAuth'
 
 interface SignUpProps {
 	onRegisterSuccess: () => void
@@ -24,13 +24,7 @@ function SignUp({ onRegisterSuccess }: SignUpProps): React.ReactElement {
 
 	const navigate = useNavigate()
 	const id = useId()
-	const authContext = useContext(AuthContext)
-
-	if (!authContext) {
-		throw new Error('AuthContext must be used within an AuthProvider')
-	}
-
-	const { registerUser } = authContext
+	const { registerUser } = useAuth()
 
 	const onSubmit = async (
 		values: FormValues,
