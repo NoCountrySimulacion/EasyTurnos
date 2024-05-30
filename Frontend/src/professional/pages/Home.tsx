@@ -12,7 +12,7 @@ function Home(): React.ReactElement {
 	const formattedDate = now.setLocale('es').toFormat("cccc, dd 'de' LLLL")
 
 	return (
-		<section className='w-[1070px] h-full flex flex-col items-center font-montserrat '>
+		<section className='w-[1070px] h-full flex flex-col items-center font-montserrat'>
 			<header className='flex gap-[22px] items-center mt-[20px]'>
 				<form className='relative w-[833px] h-[65px] gap-[18px] rounded-[26px] shadow-search '>
 					<div className='flex items-center h-full ml-[19px] gap-[10px]'>
