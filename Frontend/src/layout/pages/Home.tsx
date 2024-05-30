@@ -20,7 +20,7 @@ const Home: React.FC = (): JSX.Element => {
 	return (
 		<div className='flex flex-col items-center justify-center min-h-screen bg-gray-100'>
 			<h1 className='text-2xl font-bold mb-4'>
-				Hola Rosi, El equipo de Front te quiere!  ❤️
+				Hola Gabi, El equipo de Easy Turnos te quiere!  ❤️
 			</h1>
 			<button
 				onClick={handleLogout}
