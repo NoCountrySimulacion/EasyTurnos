@@ -29,7 +29,7 @@ export default function NavbarListItems(): JSX.Element {
 					</NavLink>
 				</li>
 				<li className='cursor-pointer hover:text-orange-400'>
-					<NavLink to='/login'>Ingresar</NavLink>
+					<NavLink to='/loginOptions'>Ingresar</NavLink>
 				</li>
 			</ul>
 			<LoginModal />
