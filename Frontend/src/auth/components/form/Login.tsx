@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react'
+import { useState } from 'react'
 import { useId } from 'react'
 import '@material/web/textfield/outlined-text-field.js'
 import { useNavigate } from 'react-router-dom'
@@ -11,23 +11,16 @@ import {
 import { ErrorMessage, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import { registerSchema } from '../../utils/validation'
-import { AuthContext } from '../../context/AuthProvider'
 import { LoginFormValues } from '../../typescript/interface'
+import { useAuth } from '../../hooks/useAuth'
 
 const { userEmail, userPassword } = registerSchema.fields
 
 export default function Login(): React.ReactElement {
 	const [showPassword, setshowPassword] = useState(false)
-
 	const id = useId()
-	const authContext = useContext(AuthContext)
-
-	if (!authContext) {
-		throw new Error('AuthContext must be used within an AuthProvider')
-	}
-
-	const { loginUser } = authContext
 	const navigate = useNavigate()
+	const { loginUser } = useAuth()
 
 	const initialValues: LoginFormValues = {
 		userEmail: '',
