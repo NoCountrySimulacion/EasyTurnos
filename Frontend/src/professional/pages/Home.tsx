@@ -12,7 +12,7 @@ function Home(): React.ReactElement {
 	const formattedDate = now.setLocale('es').toFormat("cccc, dd 'de' LLLL")
 
 	return (
-		<section className='w-[1070px] h-full flex flex-col items-center font-montserrat '>
+		<section className=' h-full flex flex-col font-montserrat px-10 gap-6 '>
 			<header className='flex gap-[22px] items-center mt-[20px]'>
 				<form className='relative w-[833px] h-[65px] gap-[18px] rounded-[26px] shadow-search '>
 					<div className='flex items-center h-full ml-[19px] gap-[10px]'>
@@ -32,17 +32,17 @@ function Home(): React.ReactElement {
 					<span>Agregar cliente</span>
 				</button>
 			</header>
-			<section className='flex flex-col items-start w-[1002px] mt-[68px] mb-[35px] gap-[18px]'>
-				<h2 className='text-[40px] font-bold leading-[56px]'>
+			<section className='flex flex-col items-start gap-[18px]'>
+				<h2 className='text-[35px] font-bold leading-[56px]'>
 					Bienvenido a tu espacio, Enzo.
 				</h2>
-				<p className='text-[33px] font-bold leading-[56px]'>
+				<p className='text-[28px] font-bold leading-[56px]'>
 					Hoy {formattedDate}.
 				</p>
 			</section>
-			<section className='shadow-search rounded-[15px] flex flex-col  justify-center '>
-				<div className='px-[21px] py-[27px] flex flex-col gap-[60px]'>
-					<p className='w-[950px] h-[247px] text-[40px] leading-[56px] content-center'>
+			<section className='shadow-search rounded-[15px] flex flex-col  justify-center mb-20 '>
+				<div className='p-10 flex flex-col gap-[60px]'>
+					<p className='px-20 w-[950px] h-[247px] text-[35px] leading-[56px] content-center'>
 						No tienes turnos programados para hoy. <br />
 						¿Te gustaría agendar un turno o quieres agregar un cliente?
 					</p>

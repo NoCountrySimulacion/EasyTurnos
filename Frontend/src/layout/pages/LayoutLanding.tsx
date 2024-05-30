@@ -4,7 +4,7 @@ import Footer from '../components/footer/Footer'
 import Navbar from '../components/navbar/Navbar'
 import Banner from '../../landing/components/banner/Banner'
 
-export default function Layout(): JSX.Element {
+export default function LayoutLanding(): JSX.Element {
 	return (
 		<div>
 			<header>
