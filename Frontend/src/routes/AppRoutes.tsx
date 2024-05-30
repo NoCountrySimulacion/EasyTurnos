@@ -7,6 +7,7 @@ import ComoFunciona from '../landing/components/comoFunciona/ComoFunciona'
 import Clientes from '../landing/components/clientes/Clientes'
 import LoginModal from '../auth/components/form/LoginModal'
 import SignUpModal from '../auth/components/form/SingUpModal'
+import { Sidemenu } from '../layout/components/sidemenu/SideMenu'
 
 export default function AppRoutes() {
 	return (
@@ -21,6 +22,7 @@ export default function AppRoutes() {
 					<Route path='/register' element={<SignUpModal />} />
 				</Route>
 				<Route path='/home' element={<Home />} />
+				<Route path='/sidemenu' element={<Sidemenu />} />
 			</Routes>
 		</BrowserRouter>
 	)
