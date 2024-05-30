@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import Home from '../layout/pages/Home'
+import Home from '../professional/pages/Home'
 import Landing from '../landing/pages/Landing'
 import Laout from '../layout/pages/Laout'
 import Planos from '../landing/components/planos/Planos'
@@ -20,7 +20,7 @@ export default function AppRoutes() {
 					<Route path='/login' element={<LoginModal />} />
 					<Route path='/register' element={<SignUpModal />} />
 				</Route>
-				<Route path='/home' element={<Home />} />
+				<Route path='/home' element={<Home />}></Route>
 			</Routes>
 		</BrowserRouter>
 	)

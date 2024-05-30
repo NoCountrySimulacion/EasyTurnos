@@ -11,7 +11,7 @@ import {
 import { ErrorMessage, Formik, FormikHelpers } from 'formik'
 import { initialValues, registerSchema } from '../../utils/validation'
 import { AuthContext } from '../../context/AuthProvider'
-import { AuthContextType, FormValues } from '../../typescript/interface'
+import { FormValues } from '../../typescript/interface'
 import Swal from 'sweetalert2'
 
 interface SignUpProps {
@@ -24,7 +24,7 @@ function SignUp({ onRegisterSuccess }: SignUpProps): React.ReactElement {
 
 	const navigate = useNavigate()
 	const id = useId()
-	const authContext = useContext<AuthContextType | undefined>(AuthContext)
+	const authContext = useContext(AuthContext)
 
 	if (!authContext) {
 		throw new Error('AuthContext must be used within an AuthProvider')
@@ -47,7 +47,8 @@ function SignUp({ onRegisterSuccess }: SignUpProps): React.ReactElement {
 			)
 			setSubmitting(false)
 			onRegisterSuccess()
-		} catch (error) {
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		} catch (error: any) {
 			console.error('Error registering user:', error)
 			setSubmitting(false)
 			Swal.fire({

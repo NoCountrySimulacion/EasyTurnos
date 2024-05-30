@@ -12,7 +12,7 @@ import { ErrorMessage, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import { registerSchema } from '../../utils/validation'
 import { AuthContext } from '../../context/AuthProvider'
-import { AuthContextType, LoginFormValues } from '../../typescript/interface'
+import { LoginFormValues } from '../../typescript/interface'
 
 const { userEmail, userPassword } = registerSchema.fields
 
@@ -20,7 +20,7 @@ export default function Login(): React.ReactElement {
 	const [showPassword, setshowPassword] = useState(false)
 
 	const id = useId()
-	const authContext = useContext<AuthContextType | undefined>(AuthContext)
+	const authContext = useContext(AuthContext)
 
 	if (!authContext) {
 		throw new Error('AuthContext must be used within an AuthProvider')
