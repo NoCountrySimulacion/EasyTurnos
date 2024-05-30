@@ -13,6 +13,7 @@ interface SignUpProps {
 	onRegisterSuccess: () => void
 }
 
+
 function SignUp({ onRegisterSuccess }: SignUpProps): React.ReactElement {
 	const navigate = useNavigate()
 	const id = useId()
@@ -39,7 +40,8 @@ function SignUp({ onRegisterSuccess }: SignUpProps): React.ReactElement {
 			)
 			setSubmitting(false)
 			onRegisterSuccess()
-		} catch (error) {
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		} catch (error: any) {
 			console.error('Error registering user:', error)
 			setSubmitting(false)
 			Swal.fire({
