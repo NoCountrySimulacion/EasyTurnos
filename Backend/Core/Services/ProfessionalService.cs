@@ -13,7 +13,10 @@ namespace Core.Services
         private readonly IMapper _mapper;
         private readonly ILogger<ProfessionalService> _logger;
 
-        public ProfessionalService(IProfessionalRepository professionalRepository, IMapper mapper, ILogger<ProfessionalService> logger)
+        public ProfessionalService(
+            IProfessionalRepository professionalRepository, 
+            IMapper mapper, 
+            ILogger<ProfessionalService> logger)
         {
             _professionalRepository = professionalRepository;
             _mapper = mapper;
@@ -37,5 +40,26 @@ namespace Core.Services
 
             return serviceResponse;
         }
+
+        public async Task<ServiceResponse<List<ProfessionalGetDto>>> GetAllProfessionals()
+        {
+            var serviceResponse = new ServiceResponse<List<ProfessionalGetDto>>();
+
+            try
+            {
+                serviceResponse.Data = await _professionalRepository.GetAll();
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+                _logger.LogError(ex, $"Error getting Professionals - {ex.Message}");
+            }
+
+            return serviceResponse;
+        }
+
+
+
     }
 }

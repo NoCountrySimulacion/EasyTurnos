@@ -1,5 +1,8 @@
 ﻿using Core.Services.Interfaces;
+using DTOs;
+using DTOs.Professional;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace API.Controllers
 {
@@ -21,6 +24,12 @@ namespace API.Controllers
                 return Ok(result);
             else
                 return NotFound(new { message = $"Professional with ID {professionalId} not found." });
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<ServiceResponse<List<ProfessionalGetDto>>>> GetAllProfessionals()
+        {
+            return Ok(await _professionalService.GetAllProfessionals());
         }
     }
 }
