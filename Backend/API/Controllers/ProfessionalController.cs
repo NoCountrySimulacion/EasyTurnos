@@ -37,5 +37,11 @@ namespace API.Controllers
         {
             return Ok(await _professionalService.AddProfessional(newProfessional));
         }
+
+        [HttpDelete]
+        public async Task<ActionResult<ServiceResponse<List<ProfessionalAddDto>>>> DeleteProfessional(Guid id)
+        {
+            return Ok(await _professionalService.DeleteProfessional(id));
+        }
     }
 }

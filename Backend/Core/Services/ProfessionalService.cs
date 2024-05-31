@@ -67,8 +67,10 @@ namespace Core.Services
             {
                 var newProfessional = _mapper.Map<Professional>(addProfessional);
 
-                await _professionalRepository.Insert(newProfessional);
+                var professionalCreated = await _professionalRepository.Insert(newProfessional);
                 await _professionalRepository.SaveChangesAsync();
+
+                serviceResponse.Message = $"Professional with Id { professionalCreated.Id } has been created";
             }
             catch (Exception ex)
             {
@@ -79,7 +81,27 @@ namespace Core.Services
             return serviceResponse;
         }
 
+        public async Task<ServiceResponse<List<ProfessionalGetDto>>> DeleteProfessional(Guid professionalId)
+        {
+            var serviceResponse = new ServiceResponse<List<ProfessionalGetDto>>();
 
+            try
+            {
+                // var professional = await _professionalRepository.GetById(professionalId);
+
+                await _professionalRepository.Delete(professionalId);
+                await _professionalRepository.SaveChangesAsync();
+
+                serviceResponse.Message = $"Professional with Id {professionalId} has been deleted";
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+                _logger.LogError(ex, $"Error deleting Professional {professionalId} - {ex.Message}");
+            }
+            return serviceResponse;
+        }
 
     }
 }
