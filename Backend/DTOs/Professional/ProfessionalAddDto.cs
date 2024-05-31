@@ -6,6 +6,6 @@ namespace DTOs.Professional
     {
         public string Specialty { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
-        public ICollection<SlotAddDto> Schedules { get; set; }
+        public ICollection<SlotAddDto> Slots { get; set; }
     }
 }
