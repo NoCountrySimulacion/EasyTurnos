@@ -25,6 +25,7 @@ namespace Infrastructure
 
             //Repositories
             services.AddScoped<IProfessionalRepository, ProfessionalRepository>();
+            services.AddScoped<ISlotRepository, SlotRepository>();
 
             // Identity
             services.AddIdentity<ApplicationUser, IdentityRole>(opt =>
