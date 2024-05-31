@@ -62,8 +62,7 @@ namespace Infrastructure.Data
 
             modelBuilder.Entity<Appointment>()
                 .Property(a => a.SlotDate)
-                // TODO: Validate the need for HasConversion, HasColumnType should work.
-                // .HasColumnType("date")
+                .HasColumnType("date")
                 .HasConversion(
                     v => v.ToString("dd/MM/yyyy"),
                     v => DateTime.ParseExact(v, "dd/MM/yyyy", null)
