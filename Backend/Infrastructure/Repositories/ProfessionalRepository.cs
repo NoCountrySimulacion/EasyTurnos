@@ -26,10 +26,10 @@ namespace Infrastructure.Repositories
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public new async Task<List<ProfessionalGetDto>> GetAll()
+        public new async Task<List<ProfessionalWithSlotsDto>> GetAllProfessionalsWithSlots()
         {
             var professionals = await Entities
-                    .ProjectTo<ProfessionalGetDto>(_mapper.ConfigurationProvider)
+                    .ProjectTo<ProfessionalWithSlotsDto>(_mapper.ConfigurationProvider)
                     .ToListAsync();
 
             return professionals;

@@ -5,7 +5,7 @@ namespace Infrastructure.Repositories.Interfaces
 {
     public interface IProfessionalRepository : IGenericRepository<Professional, Guid>
     {
-        Task<List<ProfessionalGetDto>> GetAll();
+        Task<List<ProfessionalWithSlotsDto>> GetAllProfessionalsWithSlots();
         public new Task<ProfessionalGetDto?> GetById(Guid id);
     }
 }

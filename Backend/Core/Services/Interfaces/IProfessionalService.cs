@@ -7,7 +7,7 @@ namespace Core.Services.Interfaces
     {
         Task<ServiceResponse<List<ProfessionalGetDto>>> AddProfessional(ProfessionalAddDto addProfessional);
         Task<ServiceResponse<List<ProfessionalGetDto>>> DeleteProfessional(Guid professionalId);
-        Task<ServiceResponse<List<ProfessionalGetDto>>> GetAllProfessionals();
+        Task<ServiceResponse<List<ProfessionalWithSlotsDto>>> GetAllProfessionalsWithSlots();
         Task<ServiceResponse<ProfessionalGetDto>> GetProfessionalById(Guid id);
     }
 }

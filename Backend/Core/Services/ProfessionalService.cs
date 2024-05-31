@@ -42,13 +42,13 @@ namespace Core.Services
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<List<ProfessionalGetDto>>> GetAllProfessionals()
+        public async Task<ServiceResponse<List<ProfessionalWithSlotsDto>>> GetAllProfessionalsWithSlots()
         {
-            var serviceResponse = new ServiceResponse<List<ProfessionalGetDto>>();
+            var serviceResponse = new ServiceResponse<List<ProfessionalWithSlotsDto>>();
 
             try
             {
-                serviceResponse.Data = await _professionalRepository.GetAll();
+                serviceResponse.Data = await _professionalRepository.GetAllProfessionalsWithSlots();
             }
             catch (Exception ex)
             {
@@ -87,8 +87,6 @@ namespace Core.Services
 
             try
             {
-                // var professional = await _professionalRepository.GetById(professionalId);
-
                 await _professionalRepository.Delete(professionalId);
                 await _professionalRepository.SaveChangesAsync();
 

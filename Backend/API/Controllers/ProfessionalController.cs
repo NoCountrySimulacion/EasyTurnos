@@ -27,9 +27,9 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ServiceResponse<List<ProfessionalGetDto>>>> GetAllProfessionals()
+        public async Task<ActionResult<ServiceResponse<List<ProfessionalWithSlotsDto>>>> GetAllProfessionalsWithSlots()
         {
-            return Ok(await _professionalService.GetAllProfessionals());
+            return Ok(await _professionalService.GetAllProfessionalsWithSlots());
         }
 
         [HttpPost]
