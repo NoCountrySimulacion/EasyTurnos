@@ -31,5 +31,11 @@ namespace API.Controllers
         {
             return Ok(await _professionalService.GetAllProfessionals());
         }
+
+        [HttpPost]
+        public async Task<ActionResult<ServiceResponse<List<ProfessionalGetDto>>>> AddProfessional(ProfessionalAddDto newProfessional)
+        {
+            return Ok(await _professionalService.AddProfessional(newProfessional));
+        }
     }
 }

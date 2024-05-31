@@ -2,5 +2,6 @@
 {
     public class SlotAddDto
     {
+        public DateTime AvailableSlot { get; set; }
     }
 }

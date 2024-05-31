@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Core.Services.Interfaces;
+using Domain.Entities;
 using DTOs;
 using DTOs.Professional;
 using Infrastructure.Repositories.Interfaces;
@@ -56,6 +57,25 @@ namespace Core.Services
                 _logger.LogError(ex, $"Error getting Professionals - {ex.Message}");
             }
 
+            return serviceResponse;
+        }
+
+        public async Task<ServiceResponse<List<ProfessionalGetDto>>> AddProfessional(ProfessionalAddDto addProfessional)
+        {
+            var serviceResponse = new ServiceResponse<List<ProfessionalGetDto>>();
+            try
+            {
+                var newProfessional = _mapper.Map<Professional>(addProfessional);
+
+                await _professionalRepository.Insert(newProfessional);
+                await _professionalRepository.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+                _logger.LogError(ex, $"Error adding new Professional - {ex.Message}");
+            }
             return serviceResponse;
         }
 
