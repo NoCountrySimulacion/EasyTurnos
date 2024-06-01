@@ -9,6 +9,7 @@ import SignUpModal from '../auth/components/form/SingUpModal'
 import LoginOptionsModal from '../auth/components/form/LoginOptionsModal'
 import LoginModal from '../auth/components/form/LoginModal'
 import LayoutApp from '../layout/pages/LayoutApp'
+import { FormClients } from '../layout/pages/FormClients'
 
 export default function AppRoutes() {
 	return (
@@ -25,6 +26,7 @@ export default function AppRoutes() {
 				</Route>
 				<Route element={<LayoutApp />}>
 					<Route path='/home' element={<Home />} />
+					<Route path='/addclient' element={<FormClients />} />
 				</Route>
 			</Routes>
 		</BrowserRouter>
