@@ -1,12 +1,14 @@
 ﻿using Core.Services.Interfaces;
 using DTOs;
 using DTOs.Professional;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace API.Controllers
 {
-    [Route("api/[controller]")]
+   [Authorize(Roles = "Admin")]
+   [Route("api/[controller]")]
     [ApiController]
     public class ProfessionalController : ControllerBase
     {
