@@ -55,16 +55,16 @@ function SignUp({ onRegisterSuccess }: SignUpProps): React.ReactElement {
 	}
 
 	return (
-		<section className='flex font-montserrat gap-6'>
-			<section className=' w-2/3 flex items-center justify-center rounded-lg'>
+		<section className='flex font-montserrat gap-[60px]'>
+			<section className=' w-1/2 h-auto flex items-center justify-center rounded-lg'>
 				<img src='/images/RegisterImg.webp' alt='registro' />
 			</section>
 			<section className='w-2/3 flex flex-col justify-center'>
 				<header>
-					<h2 className='text-[#313131] text-[24px] font-semibold'>
+					<h2 className='text-[#313131] text-[40px] font-semibold'>
 						Comienza ahora
 					</h2>
-					<p className=' mb-2 text-[10px] opacity-75'>
+					<p className=' mb-2 text-[13px] opacity-75'>
 						Vamos a prepararte para que puedas acceder a tu cuenta personal.
 					</p>
 				</header>
@@ -236,19 +236,19 @@ function SignUp({ onRegisterSuccess }: SignUpProps): React.ReactElement {
 								<small>
 									<label
 										htmlFor={id + 'terms'}
-										className='ml-2 text-[10px] text-[#313131] font-medium'
+										className='ml-2 text-[12px] text-[#313131] font-medium'
 									>
 										Estoy de acuerdo con los{' '}
 										<Link
 											to='#'
-											className='text-[#FF8682] font-semibold text-[10px]'
+											className='text-[#FF8682] font-medium text-[12px]'
 										>
 											Términos
 										</Link>{' '}
 										y{' '}
 										<Link
 											to='#'
-											className='text-[#FF8682] font-semibold text-[10px]'
+											className='text-[#FF8682] font-medium text-[12px]'
 										>
 											Políticas de Privacidad
 										</Link>
@@ -298,7 +298,7 @@ function SignUp({ onRegisterSuccess }: SignUpProps): React.ReactElement {
 							onClick={() => {
 								navigate('/login')
 							}}
-							className='text-[#FF8682] font-semibold text-[12px]'
+							className='text-[#FF8682] font-medium text-[12px]'
 						>
 							Inicia sesión
 						</button>
@@ -310,13 +310,13 @@ function SignUp({ onRegisterSuccess }: SignUpProps): React.ReactElement {
 						</small>
 						<hr className='w-[100px]' />
 					</div>
-					<div className='flex gap-4'>
-						<button className='w-[140px] border border-[#FD8847] rounded-[4px] flex justify-center items-center py-2 px-4'>
+					<div className='flex w-full gap-4'>
+						<button className='w-1/2 border border-[#FD8847] rounded-[4px] flex justify-center items-center py-2 px-4'>
 							<div className='h-[24px]'>
 								<FacebookLogo width={25} height={25} />
 							</div>
 						</button>
-						<button className='w-[140px] border border-[#FD8847] rounded-[4px] flex justify-center items-center py-2 px-4'>
+						<button className='w-1/2 border border-[#FD8847] rounded-[4px] flex justify-center items-center py-2 px-4'>
 							<div className='h-[24px]'>
 								<GoogleLogo width={25} height={25} />
 							</div>
