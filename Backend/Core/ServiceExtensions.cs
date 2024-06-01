@@ -18,6 +18,7 @@ namespace Core
             services.AddScoped<IProfessionalService, ProfessionalService>();
             services.AddScoped<ISlotService, SlotService>();
             services.AddScoped<IClientService, ClientService>();
+            services.AddScoped<IRecordService, RecordService>();
 
             // Validation Behavior
             services.AddTransient(typeof(IValidationBehavior<>), typeof(ValidationBehavior<>));
