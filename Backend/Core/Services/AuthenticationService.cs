@@ -69,7 +69,9 @@ namespace Core.Services
             LastName = request.LastName,
             PhoneNumber = request.PhoneNumber,
             EmailConfirmed = true,
-            UserName = request.Email,    
+            UserName = request.Email,
+            ProfessionalId = null,
+            ClientId = null
          };
 
          var existingEmail = await _userManager.FindByEmailAsync(request.Email);
@@ -82,12 +84,6 @@ namespace Core.Services
 
          if (existingEmail == null)
          {
-
-
-
-
-
-
             var result = await _userManager.CreateAsync(user, request.Password);
 
             if (result.Succeeded)
@@ -208,47 +204,6 @@ namespace Core.Services
          else
             return false;
       }
-
-      private void CreateUser(RegistrationRequest request)
-      {
-         ApplicationUser user;
-
-         if (request.UserType == UserTypeOtions.Professional)
-         {
-            Professional professional = new Professional
-            {
-               Id = Guid.NewGuid()
-            };
-            user = new ApplicationUser
-            {
-               Email = request.Email,
-               FirstName = request.FirstName,
-               LastName = request.LastName,
-               PhoneNumber = request.PhoneNumber,
-               EmailConfirmed = true,
-               UserName = request.Email,
-               ProfessionalId = professional.Id,
-               ClientId = null
-            };
-         }
-         else
-         {
-            Client client = new Client
-            {
-               Id = Guid.NewGuid()
-            };
-            user = new ApplicationUser
-            {
-               Email = request.Email,
-               FirstName = request.FirstName,
-               LastName = request.LastName,
-               PhoneNumber = request.PhoneNumber,
-               EmailConfirmed = true,
-               UserName = request.Email,
-               ClientId = client.Id,
-               ProfessionalId = null
-            };
-         }
-      }
+     
    }
 }
