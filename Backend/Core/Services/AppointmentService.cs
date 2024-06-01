@@ -104,5 +104,25 @@ namespace Core.Services
 
             return serviceResponse;
         }
+
+        public async Task<ServiceResponse<List<AppointmentGetDto>>> GetAppointments(Guid professionalId, AppointmentFilterDto appointmentFilter)
+        {
+            var serviceResponse = new ServiceResponse<List<AppointmentGetDto>>();
+
+            try
+            {
+                var dbAppointment = await _appointmentRepository.GetFilteredAppointments(professionalId, appointmentFilter);
+
+                serviceResponse.Data = dbAppointment;
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+                _logger.LogError(ex, ex.Message);
+            }
+
+            return serviceResponse;
+        }
     }
 }

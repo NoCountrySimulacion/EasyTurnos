@@ -14,5 +14,6 @@ namespace Core.Services.Interfaces
         Task<ServiceResponse<List<AppointmentGetDto>>> AddAppointment(Guid clientId, Guid professionalId, AppointmentAddDto addAppointment);
         Task<ServiceResponse<List<AppointmentGetDto>>> DeleteAppointment(Guid appointmentId, Guid professionalId);
         Task<ServiceResponse<AppointmentGetDto>> GetAppointment(Guid appointmentId, Guid professionalId);
+        Task<ServiceResponse<List<AppointmentGetDto>>> GetAppointments(Guid professionalId, AppointmentFilterDto appointmentFilter);
     }
 }
