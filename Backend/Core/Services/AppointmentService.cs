@@ -59,5 +59,30 @@ namespace Core.Services
 
             return serviceResponse;
         }
+
+        public async Task<ServiceResponse<List<AppointmentGetDto>>> DeleteAppointment(Guid appointmentId, Guid professionalId)
+        {
+            var serviceResponse = new ServiceResponse<List<AppointmentGetDto>>();
+
+            try
+            {
+                if (await _appointmentRepository.Delete(appointmentId))
+                    await _appointmentRepository.SaveChangesAsync();
+                else
+                    throw new KeyNotFoundException($"Appointment with id {appointmentId} not found.");
+
+                var dbAppointments = await _appointmentRepository.GetAllAppointmentsByProfessional(professionalId);
+
+                serviceResponse.Data = dbAppointments;
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+                _logger.LogError(ex, ex.Message);
+            }
+
+            return serviceResponse;
+        }
     }
 }

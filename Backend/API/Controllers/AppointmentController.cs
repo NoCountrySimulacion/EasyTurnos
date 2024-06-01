@@ -23,5 +23,11 @@ namespace API.Controllers
         {
             return Ok(await _appointmentService.AddAppointment(clientId, professionalId, newAppointment));
         }
+
+        [HttpDelete]
+        public async Task<ActionResult<ServiceResponse<List<AppointmentGetDto>>>> DeleteAppointment(Guid appointmentId, Guid professionalId)
+        {
+            return Ok(await _appointmentService.DeleteAppointment(appointmentId, professionalId));
+        }
     }
 }

@@ -12,5 +12,6 @@ namespace Core.Services.Interfaces
     public interface IAppointmentService
     {
         Task<ServiceResponse<List<AppointmentGetDto>>> AddAppointment(Guid clientId, Guid professionalId, AppointmentAddDto addAppointment);
+        Task<ServiceResponse<List<AppointmentGetDto>>> DeleteAppointment(Guid appointmentId, Guid professionalId);
     }
 }
