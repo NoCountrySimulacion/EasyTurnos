@@ -8,5 +8,6 @@ namespace DTOs.Appointment
 {
     public class AppointmentAddDto
     {
+        public DateTime SlotDate { get; set; }
     }
 }

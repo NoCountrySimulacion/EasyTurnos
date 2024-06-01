@@ -53,23 +53,6 @@ namespace Infrastructure.Data
                 .HasDefaultValueSql("NEWID()");
 
             modelBuilder.Entity<Appointment>()
-                .Property(a => a.Date)
-                .HasDefaultValueSql("CONVERT(date, GETDATE())")
-                .HasConversion(
-                    v => v.ToString("dd/MM/yyyy"),
-                    v => DateTime.ParseExact(v, "dd/MM/yyyy", null)
-                );
-
-            modelBuilder.Entity<Appointment>()
-                .Property(a => a.SlotDate)
-                .HasColumnType("date")
-                .HasConversion(
-                    v => v.ToString("dd/MM/yyyy"),
-                    v => DateTime.ParseExact(v, "dd/MM/yyyy", null)
-                )
-                .IsRequired();
-
-            modelBuilder.Entity<Appointment>()
                 .Property(a => a.Status)
                 .HasDefaultValue(Status.Pending);
 

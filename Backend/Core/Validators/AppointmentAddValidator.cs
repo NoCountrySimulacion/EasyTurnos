@@ -12,7 +12,20 @@ namespace Core.Validators
     {
         public AppointmentAddValidator()
         {
+            RuleFor(a => a.SlotDate)
+                .NotEmpty().WithMessage("{PropertyName} is required.")
+                .Must(BeAValidDate).WithMessage("{PropertyName} must be a valid date.")
+                .Must(BeInTheFuture).WithMessage("{PropertyName} must be in the future.");
+        }
 
+        private bool BeAValidDate(DateTime date)
+        {
+            return date != default && date != DateTime.MinValue;
+        }
+
+        private bool BeInTheFuture(DateTime date)
+        {
+            return date > DateTime.UtcNow;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using DTOs.Appointment;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,6 @@ namespace Infrastructure.Repositories.Interfaces
 {
     public interface IAppointmentRepository : IGenericRepository<Appointment, Guid>
     {
+        Task<List<AppointmentGetDto>> GetAllAppointmentsByProfessional(Guid professionalId);
     }
 }
