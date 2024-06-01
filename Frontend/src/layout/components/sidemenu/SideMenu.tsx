@@ -70,10 +70,10 @@ export function Sidemenu(): JSX.Element {
 					{principalMenu.map(item => (
 						<div
 							key={item.name}
-							className={`w-[80%] ml-3 rounded-[16px] ${selectedPage === item.name ? 'bg-[#D3CAFF] border border-solid border-[#7445C7] duration-500' : 'hover:bg-[#fff]'}`}
+							className={`w-[80%] ml-3 rounded-[16px] ${selectedPage === item.name ? 'bg-[#D3CAFF] border border-solid border-[#7445C7] duration-500' : 'hover:bg-purple-100'}`}
 						>
 							<div
-								className='flex flex-row flex-wrap pb-[10px] pt-3'
+								className='flex flex-row flex-wrap pb-[10px] pt-3 cursor-pointer'
 								onClick={() => handlePageChange(item.name)}
 							>
 								<span className='pl-[5px]'>{item.icon}</span>
@@ -92,10 +92,10 @@ export function Sidemenu(): JSX.Element {
 					{administrador.map(item => (
 						<div
 							key={item.name}
-							className={`w-[80%] ml-3 rounded-[16px] ${selectedPage === item.name ? 'bg-[#D3CAFF] border border-solid border-[#7445C7] duration-500' : 'hover:bg-[#fff]'}`}
+							className={`w-[80%] ml-3 rounded-[16px] ${selectedPage === item.name ? 'bg-[#D3CAFF] border border-solid border-[#7445C7] duration-500' : 'hover:bg-purple-100'}`}
 						>
 							<div
-								className='flex flex-row flex-wrap pb-[10px] pt-2'
+								className='flex flex-row flex-wrap pb-[10px] pt-2 cursor-pointer'
 								onClick={() => handlePageChange(item.name)}
 							>
 								<span className='pl-[6px]'>{item.icon}</span>
@@ -114,10 +114,10 @@ export function Sidemenu(): JSX.Element {
 					{configuracion.map(item => (
 						<div
 							key={item.name}
-							className={`w-[80%] ml-3 rounded-[16px] ${selectedPage === item.name ? 'bg-[#D3CAFF] border border-solid border-[#7445C7] duration-500' : 'hover:bg-[#fff]'}`}
+							className={`w-[80%] ml-3 rounded-[16px] ${selectedPage === item.name ? 'bg-[#D3CAFF] border border-solid border-[#7445C7] duration-500' : 'hover:bg-purple-100'}`}
 						>
 							<div
-								className='flex flex-row flex-wrap pb-[10px] pt-2'
+								className='flex flex-row flex-wrap pb-[10px] pt-2 cursor-pointer'
 								onClick={() => handlePageChange(item.name)}
 							>
 								<span className='pl-[5px]'>{item.icon}</span>
@@ -131,7 +131,7 @@ export function Sidemenu(): JSX.Element {
 
 				<div className='flex flex-row justify-center items-center mt-[10px]'>
 					<button
-						className='flex flex-row justify-center p-1 bg-[#7445C7] rounded-md w-[290px]'
+						className='flex flex-row justify-center p-1 bg-[#7445C7] rounded-md w-[290px] hover:bg-purple-600'
 						onClick={handleLogout}
 					>
 						<Logout width={24} height={24} />
