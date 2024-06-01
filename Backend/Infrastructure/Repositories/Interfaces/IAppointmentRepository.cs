@@ -11,5 +11,6 @@ namespace Infrastructure.Repositories.Interfaces
     public interface IAppointmentRepository : IGenericRepository<Appointment, Guid>
     {
         Task<List<AppointmentGetDto>> GetAllAppointmentsByProfessional(Guid professionalId);
+        Task<AppointmentGetDto> GetAppointmentByProfessional(Guid appointmentId, Guid professionalId);
     }
 }

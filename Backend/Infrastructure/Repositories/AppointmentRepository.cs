@@ -33,5 +33,14 @@ namespace Infrastructure.Repositories
                 .ToListAsync();
         }
 
+        public async Task<AppointmentGetDto> GetAppointmentByProfessional(Guid appointmentId, Guid professionalId)
+        {
+            var appointment = await Entities.FirstOrDefaultAsync(a => a.Id.Equals(appointmentId) && a.ProfessionalId.Equals(professionalId));
+
+            return appointment == null ?
+                throw new KeyNotFoundException($"Appointment not found.") :
+                _mapper.Map<AppointmentGetDto>(appointment);
+        }
+
     }
 }
