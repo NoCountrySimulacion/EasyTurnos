@@ -1,6 +1,8 @@
-﻿namespace Core.Services.Interfaces
+﻿using DTOs.Client;
+
+namespace Core.Services.Interfaces;
+
+public interface IClientService
 {
-    public interface IClientService
-    {
-    }
+    Task<ClientCreatedDto> AddClientAsync(Guid professionalId, ClientAddDto clientAddDto);
 }
