@@ -20,7 +20,7 @@ export default function Login(): React.ReactElement {
 	const [showPassword, setshowPassword] = useState(false)
 	const id = useId()
 	const navigate = useNavigate()
-	const { loginUser } = useAuth()
+	const { loginUser, error } = useAuth()
 
 	const initialValues: LoginFormValues = {
 		userEmail: '',
@@ -144,6 +144,7 @@ export default function Login(): React.ReactElement {
 									</a>
 								</div>
 							</div>
+							{error && <div className='text-red-500 text-sm'>{error}</div>}{' '}
 							<div>
 								<button
 									type='submit'

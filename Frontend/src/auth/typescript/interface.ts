@@ -7,6 +7,7 @@ export interface ModalProps {
 
 export interface AuthContextType {
   user: UserLogged | null;
+  error: string | null;
   loginUser: (email: string, password: string) => Promise<void>;
   registerUser: (
     firstName: string,
