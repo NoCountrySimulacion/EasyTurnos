@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Home from '../professional/pages/Home'
 import Landing from '../landing/pages/Landing'
 import LaoutLanding from '../layout/pages/LayoutLanding'
-import Planos from '../landing/components/planos/Planos'
+import Planes from '../landing/components/planos/Planes'
 import ComoFunciona from '../landing/components/comoFunciona/ComoFunciona'
 import Clientes from '../landing/components/clientes/Clientes'
 import SignUpModal from '../auth/components/form/SingUpModal'
@@ -18,7 +18,7 @@ export default function AppRoutes() {
 				<Route element={<LaoutLanding />}>
 					<Route path='/' element={<Landing />} />
 					<Route path='/comofunciona' element={<ComoFunciona />} />
-					<Route path='/planos' element={<Planos />} />
+					<Route path='/planes' element={<Planes />} />
 					<Route path='/clientes' element={<Clientes />} />
 					<Route path='/login' element={<LoginModal />} />
 					<Route path='/loginOptions' element={<LoginOptionsModal />} />

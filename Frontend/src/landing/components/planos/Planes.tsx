@@ -1,11 +1,11 @@
 // src/components/Planos.tsx
 import { plans } from '../../../landing/components/planos/constants/infoPlanos'
 
-export default function Planos(): JSX.Element {
+export default function Planes(): JSX.Element {
 	return (
 		<div className='flex flex-col items-center py-12'>
 			<h2 className='text-5xl font-montserrat font-semibold mb-4'>
-				Nuestros Planos
+				Nuestros Planes
 			</h2>
 			<p className='text-center mb-12'>
 				Diseñamos diferentes planes para que puedas encontrar el que mejor se

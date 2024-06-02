@@ -37,7 +37,7 @@ const SignUpModal: React.FC = () => {
 		>
 			<Box
 				ref={modalRef}
-				className='bg-white w-full max-w-3xl p-8 rounded-xl shadow-lg overflow-auto'
+				className='bg-white max-w-[900px] px-8 py-8 rounded-xl shadow-lg overflow-auto'
 			>
 				<SignUp onRegisterSuccess={handleRegisterSuccess} />
 			</Box>

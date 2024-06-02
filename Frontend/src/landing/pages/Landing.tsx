@@ -1,7 +1,7 @@
 import Clientes from '../components/clientes/Clientes'
 import ComoFunciona from '../components/comoFunciona/ComoFunciona'
 import InfoCardList from '../components/infoCards/InfoCardList'
-import Planos from '../components/planos/Planos'
+import Planos from '../components/planos/Planes'
 import TestimonialCarousel from '../components/testimonialCards/TestimonialCarousel'
 
 export default function Landing(): JSX.Element {
