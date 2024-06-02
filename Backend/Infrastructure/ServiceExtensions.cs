@@ -31,6 +31,7 @@ namespace Infrastructure
 
             //Repositories
             services.AddScoped<IProfessionalRepository, ProfessionalRepository>();
+            services.AddScoped<IAppointmentRepository, AppointmentRepository>();
             services.AddScoped<ISlotRepository, SlotRepository>();
 
             // Identity
