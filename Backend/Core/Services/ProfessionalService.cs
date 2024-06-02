@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
+using Azure.Core;
 using Core.Services.Interfaces;
 using Domain.Entities;
 using DTOs;
+using DTOs.Identity;
 using DTOs.Professional;
 using Infrastructure.Repositories.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 
 namespace Core.Services
@@ -11,15 +14,21 @@ namespace Core.Services
     public class ProfessionalService : IProfessionalService
     {
         private readonly IProfessionalRepository _professionalRepository;
+        private readonly IAuthenticationService _authenticationService;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
         private readonly ILogger<ProfessionalService> _logger;
 
         public ProfessionalService(
-            IProfessionalRepository professionalRepository, 
+            IProfessionalRepository professionalRepository,
+            IAuthenticationService authenticationService,
+            UserManager<ApplicationUser> userManager,
             IMapper mapper, 
             ILogger<ProfessionalService> logger)
         {
             _professionalRepository = professionalRepository;
+            _authenticationService = authenticationService;
+            _userManager = userManager;
             _mapper = mapper;
             _logger = logger;
 
@@ -60,9 +69,9 @@ namespace Core.Services
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<List<ProfessionalGetDto>>> AddProfessional(ProfessionalAddDto addProfessional)
+        public async Task<ServiceResponse<ProfessionalGetDto>> AddProfessional(ProfessionalAddDto addProfessional)
         {
-            var serviceResponse = new ServiceResponse<List<ProfessionalGetDto>>();
+            var serviceResponse = new ServiceResponse<ProfessionalGetDto>();
             try
             {
                 var newProfessional = _mapper.Map<Professional>(addProfessional);
@@ -70,7 +79,7 @@ namespace Core.Services
                 var professionalCreated = await _professionalRepository.Insert(newProfessional);
                 await _professionalRepository.SaveChangesAsync();
 
-                serviceResponse.Message = $"Professional with Id { professionalCreated.Id } has been created";
+                serviceResponse.Message = $"Professional with Id {professionalCreated.Id} has been created";
             }
             catch (Exception ex)
             {
@@ -81,9 +90,9 @@ namespace Core.Services
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<List<ProfessionalGetDto>>> DeleteProfessional(Guid professionalId)
+        public async Task<ServiceResponse<ProfessionalGetDto>> DeleteProfessional(Guid professionalId)
         {
-            var serviceResponse = new ServiceResponse<List<ProfessionalGetDto>>();
+            var serviceResponse = new ServiceResponse<ProfessionalGetDto>();
 
             try
             {
@@ -101,5 +110,29 @@ namespace Core.Services
             return serviceResponse;
         }
 
+        public async Task<ServiceResponse<RegistrationResponse>> RegisterProfessionalUser(ProfessionalAddDto addProfessional)
+        {
+            var serviceResponse = new ServiceResponse<RegistrationResponse>();
+
+            try
+            {
+                var newProfessional = _mapper.Map<Professional>(addProfessional);
+                addProfessional.RegistrationRequest.UserType = UserTypeOtions.Professional;
+                addProfessional.RegistrationRequest.Professional = newProfessional;
+
+                RegistrationResponse regsitrationResponse =  
+                    await _authenticationService.RegisterAsync(addProfessional.RegistrationRequest);
+            
+                serviceResponse.Data = regsitrationResponse;
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+                _logger.LogError(ex, $"Error adding new Professional - {ex.Message}");
+            }
+
+            return serviceResponse;
+        }
     }
 }
