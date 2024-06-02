@@ -6,6 +6,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Infrastructure.Repositories.Interfaces;
 using Infrastructure.Repositories;
+using DTOs.jwt;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Http;
+using System.Text.Json;
 
 namespace Infrastructure
 {
@@ -26,9 +32,10 @@ namespace Infrastructure
             //Repositories
             services.AddScoped<IProfessionalRepository, ProfessionalRepository>();
             services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+            services.AddScoped<ISlotRepository, SlotRepository>();
 
             // Identity
-            services.AddIdentity<ApplicationUser, IdentityRole>(opt =>
+            services.AddIdentity<ApplicationUser, ApplicationRole>(opt =>
             {
                 opt.Password.RequiredLength = 5;
                 opt.Password.RequireNonAlphanumeric = false;
@@ -40,7 +47,59 @@ namespace Infrastructure
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
 
-            return services;
+         // JWT
+         // This method configures the JWT settings. This line tells the DI container to create an instance of JwtSettings and populate it with the values from "JwtSettings"
+         services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
+
+         services.AddAuthentication(options =>
+         {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+         })
+         .AddJwtBearer(o =>
+         {
+            o.RequireHttpsMetadata = false;
+            o.SaveToken = false;
+            o.TokenValidationParameters = new TokenValidationParameters
+            {
+               ValidateIssuerSigningKey = true,
+               ValidateIssuer = true,
+               ValidateAudience = false,
+               ValidateLifetime = true,
+               ClockSkew = TimeSpan.Zero,
+               ValidIssuer = configuration["JwtSettings:Issuer"],
+               ValidAudience = configuration["JwtSettings:Audience"],
+               IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSettings:Key"]))
+            };
+
+            o.Events = new JwtBearerEvents()
+            {
+               OnAuthenticationFailed = c =>
+               {
+                  c.NoResult();
+                  c.Response.StatusCode = 500;
+                  c.Response.ContentType = "text/plain";
+                  return c.Response.WriteAsync(c.Exception.ToString());
+               },
+               OnChallenge = context =>
+               {
+                  context.HandleResponse();
+                  context.Response.StatusCode = 401;
+                  context.Response.ContentType = "application/json";
+                  var result = JsonSerializer.Serialize("401 Not authorized");
+                  return context.Response.WriteAsync(result);
+               },
+               OnForbidden = context =>
+               {
+                  context.Response.StatusCode = 403;
+                  context.Response.ContentType = "application/json";
+                  var result = JsonSerializer.Serialize("403 Not authorized");
+                  return context.Response.WriteAsync(result);
+               }
+            };
+         });
+
+         return services;
         }
     }
 }

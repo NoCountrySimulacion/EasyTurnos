@@ -25,5 +25,14 @@ namespace Infrastructure.Repositories
                 .ProjectTo<ProfessionalGetDto>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
+
+        public new async Task<List<ProfessionalWithSlotsDto>> GetAllProfessionalsWithSlots()
+        {
+            var professionals = await Entities
+                    .ProjectTo<ProfessionalWithSlotsDto>(_mapper.ConfigurationProvider)
+                    .ToListAsync();
+
+            return professionals;
+        }
     }
 }

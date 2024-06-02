@@ -21,6 +21,9 @@ namespace Core
             //Appointment
             services.AddScoped<IAppointmentService, AppointmentService>();
 
+            // Authentication
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
+          
             // Validation Behavior
             services.AddTransient(typeof(IValidationBehavior<>), typeof(ValidationBehavior<>));
 

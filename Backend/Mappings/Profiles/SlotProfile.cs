@@ -10,7 +10,6 @@ namespace Mappings.Profiles
         {
             CreateMap<SlotAddDto, Slot>();
             CreateMap<Slot, SlotGetDto>();
-            CreateMap<SlotEditDto, Slot>().ReverseMap();
         }
     }
 }

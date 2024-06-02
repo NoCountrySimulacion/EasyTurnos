@@ -5,7 +5,7 @@ using Utilities.Enums;
 
 namespace Infrastructure.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole,Guid>
     {
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {

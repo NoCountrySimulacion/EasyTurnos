@@ -9,6 +9,7 @@ namespace Mappings.Profiles
         public ProfessionalProfile()
         {
             CreateMap<ProfessionalAddDto, Professional>();
+
             CreateMap<Professional, ProfessionalGetDto>();
             CreateMap<Professional, ProfessionalWithSlotsDto>()
                     .ForMember(dest => dest.Slots, opt => opt.MapFrom(src => src.Slots));

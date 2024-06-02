@@ -1,9 +1,14 @@
 ﻿using Core.Services.Interfaces;
+using DTOs;
+using DTOs.Professional;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace API.Controllers
 {
-    [Route("api/[controller]")]
+   [Authorize(Roles = "Admin")]
+   [Route("api/[controller]")]
     [ApiController]
     public class ProfessionalController : ControllerBase
     {
@@ -21,6 +26,24 @@ namespace API.Controllers
                 return Ok(result);
             else
                 return NotFound(new { message = $"Professional with ID {professionalId} not found." });
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<ServiceResponse<List<ProfessionalWithSlotsDto>>>> GetAllProfessionalsWithSlots()
+        {
+            return Ok(await _professionalService.GetAllProfessionalsWithSlots());
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<ServiceResponse<List<ProfessionalGetDto>>>> AddProfessional(ProfessionalAddDto newProfessional)
+        {
+            return Ok(await _professionalService.AddProfessional(newProfessional));
+        }
+
+        [HttpDelete]
+        public async Task<ActionResult<ServiceResponse<List<ProfessionalAddDto>>>> DeleteProfessional(Guid id)
+        {
+            return Ok(await _professionalService.DeleteProfessional(id));
         }
     }
 }
