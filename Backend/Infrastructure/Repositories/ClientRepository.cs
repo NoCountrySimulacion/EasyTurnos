@@ -20,31 +20,13 @@ public class ClientRepository : GenericRepository<Client, Guid>, IClientReposito
         _mapper = mapper;
     }
 
-    public Task<ClientCreatedDto> Insert(ClientAddDto clientAddDto)
+    public new async Task<ClientGetDto?> GetById(Guid id)
     {
-        throw new NotImplementedException();
+        return await Entities
+            //.Include(c => c.ApplicationUser)
+            .ProjectTo<ClientGetDto>(_mapper.ConfigurationProvider)
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    //public async Task AddAsync(Client client)
-    //{
-    //    await _context.Clients.AddAsync(client);
-    //    await _context.SaveChangesAsync();
-    //}
 
-    // Overriding method from GenericRepository to use ProjectTo instead of db class.
-    //public new async Task<ProfessionalGetDto?> GetById(Guid id)
-    //{
-    //    return await Entities
-    //        .ProjectTo<ProfessionalGetDto>(_mapper.ConfigurationProvider)
-    //        .FirstOrDefaultAsync(x => x.Id == id);
-    //}
-
-    //public async Task<ClientCreatedDto> Insert(Client client)
-    //{
-    //    await _context.Clients.AddAsync(client);
-    //    await _context.SaveChangesAsync();
-    //    return await Entities
-    //        .ProjectTo<ClientCreatedDto>(_mapper.ConfigurationProvider)
-    //        .FirstOrDefaultAsync(c => c.Id == id);
-    //}
 }
