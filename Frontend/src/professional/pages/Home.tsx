@@ -1,14 +1,12 @@
 /* eslint-disable quotes */
 import { DateTime } from 'luxon'
-import {
-	AddClientIcon,
-	CalendarIcon,
-	SearchIcon
-} from '../components/icons/Icons'
+import { AddClientIcon, SearchIcon } from '../components/icons/Icons'
+import { appointmentsMock } from '../mocks/appointments'
+import { AppointmentsList } from '../components/AppointmentsList'
+import { WithoutAppointments } from '../components/WithoutAppointments'
 
 function Home(): React.ReactElement {
 	const now = DateTime.now()
-
 	const formattedDate = now.setLocale('es').toFormat("cccc, dd 'de' LLLL")
 
 	return (
@@ -33,25 +31,14 @@ function Home(): React.ReactElement {
 				</button>
 			</header>
 			<section className='flex flex-col items-start gap-[18px]'>
-				<h2 className='text-[35px] font-bold leading-[56px]'>
+				<h1 className='text-[35px] font-bold leading-[56px]'>
 					Bienvenido a tu espacio, Enzo.
-				</h2>
-				<p className='text-[28px] font-bold leading-[56px]'>
+				</h1>
+				<h2 className='text-[28px] font-bold leading-[56px]'>
 					Hoy {formattedDate}.
-				</p>
+				</h2>
 			</section>
-			<section className='shadow-search rounded-[15px] flex flex-col  justify-center mb-20 '>
-				<div className='p-10 flex flex-col gap-[60px]'>
-					<p className='px-20 w-[950px] h-[247px] text-[35px] leading-[56px] content-center'>
-						No tienes turnos programados para hoy. <br />
-						¿Te gustaría agendar un turno o quieres agregar un cliente?
-					</p>
-					<button className='bg-[#7445C7] text-[#F8F9FA] flex items-center justify-center gap-[10px] h-[38px] w-[161px] rounded-lg text-[13px] font-bold'>
-						<CalendarIcon height={18} width={18} />
-						<span>Agregar Turno</span>
-					</button>
-				</div>
-			</section>
+			{appointmentsMock.length ? <AppointmentsList /> : <WithoutAppointments />}
 		</section>
 	)
 }

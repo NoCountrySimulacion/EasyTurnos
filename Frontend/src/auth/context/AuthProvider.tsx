@@ -12,6 +12,7 @@ export const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export default function AuthProvider({ children }: AuthProviderProps) {
 	const [user, setUser] = useState<UserLogged | null>(null)
+	const [error, setError] = useState<string | null>(null);
 
 
 	useEffect(() => {
@@ -26,17 +27,22 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 			email,
 			password
 		}
-		console.log('Logging in with credentials:', credentials)
-		const response = await logIn(credentials)
-		console.log('Login response:', response)
-		setUser({ id: response.id, email: response.email, token: response.token })
-		console.log('User set after login:', {
-			id: response.id,
-			email: response.email,
-			token: response.token
-		})
-		localStorage.setItem('token', response.token)
-		
+		try {
+			console.log('Logging in with credentials:', credentials)
+			const response = await logIn(credentials)
+			console.log('Login response:', response)
+			setUser({ id: response.id, email: response.email, token: response.token })
+			localStorage.setItem('token', response.token)
+			setError(null) 
+		} catch (err: unknown) {
+			if (err instanceof Error) {
+				setError(err.message)
+				throw error
+			} else {
+				setError('Error desconocido durante el inicio de sesión')
+				throw error
+			}
+		}
 		
 	}
 
@@ -72,6 +78,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 
 	const authContextValue: AuthContextType = {
 		user,
+		error,
 		loginUser,
 		registerUser,
 		logout

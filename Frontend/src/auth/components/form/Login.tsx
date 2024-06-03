@@ -20,7 +20,7 @@ export default function Login(): React.ReactElement {
 	const [showPassword, setshowPassword] = useState(false)
 	const id = useId()
 	const navigate = useNavigate()
-	const { loginUser } = useAuth()
+	const { loginUser, error } = useAuth()
 
 	const initialValues: LoginFormValues = {
 		userEmail: '',
@@ -47,7 +47,7 @@ export default function Login(): React.ReactElement {
 	}
 
 	return (
-		<div className='flex gap-10'>
+		<div className='flex gap-10 font-montserrat'>
 			<div className='w-full max-w-md mx-auto'>
 				<div className='mb-[2.5rem]'>
 					<h2 className='text-[40px] font-semibold text-[#313131]'>
@@ -144,6 +144,7 @@ export default function Login(): React.ReactElement {
 									</a>
 								</div>
 							</div>
+							{error && <div className='text-red-500 text-sm'>{error}</div>}{' '}
 							<div>
 								<button
 									type='submit'
@@ -189,8 +190,8 @@ export default function Login(): React.ReactElement {
 									</button>
 								</p>
 							</div>
-							<div className='flex justify-center items-start gap-3 mt-14'>
-								<div className='border border-solid border-[#FD8847] pl-[5rem] pr-[5rem] pt-[.7rem] pb-[.7rem]'>
+							<div className='flex w-full justify-center items-start gap-3 mt-14'>
+								<div className='border border-solid border-[#FD8847] pl-[5.5rem] pr-[5rem] pt-[.7rem] pb-[.7rem]'>
 									<FacebookLogo width={25} height={25} />
 								</div>
 								<div className='border border-solid border-[#FD8847] pl-[5rem] pr-[5rem] pt-[.7rem] pb-[.7rem]'>
@@ -201,7 +202,7 @@ export default function Login(): React.ReactElement {
 					)}
 				</Formik>
 			</div>
-			<div className=' w-[416px] h-[516px]'>
+			<div className='w-[416px] h-[516px]'>
 				<img src='./images/LoginImg.webp' alt='login' />
 			</div>
 		</div>
