@@ -28,10 +28,10 @@ public class ClientService : IClientService
         _logger = logger;
     }
 
-    public Task<ClientCreatedDto> AddClientAsync(Guid professionalId, ClientAddDto clientAddDto)
-    {
-        throw new NotImplementedException();
-    }
+    //public Task<ClientCreatedDto> AddClientAsync(Guid professionalId, ClientAddDto clientAddDto)
+    //{
+    //    throw new NotImplementedException();
+    //}
 
     public async Task<ServiceResponse<RegistrationResponse>> RegisterClientUser(Guid professionalId, ClientAddDto registerRequest)
     {

@@ -12,18 +12,17 @@ namespace API.Controllers;
 public class ProfessionalClientController : ControllerBase
 {
     private readonly IClientService _clientService;
-    //private readonly IAuthenticationService _authenticationService;
 
     public ProfessionalClientController(IClientService clientService)
     {
         _clientService = clientService;
     }
 
-    [HttpPost]
-    public async Task<ActionResult<ClientCreatedDto>> AddClient(Guid professionalId, ClientAddDto clientAddDto)
-    {
-        return Ok(await _clientService.AddClientAsync(professionalId, clientAddDto));
-    }
+    //[HttpPost]
+    //public async Task<ActionResult<ClientCreatedDto>> AddClient(Guid professionalId, ClientAddDto clientAddDto)
+    //{
+    //    return Ok(await _clientService.AddClientAsync(professionalId, clientAddDto));
+    //}
 
     [HttpPost("RegisterClient")]
     public async Task<ActionResult<RegistrationResponse>> RegisterClientUser(Guid professionalId, ClientAddDto clientAddDto)
