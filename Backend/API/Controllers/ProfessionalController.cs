@@ -1,5 +1,6 @@
 ﻿using Core.Services.Interfaces;
 using DTOs;
+using DTOs.Identity;
 using DTOs.Professional;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -35,13 +36,13 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ServiceResponse<List<ProfessionalGetDto>>>> AddProfessional(ProfessionalAddDto newProfessional)
+        public async Task<ActionResult<ServiceResponse<RegistrationResponse>>> AddProfessional(ProfessionalAddDto newProfessional)
         {
-            return Ok(await _professionalService.AddProfessional(newProfessional));
+            return Ok(await _professionalService.RegisterProfessionalUser(newProfessional));
         }
 
         [HttpDelete]
-        public async Task<ActionResult<ServiceResponse<List<ProfessionalAddDto>>>> DeleteProfessional(Guid id)
+        public async Task<ActionResult<ServiceResponse<ProfessionalAddDto>>> DeleteProfessional(Guid id)
         {
             return Ok(await _professionalService.DeleteProfessional(id));
         }
