@@ -55,10 +55,12 @@ public class ClientService : IClientService
             registerRequest.RegistrationRequest.Client = newClient;
 
             // Register User with its client entity assigned
-            RegistrationResponse regsitrationResponse =
+            RegistrationResponse registrationResponse =
                 await _authenticationService.RegisterAsync(registerRequest.RegistrationRequest);
 
-            serviceResponse.Data = regsitrationResponse;
+            serviceResponse.Data = registrationResponse;
+            serviceResponse.Message = $"Client with Id {newClient.Id} has been created";
+
         }
         catch (Exception ex)
         {
