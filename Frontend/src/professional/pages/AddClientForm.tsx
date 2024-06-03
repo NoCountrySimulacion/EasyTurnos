@@ -15,6 +15,11 @@ export function AddClientForm(): JSX.Element {
 	return (
 		<main className='flex flex-col mt-10 ml-10'>
 			<section className='flex flex-col gap-[40px] mb-10 '>
+				<img
+					src='../../../public/images/Formulario.png'
+					alt=''
+					className='absolute top-1 z-[-1] w-[979px]'
+				/>
 				<h1 className='font-[600] text-[48px] font-montserrat'>
 					Agregar Cliente
 				</h1>
@@ -232,3 +237,5 @@ export function AddClientForm(): JSX.Element {
 		</main>
 	)
 }
+
+// C:\Users\Facundo Pettersson\Documents\NoCountry\Programacion\EasyTurnos\Frontend\public\images\Formulario.png
