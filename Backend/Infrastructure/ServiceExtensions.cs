@@ -33,6 +33,7 @@ namespace Infrastructure
             services.AddScoped<IProfessionalRepository, ProfessionalRepository>();
             services.AddScoped<IAppointmentRepository, AppointmentRepository>();
             services.AddScoped<ISlotRepository, SlotRepository>();
+            services.AddScoped<IClientRepository, ClientRepository>();
 
             // Identity
             services.AddIdentity<ApplicationUser, ApplicationRole>(opt =>
