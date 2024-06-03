@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Azure.Core;
 using Core.Services.Interfaces;
 using Domain.Entities;
 using DTOs;
@@ -110,18 +109,20 @@ namespace Core.Services
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<RegistrationResponse>> RegisterProfessionalUser(ProfessionalAddDto addProfessional)
+        public async Task<ServiceResponse<RegistrationResponse>> RegisterProfessionalUser(RegistrationRequest request)
         {
             var serviceResponse = new ServiceResponse<RegistrationResponse>();
 
             try
             {
-                var newProfessional = _mapper.Map<Professional>(addProfessional);
-                addProfessional.RegistrationRequest.UserType = UserTypeOptions.Professional;
-                addProfessional.RegistrationRequest.Professional = newProfessional;
+                // var newProfessional = _mapper.Map<Professional>(addProfessional);
+                var newProfessional = new Professional();
+
+                request.UserType = UserTypeOptions.Professional;
+                request.Professional = newProfessional;
 
                 RegistrationResponse regsitrationResponse =  
-                    await _authenticationService.RegisterAsync(addProfessional.RegistrationRequest);
+                    await _authenticationService.RegisterAsync(request);
             
                 serviceResponse.Data = regsitrationResponse;
             }

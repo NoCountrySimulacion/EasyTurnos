@@ -2,14 +2,12 @@
 using DTOs;
 using DTOs.Identity;
 using DTOs.Professional;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace API.Controllers
 {
-   //[Authorize(Roles = "Admin")]
-   [Route("api/[controller]")]
+    //[Authorize(Roles = "Admin")]
+    [Route("api/[controller]")]
     [ApiController]
     public class ProfessionalController : ControllerBase
     {
@@ -38,7 +36,13 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<ServiceResponse<RegistrationResponse>>> AddProfessional(ProfessionalAddDto newProfessional)
         {
-            return Ok(await _professionalService.RegisterProfessionalUser(newProfessional));
+            return Ok(await _professionalService.AddProfessional(newProfessional));
+        }
+
+        [HttpPost("RegisterProfessionalUser")]
+        public async Task<ActionResult<ServiceResponse<RegistrationResponse>>> RegisterProfessionalUser(RegistrationRequest request)
+        {
+            return Ok(await _professionalService.RegisterProfessionalUser(request));
         }
 
         [HttpDelete]

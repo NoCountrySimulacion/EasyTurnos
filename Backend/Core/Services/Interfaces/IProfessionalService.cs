@@ -10,6 +10,6 @@ namespace Core.Services.Interfaces
         Task<ServiceResponse<ProfessionalGetDto>> DeleteProfessional(Guid professionalId);
         Task<ServiceResponse<List<ProfessionalWithSlotsDto>>> GetAllProfessionalsWithSlots();
         Task<ServiceResponse<ProfessionalGetDto>> GetProfessionalById(Guid id);
-        Task<ServiceResponse<RegistrationResponse>> RegisterProfessionalUser(ProfessionalAddDto addProfessional);
+        Task<ServiceResponse<RegistrationResponse>> RegisterProfessionalUser(RegistrationRequest request);
     }
 }
