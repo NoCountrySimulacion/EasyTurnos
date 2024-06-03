@@ -21,7 +21,11 @@ export async function logIn(
 		console.log('Login response:', response)
 
 		if (!response.ok) {
-			throw new Error(`Failed to log in: ${response.statusText}`)
+			if (response.status === 401) {
+				throw new Error('Usuario y/o contraseña incorrectos')
+			} else {
+				throw new Error(`Error al iniciar sesión: ${response.statusText}`)
+			}
 		}
 
 		const data = await response.json()
