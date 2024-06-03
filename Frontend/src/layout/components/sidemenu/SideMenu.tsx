@@ -12,6 +12,7 @@ import {
 	Usuarios
 } from '../../Icons/Icons'
 import { useAuth } from '../../../auth/hooks/useAuth'
+import { Link } from 'react-router-dom'
 
 export function Sidemenu(): JSX.Element {
 	const [selectedPage, setSelectedPage] = useState<string>(
@@ -34,17 +35,30 @@ export function Sidemenu(): JSX.Element {
 	}
 
 	const principalMenu = [
-		{ name: 'Home', icon: <Home width={24} height={24} /> },
-		{ name: 'Agenda', icon: <Agenda width={24} height={24} /> },
-		{ name: 'Clientes', icon: <Clientes width={24} height={24} /> },
-		{ name: 'Calendario', icon: <Calendario width={24} height={24} /> }
+		{ name: 'Home', icon: <Home width={24} height={24} />, to: '/home' },
+		{
+			name: 'Agenda',
+			icon: <Agenda width={24} height={24} />,
+			to: '/diary'
+		},
+		{
+			name: 'Clientes',
+			icon: <Clientes width={24} height={24} />,
+			to: '/clients'
+		},
+		{
+			name: 'Calendario',
+			icon: <Calendario width={24} height={24} />,
+			to: '/calendar'
+		}
 	]
 
 	const administrador = [
 		{ name: 'Servicios', icon: <Servicios width={24} height={24} /> },
 		{
 			name: 'Administrar Negocio',
-			icon: <AdministrarNegocio width={24} height={24} />
+			icon: <AdministrarNegocio width={24} height={24} />,
+			to: '/manage'
 		}
 	]
 
@@ -52,13 +66,14 @@ export function Sidemenu(): JSX.Element {
 		{ name: 'Usuario', icon: <Usuarios width={24} height={24} /> },
 		{
 			name: 'Configuraciones',
-			icon: <Configuraciones width={24} height={24} />
+			icon: <Configuraciones width={24} height={24} />,
+			to: '/settings'
 		}
 	]
 
 	return (
-		<aside className='h-full bg-[#fff] text-[#000] font-mono w-[325px] shadow-md shadow-black'>
-			<nav>
+		<aside className='h-full bg-[#fff] text-[#000] font-mono w-[325px] shadow-md shadow-black '>
+			<nav className=''>
 				<div id='logo' className='flex flex-col ml-2 pb-[0px]'>
 					<h4 className='text-[48px] font-bold'>EasyTurno</h4>
 				</div>
@@ -72,7 +87,8 @@ export function Sidemenu(): JSX.Element {
 							key={item.name}
 							className={`w-[80%] ml-3 rounded-[16px] ${selectedPage === item.name ? 'bg-[#D3CAFF] border border-solid border-[#7445C7] duration-500' : 'hover:bg-purple-100'}`}
 						>
-							<div
+							<Link
+								to={item.to}
 								className='flex flex-row flex-wrap pb-[10px] pt-3 cursor-pointer'
 								onClick={() => handlePageChange(item.name)}
 							>
@@ -80,7 +96,7 @@ export function Sidemenu(): JSX.Element {
 								<h4 className='ml-3 text-[18px] font-bold font-montserrat'>
 									{item.name}
 								</h4>
-							</div>
+							</Link>
 						</div>
 					))}
 				</section>
