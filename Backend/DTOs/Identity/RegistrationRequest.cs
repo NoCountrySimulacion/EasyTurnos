@@ -1,4 +1,3 @@
-using Domain.Entities;
 using System.ComponentModel.DataAnnotations;
 
 using System.Text.Json.Serialization;
@@ -23,8 +22,14 @@ namespace DTOs.Identity
         public string? PhoneNumber { get; set; }
 
         [Required]
-        [MinLength(6)]
+        //[MinLength(6)]
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{6,}$", ErrorMessage = "The password must be at least 6 characters, including at least one capital letter, one number, and one special character")]
         public string Password { get; set; } = string.Empty;
+
+        [Required]
+        // [MinLength(6)]
+        [Compare("Password", ErrorMessage = "Password and confirm password fields do not match")]
+        public string ConfirmPassword { get; set; } = string.Empty;
 
         [JsonIgnore]
         public UserTypeOptions UserType { get; set; } = UserTypeOptions.Professional;
