@@ -6,7 +6,7 @@ export default function LayoutApp(): JSX.Element {
 	return (
 		<div>
 			<div className='flex'>
-				<aside className='bg-red-400'>
+				<aside className='bg-red-400  '>
 					<Sidemenu />
 				</aside>
 				<main>
