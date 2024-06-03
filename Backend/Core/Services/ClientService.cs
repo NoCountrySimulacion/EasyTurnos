@@ -1,129 +1,73 @@
-﻿using Core.Services.Interfaces;
+﻿using AutoMapper;
+using Core.Services.Interfaces;
 using Domain.Entities;
+using DTOs;
 using DTOs.Client;
 using DTOs.Identity;
-using DTOs.jwt;
 using Infrastructure.Repositories.Interfaces;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+using Microsoft.Extensions.Logging;
 
 namespace Core.Services;
 
 public class ClientService : IClientService
 {
-    private readonly UserManager<ApplicationUser> _userManager;
-    //private readonly SignInManager<ApplicationUser> _signInManager;
-    private readonly JwtSettings _jwtSettings;
-    private readonly RoleManager<ApplicationRole> _roleManager;
-    //private readonly IClientRepository _clientRepository;
+    private readonly IClientRepository _clientRepository;
+    private readonly IAuthenticationService _authenticationService;
+    private readonly IMapper _mapper;
+    private readonly ILogger<ClientService> _logger;
 
-    public ClientService(UserManager<ApplicationUser> userManager,
-        //SignInManager<ApplicationUser> signInManager, 
-        IOptions<JwtSettings> jwSettings,
-        RoleManager<ApplicationRole> roleManager
-        //IClientRepository clientRepository
-        //IProfessionalRepository professionalRepository
-        )
+    public ClientService(
+            IClientRepository clientRepository,
+            IAuthenticationService authenticationService,
+            IMapper mapper,
+            ILogger<ClientService> logger)
     {
-        _userManager = userManager;
-        //_signInManager = signInManager;
-        _jwtSettings = jwSettings.Value;
-        _roleManager = roleManager;
-        //_professionalRepository = professionalRepository;
-        //_clientRepository = clientRepository;
+        _clientRepository = clientRepository;
+        _authenticationService = authenticationService;
+        _mapper = mapper;
+        _logger = logger;
     }
 
-    public async Task<ClientCreatedDto> AddClientAsync(Guid professionalId, ClientAddDto clientAddDto)
+    public Task<ClientCreatedDto> AddClientAsync(Guid professionalId, ClientAddDto clientAddDto)
     {
-        ApplicationUser userClient = new ApplicationUser
+        throw new NotImplementedException();
+    }
+
+    public async Task<ServiceResponse<RegistrationResponse>> RegisterClientUser(Guid professionalId, ClientAddDto registerRequest)
+    {
+        var serviceResponse = new ServiceResponse<RegistrationResponse>();
+
+        try
         {
-            Email = clientAddDto.Email,
-            FirstName = clientAddDto.FirstName,
-            LastName = clientAddDto.LastName,
-            PhoneNumber = clientAddDto.PhoneNumber,
-            EmailConfirmed = true,
-            UserName = clientAddDto.Email,
-            ProfessionalId = null,
-            ClientId = null
-        };
+            // Client Entity is created
+            var newClient = _mapper.Map<Client>(registerRequest);
 
-        var existingEmail = await _userManager.FindByEmailAsync(clientAddDto.Email);
-
-        if (existingEmail == null)
-        {
-            var result = await _userManager.CreateAsync(userClient, clientAddDto.Password);
-
-            if (result.Succeeded)
+            // Set relation between Professional and Client // NOT THE BEST WAY TO DO THIS BUT THE FASTEST WAY
+            newClient.ProfessionalClients = new List<ProfessionalClient>
             {
-                // Create a role
-                ApplicationRole? existRole = await _roleManager.FindByNameAsync("Client");
+                new ProfessionalClient() {ProfessionalId = professionalId, ClientId = newClient.Id }
+            };
 
-                if (existRole is null)
-                {
-                    ApplicationRole newRole = new()
-                    {
-                        Name = "Client"
-                    };
-                    await _roleManager.CreateAsync(newRole);
-                }
-                await _userManager.AddToRoleAsync(userClient, "Client");
-                
-                // Generate Token
-                JwtSecurityToken jwtSecurityToken = await GenerateToken(userClient);
+            // Set Client role for User
+            registerRequest.RegistrationRequest.UserType = UserTypeOtions.Client;
 
-                return new ClientCreatedDto()
-                {
-                    UserId = userClient.Id,
-                    Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken)
-                };
-            }
-            else
-            {
-                throw new Exception($"{result.Errors}");
-            }
+            // Set DB relation between Client and its User
+            registerRequest.RegistrationRequest.Client = newClient;
+
+            // Register User with its client entity assigned
+            RegistrationResponse regsitrationResponse =
+                await _authenticationService.RegisterAsync(registerRequest.RegistrationRequest);
+
+            serviceResponse.Data = regsitrationResponse;
         }
-        else
+        catch (Exception ex)
         {
-            throw new Exception($"Email {clientAddDto.Email} already exists.");
+            serviceResponse.Success = false;
+            serviceResponse.Message = ex.Message;
+            _logger.LogError(ex, $"Error adding new Client - {ex.Message}");
         }
+
+        return serviceResponse;
     }
-
-    private async Task<JwtSecurityToken> GenerateToken(ApplicationUser user)
-    {
-        var userClaims = await _userManager.GetClaimsAsync(user);
-        var roles = await _userManager.GetRolesAsync(user);
-
-        var roleClaims = new List<Claim>();
-
-        foreach (var role in roles)
-        {
-            roleClaims.Add(new Claim(ClaimTypes.Role, role));
-        }
-
-        IEnumerable<Claim> claims = new[]
-        {
-                new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email),
-         }
-        .Union(userClaims)
-        .Union(roleClaims);
-
-        var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
-        var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
-
-        var jwtSecurityToken = new JwtSecurityToken(
-            issuer: _jwtSettings.Issuer,
-            audience: _jwtSettings.Audience,
-            claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(_jwtSettings.DurationInMinutes),
-            signingCredentials: signingCredentials);
-        return jwtSecurityToken;
-    }
-
 
 }

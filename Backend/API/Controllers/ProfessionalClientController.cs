@@ -1,13 +1,12 @@
-﻿using Azure.Core;
-using Core.Services.Interfaces;
-using DTOs;
+﻿using Core.Services.Interfaces;
 using DTOs.Client;
+using DTOs.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
-[Authorize(Roles = "Professional")]
+//[Authorize(Roles = "Professional")]
 [Route("api/professionals/{professionalId}/clients")]
 [ApiController]
 public class ProfessionalClientController : ControllerBase
@@ -25,6 +24,10 @@ public class ProfessionalClientController : ControllerBase
     {
         return Ok(await _clientService.AddClientAsync(professionalId, clientAddDto));
     }
-    
 
+    [HttpPost("RegisterClient")]
+    public async Task<ActionResult<RegistrationResponse>> RegisterClientUser(Guid professionalId, ClientAddDto clientAddDto)
+    {
+        return Ok(await _clientService.RegisterClientUser(professionalId, clientAddDto));
+    }
 }

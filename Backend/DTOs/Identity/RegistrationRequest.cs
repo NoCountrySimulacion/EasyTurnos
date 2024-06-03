@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace DTOs.Identity
 {
-   public class RegistrationRequest
+    public class RegistrationRequest
    {
       [Required]
       public string FirstName { get; set; } = string.Empty;
@@ -24,8 +25,14 @@ namespace DTOs.Identity
       [Required]
       [MinLength(6)]
       public string Password { get; set; } = string.Empty;
-
       public UserTypeOtions UserType { get; set; } = UserTypeOtions.Professional;
+
+      [JsonIgnore]
+      public Domain.Entities.Professional? Professional { get; set; }
+
+      [JsonIgnore]
+      public Domain.Entities.Client? Client { get; set; }
+
    }
 }
 public enum UserTypeOtions

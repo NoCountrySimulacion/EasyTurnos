@@ -70,8 +70,8 @@ namespace Core.Services
             PhoneNumber = request.PhoneNumber,
             EmailConfirmed = true,
             UserName = request.Email,
-            ProfessionalId = null,
-            ClientId = null
+            Professional = request.Professional,
+            Client = request.Client
          };
 
          var existingEmail = await _userManager.FindByEmailAsync(request.Email);
