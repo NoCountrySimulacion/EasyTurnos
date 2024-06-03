@@ -17,7 +17,16 @@ namespace API.Controllers
       [HttpPost("authenticate")]
       public async Task<ActionResult<AuthenticationResponse>> AuthenticateAsync(AuthenticationRequest request)
       {
-         return Ok(await _authenticationService.AuthenticateAsync(request));
+            try
+            {
+                return Ok(await _authenticationService.AuthenticateAsync(request));
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+
       }
 
       [HttpPost("register")]
