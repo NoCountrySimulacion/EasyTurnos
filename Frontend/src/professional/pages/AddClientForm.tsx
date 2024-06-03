@@ -165,11 +165,14 @@ export function AddClientForm(): JSX.Element {
 							<span className='flex mt-4 mb-4 border border-solid border-[#000] w-[551.5px]'></span>
 							<div className=''>
 								<h4 className='font-bold'>Usuario del cliente</h4>
-								<div className='w-[466px]'>
-									<label htmlFor='usuarioCliente' className=''>
-										Introduce el mail del cliente, este será el usuario con la
-										cual el usuario entrará a la página para reservar el turno.
-									</label>
+								<div className='w-[466px] mb-[26px]'>
+									<div className='ml-3 mt-[7px] mb-[2px]'>
+										<label htmlFor='usuarioCliente' className='text-[#828282]'>
+											Introduce el mail del cliente, este será el usuario con la
+											cual el usuario entrará a la página para reservar el
+											turno.
+										</label>
+									</div>
 									<Field
 										type='text'
 										name='usuarioCliente'
@@ -184,13 +187,18 @@ export function AddClientForm(): JSX.Element {
 								</div>
 							</div>
 							<div className='w-[466px]'>
-								<h4>Contraseña del cliente.</h4>
-								<div>
-									<label htmlFor='contraseñaCliente'>
-										Introduce el documento del cliente, este será la contraseña
-										con la cual el usuario entrará a la página para reservar el
-										turno.
-									</label>
+								<h4 className='font-bold mb-[7px]'>Contraseña del cliente.</h4>
+								<div className=''>
+									<div className='ml-3 mt-[7px] mb-[2px]'>
+										<label
+											htmlFor='contraseñaCliente'
+											className='text-[#828282]'
+										>
+											Introduce el documento del cliente, este será la
+											contraseña con la cual el usuario entrará a la página para
+											reservar el turno.
+										</label>
+									</div>
 									<Field
 										type='text'
 										name='contraseñaCliente'
@@ -206,14 +214,14 @@ export function AddClientForm(): JSX.Element {
 							</div>
 						</section>
 
-						<div className='flex flex-row flex-wrap gap-2'>
-							<button type='button' className='bg-[#BC4141]'>
+						<div className='flex flex-row flex-wrap gap-5 mb-5 w-[60rem]  justify-end'>
+							<button type='button' className='bg-[#BC4141] p-2 rounded-[4px]'>
 								Cancelar
 							</button>
 							<button
 								type='submit'
 								disabled={isSubmitting}
-								className='bg-[#02A95C]'
+								className='bg-[#02A95C] p-2 rounded-[4px]'
 							>
 								Dar de alta a cliente
 							</button>

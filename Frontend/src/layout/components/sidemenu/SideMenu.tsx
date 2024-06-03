@@ -72,8 +72,8 @@ export function Sidemenu(): JSX.Element {
 	]
 
 	return (
-		<aside className='h-full bg-[#fff] text-[#000] font-mono w-[325px] shadow-md shadow-black'>
-			<nav>
+		<aside className='h-full bg-[#fff] text-[#000] font-mono w-[325px] shadow-md shadow-black '>
+			<nav className=''>
 				<div id='logo' className='flex flex-col ml-2 pb-[0px]'>
 					<h4 className='text-[48px] font-bold'>EasyTurno</h4>
 				</div>
