@@ -9,6 +9,7 @@ public class ClientProfile : Profile
     public ClientProfile()
     {
         CreateMap<ClientAddDto, Client>().ReverseMap();
-        CreateMap<Client, ClientCreatedDto>();
+        //CreateMap<Client, ClientCreatedDto>();
+        CreateMap<Client, ClientGetDto>();
     }
 }
