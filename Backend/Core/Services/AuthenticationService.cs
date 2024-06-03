@@ -52,9 +52,11 @@ namespace Core.Services
 
          AuthenticationResponse response = new AuthenticationResponse
          {
-            Id = user.Id,
+            UserId = user.Id,
             Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
             Email = user.Email,
+            FirstName = user.FirstName,
+            LastName = user.LastName
          };
 
          return response;
@@ -70,8 +72,8 @@ namespace Core.Services
             PhoneNumber = request.PhoneNumber,
             EmailConfirmed = true,
             UserName = request.Email,
-            ProfessionalId = null,
-            ClientId = null
+            Professional = request.Professional,
+            Client = request.Client
          };
 
          var existingEmail = await _userManager.FindByEmailAsync(request.Email);
@@ -97,7 +99,10 @@ namespace Core.Services
                return new RegistrationResponse()
                {
                   UserId = user.Id,
-                  Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken)
+                  Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
+                  Email = user.Email,
+                  FirstName = user.FirstName,
+                  LastName = user.LastName
                };
             }
             else
@@ -128,6 +133,8 @@ namespace Core.Services
                 new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim("professionalId", user.ProfessionalId.ToString()),
+                new Claim("clientId", user.ClientId.ToString()),
          }
          .Union(userClaims)
          .Union(roleClaims);
