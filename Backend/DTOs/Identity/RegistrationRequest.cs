@@ -25,8 +25,9 @@ namespace DTOs.Identity
         [Required]
         [MinLength(6)]
         public string Password { get; set; } = string.Empty;
-      
-        public UserTypeOtions UserType { get; set; } = UserTypeOtions.Professional;
+
+        [JsonIgnore]
+        public UserTypeOptions UserType { get; set; } = UserTypeOptions.Professional;
 
         [JsonIgnore]
         public Domain.Entities.Professional? Professional { get; set; }
@@ -35,7 +36,7 @@ namespace DTOs.Identity
         public Domain.Entities.Client? Client { get; set; }
    }
 }
-public enum UserTypeOtions
+public enum UserTypeOptions
 {
     Admin, Professional, Client
 

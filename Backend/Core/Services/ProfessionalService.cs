@@ -117,7 +117,7 @@ namespace Core.Services
             try
             {
                 var newProfessional = _mapper.Map<Professional>(addProfessional);
-                addProfessional.RegistrationRequest.UserType = UserTypeOtions.Professional;
+                addProfessional.RegistrationRequest.UserType = UserTypeOptions.Professional;
                 addProfessional.RegistrationRequest.Professional = newProfessional;
 
                 RegistrationResponse regsitrationResponse =  

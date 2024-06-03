@@ -49,7 +49,7 @@ public class ClientService : IClientService
             };
 
             // Set Client role for User
-            registerRequest.RegistrationRequest.UserType = UserTypeOtions.Client;
+            registerRequest.RegistrationRequest.UserType = UserTypeOptions.Client;
 
             // Set DB relation between Client and its User
             registerRequest.RegistrationRequest.Client = newClient;
