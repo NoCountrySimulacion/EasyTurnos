@@ -23,7 +23,7 @@ public class ClientRepository : GenericRepository<Client, Guid>, IClientReposito
     public new async Task<ClientGetDto?> GetById(Guid id)
     {
         return await Entities
-            //.Include(c => c.ApplicationUser)
+            .Include(c => c.ApplicationUser)
             .ProjectTo<ClientGetDto>(_mapper.ConfigurationProvider)
             .FirstOrDefaultAsync(x => x.Id == id);
     }
