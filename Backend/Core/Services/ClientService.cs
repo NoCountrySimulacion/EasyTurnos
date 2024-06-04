@@ -5,6 +5,7 @@ using DTOs;
 using DTOs.Client;
 using DTOs.Identity;
 using Infrastructure.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Core.Services;
@@ -84,6 +85,29 @@ public class ClientService : IClientService
             serviceResponse.Success = false;
             serviceResponse.Message = ex.Message;
             _logger.LogError(ex, $"{ex.Message}");
+        }
+
+        return serviceResponse;
+    }
+
+    public async Task<ServiceResponse<List<ClientListDto>>> GetClients()
+    {
+        var serviceResponse = new ServiceResponse<List<ClientListDto>>();
+        try
+        {
+            var clients = await _clientRepository.GetAll()
+               .Include(c => c.ApplicationUser)
+               .ToListAsync();
+
+            var clientsList = _mapper.Map<List<ClientListDto>>(clients);
+
+            serviceResponse.Data = clientsList;
+        }
+        catch (Exception ex)
+        {
+            serviceResponse.Success = false;
+            serviceResponse.Message = ex.Message;
+            _logger.LogError(ex, $"Error getting Clients - {ex.Message}");
         }
 
         return serviceResponse;
