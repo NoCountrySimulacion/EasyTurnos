@@ -1,16 +1,17 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Core.Services.Interfaces;
 using Domain.Entities;
 using DTOs;
 using DTOs.Client;
 using DTOs.Identity;
 using Infrastructure.Repositories.Interfaces;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 
 namespace Core.Services;
 
 public class ClientService : IClientService
+
 {
     private readonly IClientRepository _clientRepository;
     private readonly IAuthenticationService _authenticationService;
@@ -50,7 +51,7 @@ public class ClientService : IClientService
             };
 
             // Set Client role for User
-            registerRequest.RegistrationRequest.UserType = UserTypeOtions.Client;
+            registerRequest.RegistrationRequest.UserType = UserTypeOptions.Client;
 
             // Set DB relation between Client and its User
             registerRequest.RegistrationRequest.Client = newClient;
@@ -71,6 +72,7 @@ public class ClientService : IClientService
         }
 
         return serviceResponse;
+
     }
 
     public async Task<ServiceResponse<ClientGetDto>> GetClientById(Guid id)

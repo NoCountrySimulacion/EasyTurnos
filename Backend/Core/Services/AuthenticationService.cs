@@ -52,9 +52,11 @@ namespace Core.Services
 
          AuthenticationResponse response = new AuthenticationResponse
          {
-            Id = user.Id,
+            UserId = user.Id,
             Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
             Email = user.Email,
+            FirstName = user.FirstName,
+            LastName = user.LastName
          };
 
          return response;
@@ -97,7 +99,10 @@ namespace Core.Services
                return new RegistrationResponse()
                {
                   UserId = user.Id,
-                  Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken)
+                  Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
+                  Email = user.Email,
+                  FirstName = user.FirstName,
+                  LastName = user.LastName
                };
             }
             else
@@ -128,6 +133,8 @@ namespace Core.Services
                 new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim("professionalId", user.ProfessionalId.ToString()),
+                new Claim("clientId", user.ClientId.ToString()),
          }
          .Union(userClaims)
          .Union(roleClaims);
@@ -144,7 +151,7 @@ namespace Core.Services
          return jwtSecurityToken;
       }
 
-      private async Task<bool> CreateRole(ApplicationUser user, UserTypeOtions userType)
+      private async Task<bool> CreateRole(ApplicationUser user, UserTypeOptions userType)
       {
          bool roleAssigned = false;
 
@@ -163,16 +170,16 @@ namespace Core.Services
          // Add a role to the user
          switch (userType)
          {
-            case UserTypeOtions.Admin:
+            case UserTypeOptions.Admin:
                await _userManager.AddToRoleAsync(user, userType.ToString());
                roleAssigned = true;
                return roleAssigned;
-            case UserTypeOtions.Client:
+            case UserTypeOptions.Client:
                await _userManager.AddToRoleAsync(user, userType.ToString());
                roleAssigned = true;
                return roleAssigned;
 
-            case UserTypeOtions.Professional:
+            case UserTypeOptions.Professional:
                await _userManager.AddToRoleAsync(user, userType.ToString());
                roleAssigned = true;
                return roleAssigned;
@@ -182,9 +189,9 @@ namespace Core.Services
 
       }
 
-      private async Task<bool> AdminUserExistsAsync(UserTypeOtions? userType)
+      private async Task<bool> AdminUserExistsAsync(UserTypeOptions? userType)
       {
-         if (userType == UserTypeOtions.Admin)
+         if (userType == UserTypeOptions.Admin)
          {
             ApplicationRole? adminRole = await _roleManager.FindByNameAsync("admin");
 
