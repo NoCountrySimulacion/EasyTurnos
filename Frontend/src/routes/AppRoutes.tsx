@@ -9,8 +9,10 @@ import SignUpModal from '../auth/components/form/SingUpModal'
 import LoginOptionsModal from '../auth/components/form/LoginOptionsModal'
 import LoginModal from '../auth/components/form/LoginModal'
 import LayoutApp from '../layout/pages/LayoutApp'
-import { AddClientForm } from '../professional/pages/AddClientForm'
 import Calendar from '../calendar/pages/Calendar'
+import Clients from '../professional/pages/Clients'
+import { AddClientForm } from '../professional/pages/AddClientForm'
+
 
 export default function AppRoutes() {
 	return (
@@ -27,8 +29,9 @@ export default function AppRoutes() {
 				</Route>
 				<Route element={<LayoutApp />}>
 					<Route path='/home' element={<Home />} />
-					<Route path='/clients' element={<AddClientForm />} />
 					<Route path='/calendar' element={<Calendar />} />
+					<Route path='/clients' element={<Clients />} />
+					<Route path='/professional/add-client' element={<AddClientForm />} />
 				</Route>
 			</Routes>
 		</BrowserRouter>
