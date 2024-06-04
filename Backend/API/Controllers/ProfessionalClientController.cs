@@ -29,4 +29,14 @@ public class ProfessionalClientController : ControllerBase
     {
         return Ok(await _clientService.RegisterClientUser(professionalId, clientAddDto));
     }
+
+    [HttpGet("{clientId}")]
+    public async Task<ActionResult> GetClientById(Guid clientId)
+    {
+        var result = await _clientService.GetClientById(clientId);
+        if (result != null)
+            return Ok(result);
+        else
+            return NotFound(new { message = $"Client with ID {clientId} not found." });
+    }
 }
