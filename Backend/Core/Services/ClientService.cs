@@ -72,4 +72,20 @@ public class ClientService : IClientService
         return serviceResponse;
     }
 
+    public async Task<ServiceResponse<ClientGetDto>> GetClientById(Guid id)
+    {
+        var serviceResponse = new ServiceResponse<ClientGetDto>();
+        try
+        {
+            serviceResponse.Data = await _clientRepository.GetById(id);
+        }
+        catch (Exception ex)
+        {
+            serviceResponse.Success = false;
+            serviceResponse.Message = ex.Message;
+            _logger.LogError(ex, $"{ex.Message}");
+        }
+
+        return serviceResponse;
+    }
 }
