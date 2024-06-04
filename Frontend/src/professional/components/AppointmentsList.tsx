@@ -1,5 +1,5 @@
 import { appointmentsMock } from '../mocks/appointments'
-import { AppointmentCard } from './ApopintmentCard'
+import { AppointmentCard } from './AppointmentCard'
 import { CalendarIcon } from './icons/Icons'
 
 export function AppointmentsList(): React.ReactElement {

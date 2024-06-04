@@ -1,4 +1,4 @@
-import { CalendarIcon } from './icons/Icons'
+import { ScheduleAppointmentButton } from './ScheduleAppointmentButton'
 
 export function WithoutAppointments(): React.ReactElement {
 	return (
@@ -8,10 +8,7 @@ export function WithoutAppointments(): React.ReactElement {
 					No tienes turnos programados para hoy. <br />
 					¿Te gustaría agendar un turno o quieres agregar un cliente?
 				</p>
-				<button className='bg-[#7445C7] text-[#F8F9FA] flex items-center justify-center gap-[10px] h-[38px] w-[161px] rounded-lg text-[13px] font-bold'>
-					<CalendarIcon height={18} width={18} />
-					<span>Agendar Turno</span>
-				</button>
+				<ScheduleAppointmentButton />
 			</div>
 		</section>
 	)
