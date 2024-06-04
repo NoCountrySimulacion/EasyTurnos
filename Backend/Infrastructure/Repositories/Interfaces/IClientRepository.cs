@@ -7,5 +7,4 @@ public interface IClientRepository : IGenericRepository<Client, Guid>
 {
     //public Task<ClientCreatedDto> Insert(ClientAddDto clientAddDto);
     Task<ClientGetDto?> GetById(Guid id);
-
 }
