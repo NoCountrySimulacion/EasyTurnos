@@ -22,12 +22,8 @@ namespace Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            
             // Client
-
-            //modelBuilder.Entity<Client>()
-            //    .HasOne(c => c.ApplicationUser)
-            //    .WithOne(au => au.Client)
-            //    .HasForeignKey<Client>(c => c.ApplicationUserId);
             modelBuilder.Entity<Client>()
                 .HasOne(c => c.ApplicationUser)
                 .WithOne(au => au.Client)
