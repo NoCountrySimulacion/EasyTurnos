@@ -5,12 +5,12 @@ using Utilities.Enums;
 
 namespace Infrastructure.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole,Guid>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
     {
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
         }
-        
+
         public DbSet<Professional> Professionals { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<ProfessionalClient> ProfessionalClients { get; set; }
@@ -22,6 +22,17 @@ namespace Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            
+            // Client
+            modelBuilder.Entity<Client>()
+                .HasOne(c => c.ApplicationUser)
+                .WithOne(au => au.Client)
+                .HasForeignKey<Client>(c => c.ApplicationUserId);
+
+            modelBuilder.Entity<ApplicationUser>()
+                .HasOne(au => au.Client)
+                .WithOne(c => c.ApplicationUser)
+                .HasForeignKey<ApplicationUser>(au => au.ClientId);
 
             modelBuilder.Entity<ProfessionalClient>()
                 .HasKey(pc => new { pc.ProfessionalId, pc.ClientId });

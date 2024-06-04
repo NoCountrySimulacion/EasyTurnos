@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Core.Services.Interfaces;
 using Domain.Entities;
 using DTOs;
@@ -6,10 +6,12 @@ using DTOs.Client;
 using DTOs.Identity;
 using Infrastructure.Repositories.Interfaces;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 
 namespace Core.Services;
 
 public class ClientService : IClientService
+
 {
     private readonly IClientRepository _clientRepository;
     private readonly IAuthenticationService _authenticationService;
@@ -70,6 +72,46 @@ public class ClientService : IClientService
         }
 
         return serviceResponse;
+
     }
 
+    public async Task<ServiceResponse<ClientGetDto>> GetClientById(Guid id)
+    {
+        var serviceResponse = new ServiceResponse<ClientGetDto>();
+        try
+        {
+            serviceResponse.Data = await _clientRepository.GetById(id);
+        }
+        catch (Exception ex)
+        {
+            serviceResponse.Success = false;
+            serviceResponse.Message = ex.Message;
+            _logger.LogError(ex, $"{ex.Message}");
+        }
+
+        return serviceResponse;
+    }
+
+    public async Task<ServiceResponse<List<ClientListDto>>> GetClients()
+    {
+        var serviceResponse = new ServiceResponse<List<ClientListDto>>();
+        try
+        {
+            var clients = await _clientRepository.GetAll()
+               .Include(c => c.ApplicationUser)
+               .ToListAsync();
+
+            var clientsList = _mapper.Map<List<ClientListDto>>(clients);
+
+            serviceResponse.Data = clientsList;
+        }
+        catch (Exception ex)
+        {
+            serviceResponse.Success = false;
+            serviceResponse.Message = ex.Message;
+            _logger.LogError(ex, $"Error getting Clients - {ex.Message}");
+        }
+
+        return serviceResponse;
+    }
 }
