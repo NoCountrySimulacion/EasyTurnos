@@ -76,7 +76,6 @@ export function AddClientForm(): JSX.Element {
 					return errors
 				}}
 				onSubmit={(values, { setSubmitting }) => {
-					// Handle form submission logic here
 					console.log(values)
 					setSubmitting(false)
 				}}
