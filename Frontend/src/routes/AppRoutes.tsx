@@ -10,6 +10,7 @@ import LoginOptionsModal from '../auth/components/form/LoginOptionsModal'
 import LoginModal from '../auth/components/form/LoginModal'
 import LayoutApp from '../layout/pages/LayoutApp'
 import { AddClientForm } from '../professional/pages/AddClientForm'
+import { UserViewInd } from '../professional/pages/UserViewInd'
 
 export default function AppRoutes() {
 	return (
@@ -27,6 +28,7 @@ export default function AppRoutes() {
 				<Route element={<LayoutApp />}>
 					<Route path='/home' element={<Home />} />
 					<Route path='/clients' element={<AddClientForm />} />
+					<Route path='/calendar' element={<UserViewInd />} />
 				</Route>
 			</Routes>
 		</BrowserRouter>

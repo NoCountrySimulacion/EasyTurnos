@@ -72,7 +72,7 @@ export function Sidemenu(): JSX.Element {
 	]
 
 	return (
-		<aside className='h-full bg-[#fff] text-[#000] font-mono w-[325px] shadow-md shadow-black '>
+		<aside className='fixed h-[115vh] mb-10 overflow-x-scroll bg-[#fff] text-[#000] font-mono w-[325px] shadow-md shadow-black '>
 			<nav className=''>
 				<div id='logo' className='flex flex-col ml-2 pb-[0px]'>
 					<h4 className='text-[48px] font-bold'>EasyTurno</h4>
@@ -145,7 +145,7 @@ export function Sidemenu(): JSX.Element {
 					))}
 				</section>
 
-				<div className='flex flex-row justify-center items-center mt-[10px]'>
+				<div className='flex flex-row justify-center items-center mt-[10px] mb-2'>
 					<button
 						className='flex flex-row justify-center p-1 bg-[#7445C7] rounded-md w-[290px] hover:bg-purple-600'
 						onClick={handleLogout}
