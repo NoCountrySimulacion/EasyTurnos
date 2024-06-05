@@ -76,10 +76,10 @@ export function UserViewInd(): JSX.Element {
 					</button>
 				</div>
 			</section>
-			<section className='ml-5 mb-2'>
+			<section className='relative bottom-[83.9px] ml-5'>
 				<div>
 					<Link to={'/clients'}>
-						<button className='bg-[#7445C7] p-[10px] rounded-md font-montserrat font-[700] text-[#fff]'>
+						<button className='bg-[#7445C7] p-[10px] rounded-md font-montserrat font-[700] text-[#fff] '>
 							Volver
 						</button>
 					</Link>
