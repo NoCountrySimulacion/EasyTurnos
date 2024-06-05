@@ -28,5 +28,18 @@ public class ClientRepository : GenericRepository<Client, Guid>, IClientReposito
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
+    public async Task<bool> RemoveProfessionalClientRelation(Guid professionalId, Guid clientId)
+    {
+        var professionalClient = await _context.ProfessionalClients
+           .FirstOrDefaultAsync(pc => pc.ProfessionalId == professionalId && pc.ClientId == clientId);
 
+        if (professionalClient != null)
+        {
+            _context.ProfessionalClients.Remove(professionalClient);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        return false;
+    }
 }
