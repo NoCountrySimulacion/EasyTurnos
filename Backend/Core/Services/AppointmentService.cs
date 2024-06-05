@@ -53,12 +53,14 @@ namespace Core.Services
                 var dbAppointments = await _appointmentRepository.GetAllAppointmentsByProfessional(professionalId);
 
                 serviceResponse.Data = dbAppointments;
+
+                serviceResponse.Message = $"Appointment with Id {newAppointment.Id} created.";
             }
             catch (Exception ex)
             {
                 serviceResponse.Success = false;
                 serviceResponse.Message = ex.Message;
-                _logger.LogError(ex, ex.Message);
+                _logger.LogError(ex, $"Error adding Appointment - {ex.Message}");
             }
 
             return serviceResponse;
@@ -73,17 +75,19 @@ namespace Core.Services
                 if (await _appointmentRepository.Delete(appointmentId))
                     await _appointmentRepository.SaveChangesAsync();
                 else
-                    throw new KeyNotFoundException($"Appointment with id {appointmentId} not found.");
+                    throw new KeyNotFoundException($"Appointment not found. Check both IDs.");
 
                 var dbAppointments = await _appointmentRepository.GetAllAppointmentsByProfessional(professionalId);
 
                 serviceResponse.Data = dbAppointments;
+
+                serviceResponse.Message = $"Appointment deleted.";
             }
             catch (Exception ex)
             {
                 serviceResponse.Success = false;
                 serviceResponse.Message = ex.Message;
-                _logger.LogError(ex, ex.Message);
+                _logger.LogError(ex, $"Error deleting Appointment - {ex.Message}");
             }
 
             return serviceResponse;
@@ -103,7 +107,7 @@ namespace Core.Services
             {
                 serviceResponse.Success = false;
                 serviceResponse.Message = ex.Message;
-                _logger.LogError(ex, ex.Message);
+                _logger.LogError(ex, $"Error getting Appointment - {ex.Message}");
             }
 
             return serviceResponse;
@@ -116,6 +120,7 @@ namespace Core.Services
             try
             {
                 var dbAppointment = await _appointmentRepository.GetAllAppointmentsByProfessional(professionalId);
+                if(dbAppointment.Count == 0) serviceResponse.Message = $"No appointments found.";
 
                 serviceResponse.Data = dbAppointment;
             }
@@ -123,7 +128,7 @@ namespace Core.Services
             {
                 serviceResponse.Success = false;
                 serviceResponse.Message = ex.Message;
-                _logger.LogError(ex, ex.Message);
+                _logger.LogError(ex, $"Error getting Appointments - {ex.Message}");
             }
 
             return serviceResponse;
