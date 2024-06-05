@@ -11,7 +11,6 @@ using Microsoft.EntityFrameworkCore;
 namespace Core.Services;
 
 public class ClientService : IClientService
-
 {
     private readonly IClientRepository _clientRepository;
     private readonly IAuthenticationService _authenticationService;
@@ -113,5 +112,25 @@ public class ClientService : IClientService
         }
 
         return serviceResponse;
+    }
+
+    public async Task<ServiceResponse<bool>> RemoveProfessionalClientRelation(Guid professionalId, Guid clientId)
+    {
+        try
+        {
+            var result = await _clientRepository.RemoveProfessionalClientRelation(professionalId, clientId);
+            if (result)
+            {
+                return new ServiceResponse<bool> { Data = true, Success = true, Message = "Relation removed successfully." };
+            }
+            else
+            {
+                return new ServiceResponse<bool> { Data = false, Success = false, Message = "Relation not found." };
+            }
+        }
+        catch (Exception ex)
+        {
+            return new ServiceResponse<bool> { Data = false, Success = false, Message = $"An error occurred: {ex.Message}" };
+        }
     }
 }
