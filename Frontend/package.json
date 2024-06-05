@@ -17,6 +17,7 @@
 		"@material/web": "^1.5.0",
 		"@mui/icons-material": "^5.15.18",
 		"@mui/material": "^5.15.19",
+		"@mui/system": "^5.15.15",
 		"@mui/x-date-pickers": "^7.6.1",
 		"@mui/system": "^5.15.15",
 		"formik": "^2.4.6",
@@ -36,6 +37,8 @@
 		"yup": "^1.4.0"
 	},
 	"devDependencies": {
+		"@types/jsonwebtoken": "^9.0.6",
+		"@types/jwt-decode": "^3.1.0",
 		"@types/leaflet": "^1.9.12",
 		"@types/luxon": "^3.4.2",
 		"@types/node": "^20.12.12",
