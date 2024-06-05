@@ -73,9 +73,7 @@ export function Sidemenu(): JSX.Element {
 		}
 	]
 
-	const configuracion = [
-		{ name: 'Perfil', icon: <Usuarios width={24} height={24} /> }
-	]
+	const configuracion = decodedToken?.role === 'Professional' ? [{ name: 'Perfil', icon: <Usuarios width={24} height={24} /> }] : []
 
 	const principalMenu =
 		decodedToken?.role === 'Professional'
@@ -90,7 +88,7 @@ export function Sidemenu(): JSX.Element {
 				</div>
 
 				<section className='ml-1 mb-[17.67px]'>
-					<p className='text-[18px] pb-3 pl-[10px] font-montserrat text-[#828282]'>
+					<p className='capitalize text-[18px] pb-3 pl-[10px] font-montserrat text-[#828282]'>
 						{user?.firstName} {user?.lastName}
 					</p>
 					{principalMenu.map(item => (
@@ -111,24 +109,27 @@ export function Sidemenu(): JSX.Element {
 					))}
 				</section>
 
-				<section className='ml-1 mt-1 mb-[17.67px]'>
-					<p className='text-[18px] pb-3 pl-[10px] font-montserrat text-[#828282]'>
-						Configuraciones
-					</p>
-					{configuracion.map(item => (
-						<div
-							key={item.name}
-							className={`w-[80%] ml-3 rounded-[16px] ${selectedPage === item.name ? 'bg-[#D3CAFF] border border-solid border-[#7445C7] duration-500' : 'hover:bg-purple-100'}`}
-						>
-							<div className='flex flex-row flex-wrap pb-[10px] pt-2 cursor-pointer'>
-								<span className='pl-[5px]'>{item.icon}</span>
-								<h4 className='ml-3 text-[18px] font-bold font-montserrat'>
-									{item.name}
-								</h4>
+				{configuracion.length > 0 && (
+					<section className='ml-1 mt-1 mb-[17.67px]'>
+						<p className='text-[18px] pb-3 pl-[10px] font-montserrat text-[#828282]'>
+							Configuraciones
+						</p>
+						{configuracion.map(item => (
+							<div
+								key={item.name}
+								className={`w-[80%] ml-3 rounded-[16px] ${selectedPage === item.name ? 'bg-[#D3CAFF] border border-solid border-[#7445C7] duration-500' : 'hover:bg-purple-100'}`}
+							>
+								<div className='flex flex-row flex-wrap pb-[10px] pt-2 cursor-pointer'>
+									<span className='pl-[5px]'>{item.icon}</span>
+									<h4 className='ml-3 text-[18px] font-bold font-montserrat'>
+										{item.name}
+									</h4>
+								</div>
 							</div>
-						</div>
-					))}
-				</section>
+						))}
+					</section>
+				)}
+
 				<div className='flex flex-row justify-center items-center mt-[10px]'>
 					<button
 						className='flex flex-row justify-center p-1 bg-[#7445C7] rounded-md w-[290px] hover:bg-purple-600'
