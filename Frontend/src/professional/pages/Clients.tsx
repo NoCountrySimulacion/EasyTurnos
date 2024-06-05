@@ -12,7 +12,7 @@ import { ScheduleAppointmentButton } from '../components/ScheduleAppointmentButt
 import { UnsubscribeButton } from '../components/UnsubscribeButton'
 import { styled } from '@mui/system'
 import { rowsMock } from '../mocks/rowsMock'
-
+import { Link } from 'react-router-dom'
 function TableClient() {
 	const CustomTableCell = styled(TableCell)({
 		borderBottom: 'none',
@@ -49,30 +49,29 @@ function TableClient() {
 						</CustomTableRow>
 					</TableHead>
 					<TableBody>
-						{rowsMock
-							// .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-							.map((row, index) => (
-								<CustomTableRow
-									key={index}
-									className={index % 2 == 0 ? 'bg-[#F7F6FE]' : 'bg-white'}
-								>
-									<CustomTableCell className='w-[15%]'>
-										{row.name}
-									</CustomTableCell>
-									<CustomTableCell className='w-[15%]'>
-										{row.lastName}
-									</CustomTableCell>
-									<CustomTableCellTel className='w-[40%]'>
-										{row.tel}
-									</CustomTableCellTel>
-									<CustomTableCell align='right'>
-										<div className='flex gap-[16.75px] justify-start'>
-											<ScheduleAppointmentButton />
-											<UnsubscribeButton />
-										</div>
-									</CustomTableCell>
-								</CustomTableRow>
-							))}
+						{rowsMock.map((row, index) => (
+							<CustomTableRow
+								key={index}
+								className={index % 2 == 0 ? 'bg-[#F7F6FE]' : 'bg-white'}
+							>
+								<CustomTableCell className='w-[15%]'>
+									<Link to={row.to}>{row.name}</Link>
+								</CustomTableCell>
+
+								<CustomTableCell className='w-[15%]'>
+									<Link to={row.to}>{row.lastName}</Link>
+								</CustomTableCell>
+								<CustomTableCellTel className='w-[30%]'>
+									<Link to={row.to}>{row.tel}</Link>
+								</CustomTableCellTel>
+								<CustomTableCell align='right'>
+									<div className='flex gap-[20.75px] justify-start'>
+										<ScheduleAppointmentButton />
+										<UnsubscribeButton />
+									</div>
+								</CustomTableCell>
+							</CustomTableRow>
+						))}
 					</TableBody>
 				</Table>
 			</TableContainer>

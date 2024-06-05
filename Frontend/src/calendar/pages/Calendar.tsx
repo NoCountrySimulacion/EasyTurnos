@@ -99,7 +99,7 @@ const Calendar: React.FC = () => {
 	}
 
 	return (
-		<div className='p-4 w-full h-screen flex flex-col gap-5'>
+		<div className='p-4 w-full h-[100%] flex flex-col gap-5'>
 			<CalendarSlider
 				timeRange={timeRange}
 				onTimeRangeChange={handleTimeRangeChange}

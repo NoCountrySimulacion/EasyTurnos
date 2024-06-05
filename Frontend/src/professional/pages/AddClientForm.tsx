@@ -33,6 +33,7 @@ export function AddClientForm(): JSX.Element {
 				</div>
 			</header>
 
+
 			<section className='w-full flex flex-col'>
 				<div className='flex flex-col ml-[74px] gap-[23px] mb-[18px]'>
 					<div className='flex flex-row gap-3 items-center content-center '>
