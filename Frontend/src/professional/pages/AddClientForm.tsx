@@ -1,5 +1,6 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { UserProfile, Edit } from '../components/icons/Icons'
+import { Link } from 'react-router-dom'
 
 interface FormValues {
 	nombre: string
@@ -32,7 +33,6 @@ export function AddClientForm(): JSX.Element {
 					</p>
 				</div>
 			</header>
-
 
 			<section className='w-full flex flex-col'>
 				<div className='flex flex-col ml-[74px] gap-[23px] mb-[18px]'>
@@ -306,9 +306,12 @@ export function AddClientForm(): JSX.Element {
 							</section>
 
 							<footer className='flex mb-5 mt-10 w-[60rem] justify-between text-[13px] font-bold text-[#F8F9FA] ml-[42px]'>
-								<button className='bg-[#7445C7] h-[38px] px-2 rounded-lg '>
+								<Link
+									to='/home'
+									className='bg-[#7445C7] h-[38px] px-2 rounded-lg flex items-center justify-center '
+								>
 									<span>Volver</span>
-								</button>
+								</Link>
 								<div className='flex gap-5'>
 									<button
 										type='button'
