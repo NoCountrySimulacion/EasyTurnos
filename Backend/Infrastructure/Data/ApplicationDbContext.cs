@@ -24,11 +24,6 @@ namespace Infrastructure.Data
             base.OnModelCreating(modelBuilder);
             
             // Client
-            modelBuilder.Entity<Client>()
-                .HasOne(c => c.ApplicationUser)
-                .WithOne(au => au.Client)
-                .HasForeignKey<Client>(c => c.ApplicationUserId);
-
             modelBuilder.Entity<ApplicationUser>()
                 .HasOne(au => au.Client)
                 .WithOne(c => c.ApplicationUser)
