@@ -1,5 +1,4 @@
-﻿using Azure;
-using Core.Services.Interfaces;
+﻿using Core.Services.Interfaces;
 using DTOs;
 using DTOs.Client;
 using DTOs.Identity;
@@ -19,12 +18,6 @@ public class ProfessionalClientController : ControllerBase
     {
         _clientService = clientService;
     }
-
-    //[HttpPost]
-    //public async Task<ActionResult<ClientCreatedDto>> AddClient(Guid professionalId, ClientAddDto clientAddDto)
-    //{
-    //    return Ok(await _clientService.AddClientAsync(professionalId, clientAddDto));
-    //}
 
     [HttpPost("RegisterClient")]
     public async Task<ActionResult<RegistrationResponse>> RegisterClientUser(Guid professionalId, ClientAddDto clientAddDto)
