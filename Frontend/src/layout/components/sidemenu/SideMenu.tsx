@@ -73,7 +73,10 @@ export function Sidemenu(): JSX.Element {
 		}
 	]
 
-	const configuracion = decodedToken?.role === 'Professional' ? [{ name: 'Perfil', icon: <Usuarios width={24} height={24} /> }] : []
+	const configuracion =
+		decodedToken?.role === 'Professional'
+			? [{ name: 'Perfil', icon: <Usuarios width={24} height={24} /> }]
+			: []
 
 	const principalMenu =
 		decodedToken?.role === 'Professional'
