@@ -1,12 +1,20 @@
 import { useLocation, useNavigate } from 'react-router-dom'
-import { Agenda, Clientes, Home, Logout, Usuarios } from '../../Icons/Icons'
+import {
+	Home as HomeIcon,
+	Agenda,
+	Clientes,
+	Logout,
+	Usuarios
+} from '../../Icons/Icons'
 import { useAuth } from '../../../auth/hooks/useAuth'
 import { Link } from 'react-router-dom'
+import { FaCalendarAlt, FaUserMd, FaClipboardCheck } from 'react-icons/fa'
 
 export function Sidemenu(): JSX.Element {
 	const { logout } = useAuth()
 	const navigate = useNavigate()
 	const location = useLocation()
+	const { user, decodedToken } = useAuth()
 
 	const getSelectedPage = () => {
 		const path = location.pathname
@@ -16,6 +24,10 @@ export function Sidemenu(): JSX.Element {
 			return 'Agenda'
 		} else if (path.startsWith('/home')) {
 			return 'Inicio'
+		} else if (path.startsWith('/profesionales')) {
+			return 'Profesionales'
+		} else if (path.startsWith('/misTurnos')) {
+			return 'MisTurnos'
 		} else {
 			return 'Home'
 		}
@@ -28,8 +40,8 @@ export function Sidemenu(): JSX.Element {
 		navigate('/')
 	}
 
-	const principalMenu = [
-		{ name: 'Inicio', icon: <Home width={24} height={24} />, to: '/home' },
+	const principalMenuProfessional = [
+		{ name: 'Inicio', icon: <HomeIcon width={24} height={24} />, to: '/home' },
 		{
 			name: 'Agenda',
 			icon: <Agenda width={24} height={24} />,
@@ -42,9 +54,33 @@ export function Sidemenu(): JSX.Element {
 		}
 	]
 
+	const principalMenuClient = [
+		{ name: 'Inicio', icon: <HomeIcon width={24} height={24} />, to: '/home' },
+		{
+			name: 'Agendar turno',
+			icon: <FaCalendarAlt size={24} />,
+			to: '/calendar'
+		},
+		{
+			name: 'Profesionales',
+			icon: <FaUserMd size={24} />,
+			to: '/profesionales'
+		},
+		{
+			name: 'Mis turnos',
+			icon: <FaClipboardCheck size={24} />,
+			to: '/misTurnos'
+		}
+	]
+
 	const configuracion = [
 		{ name: 'Perfil', icon: <Usuarios width={24} height={24} /> }
 	]
+
+	const principalMenu =
+		decodedToken?.role === 'Professional'
+			? principalMenuProfessional
+			: principalMenuClient
 
 	return (
 		<aside className='h-[100%] bg-[#fff] text-[#000] font-mono w-[325px] shadow-md shadow-black '>
@@ -55,7 +91,7 @@ export function Sidemenu(): JSX.Element {
 
 				<section className='ml-1 mb-[17.67px]'>
 					<p className='text-[18px] pb-3 pl-[10px] font-montserrat text-[#828282]'>
-						Nombre del emprendimiento
+						{user?.firstName} {user?.lastName}
 					</p>
 					{principalMenu.map(item => (
 						<div

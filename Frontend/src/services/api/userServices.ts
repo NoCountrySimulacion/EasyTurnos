@@ -17,9 +17,6 @@ export async function logIn(
 			},
 			body: JSON.stringify(credentials)
 		})
-
-		console.log('Login response:', response)
-
 		if (!response.ok) {
 			if (response.status === 401) {
 				throw new Error('Usuario y/o contraseña incorrectos')
@@ -29,7 +26,6 @@ export async function logIn(
 		}
 
 		const data = await response.json()
-		console.log('Login data:', data)
 
 		return data
 	} catch (error) {
@@ -51,7 +47,6 @@ export async function register(credentials: RegisterCredentials) {
 				body: JSON.stringify(credentials)
 			}
 		)
-		console.log('Register response:', response)
 		if (!response.ok) {
 			throw new Error('Failed to register: ' + (await response.text()))
 		}
