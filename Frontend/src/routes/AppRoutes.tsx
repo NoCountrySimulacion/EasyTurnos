@@ -12,6 +12,7 @@ import LayoutApp from '../layout/pages/LayoutApp'
 import Calendar from '../calendar/pages/Calendar'
 import Clients from '../professional/pages/Clients'
 import { AddClientForm } from '../professional/pages/AddClientForm'
+import { UserViewInd } from '../professional/pages/UserViewInd'
 
 export default function AppRoutes() {
 	return (
@@ -30,6 +31,7 @@ export default function AppRoutes() {
 					<Route path='/home' element={<Home />} />
 					<Route path='/calendar' element={<Calendar />} />
 					<Route path='/clients' element={<Clients />} />
+					<Route path='/clients/clients_see' element={<UserViewInd />} />
 					<Route path='/professional/add-client' element={<AddClientForm />} />
 				</Route>
 			</Routes>

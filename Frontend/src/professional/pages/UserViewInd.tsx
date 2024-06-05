@@ -1,13 +1,22 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from 'react'
-import { Calendar } from '../components/icons/Icons'
+import { Calendar, IconGeneral } from '../components/icons/Icons'
+import { Link } from 'react-router-dom'
 
 export function UserViewInd(): JSX.Element {
-	const [turno] = useState(true)
+	const [turno] = useState(false)
 
 	return (
-		<main className='relative top-[182px] left-10 w-[60em]'>
-			<section className='w-[65%]'>
+		<main className='ml-4 mt-2'>
+			<section className='w-full'>
+				<div className='flex items-center content-center gap-4 border shadow-2xl'>
+					<IconGeneral width={160} height={167} />
+					<h2 className='font-montserrat font-[600] text-[26px] w-[300px]'>
+						Nombre y apellido del cliente
+					</h2>
+				</div>
+			</section>
+			<section className='w-[65%] mt-[32px] ml-4'>
 				<section className='mb-1 mt-1'>
 					<h4 className='font-roboto font-[400]'>Edad</h4>
 					<h4 className='text-[#828282] font-roboto '>56</h4>
@@ -54,8 +63,8 @@ export function UserViewInd(): JSX.Element {
 				</section>
 			</section>
 
-			<section className='flex mt-1  justify-end'>
-				<div className='flex flex-row justify-end w-[30rem] gap-2 mb-10'>
+			<section className='flex mt-7  justify-end'>
+				<div className='flex flex-row justify-end w-[30rem] gap-2 mb-10 mr-4'>
 					<button className='flex justify-center item-center content-center bg-[#7445C7] font-montserrat font-[700] p-2 rounded-md text-[#fff] '>
 						<span className='pr-1 pt-[.5px]'>
 							<Calendar width={20} height={20} />
@@ -65,6 +74,15 @@ export function UserViewInd(): JSX.Element {
 					<button className='flex bg-[#BC4141] p-2 rounded-md text-[#fff] font-montserrat font-[700]'>
 						Dar de baja
 					</button>
+				</div>
+			</section>
+			<section className='ml-5'>
+				<div>
+					<Link to={'/clients'}>
+						<button className='bg-[#7445C7] p-[10px] rounded-md font-montserrat font-[700] text-[#fff]'>
+							Volver
+						</button>
+					</Link>
 				</div>
 			</section>
 		</main>

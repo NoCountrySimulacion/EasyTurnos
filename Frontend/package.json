@@ -4,7 +4,7 @@
 	"version": "0.0.0",
 	"type": "module",
 	"scripts": {
-		"dev": "vite",
+		"dev": "npm i && vite",
 		"build": "tsc && vite build",
 		"preview": "vite preview",
 		"format": "prettier --write .",
@@ -18,9 +18,7 @@
 		"@mui/icons-material": "^5.15.18",
 		"@mui/material": "^5.15.19",
 		"@mui/x-date-pickers": "^7.6.1",
-
 		"@mui/system": "^5.15.15",
-
 		"formik": "^2.4.6",
 		"leaflet": "^1.9.4",
 		"luxon": "^3.4.4",
