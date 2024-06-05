@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Core.Behaviors;
 using Core.Services.Interfaces;
 using Domain.Entities;
 using DTOs;
@@ -20,16 +21,18 @@ namespace Core.Services
         private readonly IAppointmentRepository _appointmentRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<AppointmentService> _logger;
+        private readonly IValidationBehavior<AppointmentAddDto> _validationBehavior;
 
         public AppointmentService(
             IAppointmentRepository appointmentRepository,
             IMapper mapper,
-            ILogger<AppointmentService> logger)
+            ILogger<AppointmentService> logger,
+            IValidationBehavior<AppointmentAddDto> validationBehavior)
         {
             _appointmentRepository = appointmentRepository;
             _mapper = mapper;
             _logger = logger;
-
+            _validationBehavior = validationBehavior;
         }
 
         public async Task<ServiceResponse<List<AppointmentGetDto>>> AddAppointment(Guid clientId, Guid professionalId, AppointmentAddDto addAppointment)
@@ -38,23 +41,22 @@ namespace Core.Services
 
             try
             {
+                await _validationBehavior.ValidateFields(addAppointment);
+
                 var newAppointment = _mapper.Map<Appointment>(addAppointment);
                 newAppointment.ClientId = clientId;
                 newAppointment.ProfessionalId = professionalId;
-                newAppointment.Date = DateTime.UtcNow;
-                newAppointment.Status = Status.Pending;
+                newAppointment.Date = DateTime.Now;
                 await _appointmentRepository.Insert(newAppointment);
                 await _appointmentRepository.SaveChangesAsync();
 
-                var dbAppointments = await _appointmentRepository.GetAllAppointmentsByProfessional(professionalId);
-
-                serviceResponse.Data = dbAppointments;
+                serviceResponse.Message = $"Appointment with Id {newAppointment.Id} created.";
             }
             catch (Exception ex)
             {
                 serviceResponse.Success = false;
                 serviceResponse.Message = ex.Message;
-                _logger.LogError(ex, ex.Message);
+                _logger.LogError(ex, $"Error adding Appointment - {ex.Message}");
             }
 
             return serviceResponse;
@@ -69,17 +71,15 @@ namespace Core.Services
                 if (await _appointmentRepository.Delete(appointmentId))
                     await _appointmentRepository.SaveChangesAsync();
                 else
-                    throw new KeyNotFoundException($"Appointment with id {appointmentId} not found.");
+                    throw new KeyNotFoundException($"Appointment not found. Check both IDs.");
 
-                var dbAppointments = await _appointmentRepository.GetAllAppointmentsByProfessional(professionalId);
-
-                serviceResponse.Data = dbAppointments;
+                serviceResponse.Message = $"Appointment deleted.";
             }
             catch (Exception ex)
             {
                 serviceResponse.Success = false;
                 serviceResponse.Message = ex.Message;
-                _logger.LogError(ex, ex.Message);
+                _logger.LogError(ex, $"Error deleting Appointment - {ex.Message}");
             }
 
             return serviceResponse;
@@ -99,19 +99,20 @@ namespace Core.Services
             {
                 serviceResponse.Success = false;
                 serviceResponse.Message = ex.Message;
-                _logger.LogError(ex, ex.Message);
+                _logger.LogError(ex, $"Error getting Appointment - {ex.Message}");
             }
 
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<List<AppointmentGetDto>>> GetAppointments(Guid professionalId, AppointmentFilterDto appointmentFilter)
+        public async Task<ServiceResponse<List<AppointmentGetDto>>> GetAppointments(Guid professionalId)
         {
             var serviceResponse = new ServiceResponse<List<AppointmentGetDto>>();
 
             try
             {
-                var dbAppointment = await _appointmentRepository.GetFilteredAppointments(professionalId, appointmentFilter);
+                var dbAppointment = await _appointmentRepository.GetAllAppointmentsByProfessional(professionalId);
+                if(dbAppointment.Count == 0) serviceResponse.Message = $"No appointments found.";
 
                 serviceResponse.Data = dbAppointment;
             }
@@ -119,7 +120,7 @@ namespace Core.Services
             {
                 serviceResponse.Success = false;
                 serviceResponse.Message = ex.Message;
-                _logger.LogError(ex, ex.Message);
+                _logger.LogError(ex, $"Error getting Appointments - {ex.Message}");
             }
 
             return serviceResponse;

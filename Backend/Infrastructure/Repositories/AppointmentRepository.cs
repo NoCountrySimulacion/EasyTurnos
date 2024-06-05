@@ -44,28 +44,5 @@ namespace Infrastructure.Repositories
                 _mapper.Map<AppointmentGetDto>(appointment);
         }
 
-        public async Task<List<AppointmentGetDto>> GetFilteredAppointments(Guid professionalId, AppointmentFilterDto appointmentFilter)
-        {
-            var appointments = await GetAll()
-                .Where(a => a.ProfessionalId == professionalId)
-                .ProjectTo<AppointmentGetDto>(_mapper.ConfigurationProvider)
-                .ToListAsync();
-
-            //Filters
-            int maxEnumLength = Enum.GetValues(typeof(Status)).Length;
-
-            if (appointmentFilter.Status >= 0 && appointmentFilter.Status < maxEnumLength)
-                appointments = appointments.Where(a => a.Status.Equals((Status)appointmentFilter.Status)).ToList();
-
-            if (appointmentFilter.SoonFirst.HasValue)
-                appointments = appointmentFilter.SoonFirst.Value ?
-                    appointments.OrderBy(a => a.SlotDate).ToList() :
-                    appointments;
-
-            return appointments.IsNullOrEmpty() ?
-                throw new KeyNotFoundException($"Appointments not found.") :
-                appointments;
-        }
-
     }
 }
