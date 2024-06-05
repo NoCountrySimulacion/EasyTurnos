@@ -64,10 +64,6 @@ namespace Infrastructure.Data
                 .HasDefaultValueSql("NEWID()");
 
             modelBuilder.Entity<Appointment>()
-                .Property(a => a.Status)
-                .HasDefaultValue(Status.Pending);
-
-            modelBuilder.Entity<Appointment>()
                 .HasOne(p => p.Professional)
                 .WithMany(a => a.Appointments)
                 .HasForeignKey(p => p.ProfessionalId);

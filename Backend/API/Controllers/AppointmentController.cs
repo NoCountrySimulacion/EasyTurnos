@@ -37,9 +37,9 @@ namespace API.Controllers
         }
 
         [HttpGet("{professionalId}")]
-        public async Task<ActionResult<ServiceResponse<List<AppointmentGetDto>>>> GetAppointments(Guid professionalId, [FromQuery]AppointmentFilterDto appointmentFilter)
+        public async Task<ActionResult<ServiceResponse<List<AppointmentGetDto>>>> GetAppointments(Guid professionalId)
         {
-            return Ok(await _appointmentService.GetAppointments(professionalId, appointmentFilter));
+            return Ok(await _appointmentService.GetAppointments(professionalId));
         }
     }
 }

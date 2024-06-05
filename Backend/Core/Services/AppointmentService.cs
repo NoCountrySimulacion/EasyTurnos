@@ -47,7 +47,6 @@ namespace Core.Services
                 newAppointment.ClientId = clientId;
                 newAppointment.ProfessionalId = professionalId;
                 newAppointment.Date = DateTime.Now;
-                newAppointment.Status = Status.Pending;
                 await _appointmentRepository.Insert(newAppointment);
                 await _appointmentRepository.SaveChangesAsync();
 
@@ -110,13 +109,13 @@ namespace Core.Services
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<List<AppointmentGetDto>>> GetAppointments(Guid professionalId, AppointmentFilterDto appointmentFilter)
+        public async Task<ServiceResponse<List<AppointmentGetDto>>> GetAppointments(Guid professionalId)
         {
             var serviceResponse = new ServiceResponse<List<AppointmentGetDto>>();
 
             try
             {
-                var dbAppointment = await _appointmentRepository.GetFilteredAppointments(professionalId, appointmentFilter);
+                var dbAppointment = await _appointmentRepository.GetAllAppointmentsByProfessional(professionalId);
 
                 serviceResponse.Data = dbAppointment;
             }
