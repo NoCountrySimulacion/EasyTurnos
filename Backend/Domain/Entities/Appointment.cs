@@ -4,8 +4,10 @@ namespace Domain.Entities
 {
     public class Appointment : BaseEntity<Guid>
     {
+        public string Name { get; set; }
         public DateTime Date { get; set; }
-        public DateTime SlotDate { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
         public bool ConfirmationSent { get; set; }
         public Status Status { get; set; }
         //FK
