@@ -36,9 +36,9 @@ public class ProfessionalClientController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<ServiceResponse<List<ClientListDto>>>> GetAllClients()
+    public async Task<ActionResult<ServiceResponse<List<ClientListDto>>>> GetAllClients(Guid professionalId)
     {
-        var result = await _clientService.GetClients();
+        var result = await _clientService.GetClients(professionalId);
         if (result == null)
         {
             return StatusCode(500, new { message = "Internal server error occurred." });
