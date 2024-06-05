@@ -96,7 +96,7 @@ namespace Core.Services
             {
                 var professional = await _professionalRepository.GetById(professionalId);
 
-                professional.Speciality = addProfessional.Specialty;
+                professional.Speciality = addProfessional.Speciality;
                 professional.Description = addProfessional.Description;
 
                 await _professionalRepository.Update(professional);
