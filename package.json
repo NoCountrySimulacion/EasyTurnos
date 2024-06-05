@@ -1,0 +1,14 @@
+{
+  "name": "easyturnos",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "install": "cd frontend && npm install",
+    "dev": "cd frontend && npm run dev",
+    "build": "cd frontend && npm run build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
