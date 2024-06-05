@@ -1,8 +1,10 @@
 export interface LoginResponse {
-	id: string
-	email: string
-	token: string
-}
+	userId: string;
+	email: string;
+	token: string;
+	firstName: string;
+	lastName: string;
+  }
 
 export interface RegisterResponse {
 	userId: string

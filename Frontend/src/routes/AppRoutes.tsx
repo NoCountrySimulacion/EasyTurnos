@@ -31,7 +31,7 @@ export default function AppRoutes() {
 					<Route path='/home' element={<Home />} />
 					<Route path='/calendar' element={<Calendar />} />
 					<Route path='/clients' element={<Clients />} />
-					<Route path='/professional/add-client' element={<AddClientForm />} />
+					<Route path='/clients/addClient' element={<AddClientForm />} />
 				</Route>
 			</Routes>
 		</BrowserRouter>
