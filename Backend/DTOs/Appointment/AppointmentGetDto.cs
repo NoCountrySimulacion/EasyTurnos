@@ -9,9 +9,13 @@ namespace DTOs.Appointment
 {
     public class AppointmentGetDto
     {
-        public DateTime Date { get; set; }
-        public DateTime SlotDate { get; set; }
+        public Guid Id { get; set; }
+        public string? Name { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
         public bool ConfirmationSent { get; set; }
         public Status Status { get; set; }
+        public Guid ProfessionalId { get; set; }
+        public Guid ClientId { get; set; }
     }
 }

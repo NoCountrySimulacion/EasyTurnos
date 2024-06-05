@@ -10,6 +10,5 @@ namespace DTOs.Appointment
     public class AppointmentFilterDto
     {
         public int? Status { get; set; }
-        public bool? SoonFirst { get; set; }
     }
 }

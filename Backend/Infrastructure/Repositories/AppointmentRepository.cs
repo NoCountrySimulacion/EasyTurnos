@@ -57,11 +57,6 @@ namespace Infrastructure.Repositories
             if (appointmentFilter.Status >= 0 && appointmentFilter.Status < maxEnumLength)
                 appointments = appointments.Where(a => a.Status.Equals((Status)appointmentFilter.Status)).ToList();
 
-            if (appointmentFilter.SoonFirst.HasValue)
-                appointments = appointmentFilter.SoonFirst.Value ?
-                    appointments.OrderBy(a => a.SlotDate).ToList() :
-                    appointments;
-
             return appointments.IsNullOrEmpty() ?
                 throw new KeyNotFoundException($"Appointments not found.") :
                 appointments;
