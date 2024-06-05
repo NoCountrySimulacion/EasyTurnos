@@ -38,7 +38,7 @@ namespace Core.Services
             var serviceResponse = new ServiceResponse<ProfessionalGetDto>();
             try
             {
-                serviceResponse.Data = await _professionalRepository.GetById(id);
+                serviceResponse.Data = await _professionalRepository.GetProfessionalById(id);
             }
             catch (Exception ex)
             {
@@ -89,6 +89,31 @@ namespace Core.Services
             return serviceResponse;
         }
 
+        public async Task<ServiceResponse<ProfessionalGetDto>> UpdateProfessional(Guid professionalId, ProfessionalAddDto addProfessional)
+        {
+            var serviceResponse = new ServiceResponse<ProfessionalGetDto>();
+            try
+            {
+                var professional = await _professionalRepository.GetById(professionalId);
+
+                professional.Specialty = addProfessional.Specialty;
+                professional.Description = addProfessional.Description;
+
+                await _professionalRepository.Update(professional);
+                await _professionalRepository.SaveChangesAsync();
+
+                serviceResponse.Message = $"Professional with Id {professional.Id} has been updated, successfully";
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+                _logger.LogError(ex, $"Error adding new Professional - {ex.Message}");
+            }
+            return serviceResponse;
+        }
+
+
         public async Task<ServiceResponse<ProfessionalGetDto>> DeleteProfessional(Guid professionalId)
         {
             var serviceResponse = new ServiceResponse<ProfessionalGetDto>();
@@ -115,11 +140,8 @@ namespace Core.Services
 
             try
             {
-                // var newProfessional = _mapper.Map<Professional>(addProfessional);
-                var newProfessional = new Professional();
-
                 request.UserType = UserTypeOptions.Professional;
-                request.Professional = newProfessional;
+                request.Professional = new Professional();
 
                 RegistrationResponse regsitrationResponse =  
                     await _authenticationService.RegisterAsync(request);
