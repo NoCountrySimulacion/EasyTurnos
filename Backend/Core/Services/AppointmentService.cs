@@ -50,10 +50,6 @@ namespace Core.Services
                 await _appointmentRepository.Insert(newAppointment);
                 await _appointmentRepository.SaveChangesAsync();
 
-                var dbAppointments = await _appointmentRepository.GetAllAppointmentsByProfessional(professionalId);
-
-                serviceResponse.Data = dbAppointments;
-
                 serviceResponse.Message = $"Appointment with Id {newAppointment.Id} created.";
             }
             catch (Exception ex)
@@ -76,10 +72,6 @@ namespace Core.Services
                     await _appointmentRepository.SaveChangesAsync();
                 else
                     throw new KeyNotFoundException($"Appointment not found. Check both IDs.");
-
-                var dbAppointments = await _appointmentRepository.GetAllAppointmentsByProfessional(professionalId);
-
-                serviceResponse.Data = dbAppointments;
 
                 serviceResponse.Message = $"Appointment deleted.";
             }
