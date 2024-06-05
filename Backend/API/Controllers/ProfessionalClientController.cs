@@ -58,4 +58,23 @@ public class ProfessionalClientController : ControllerBase
             return BadRequest(new { message = result.Message });
         }
     }
+
+    [HttpDelete("{clientId}")]
+    public async Task<IActionResult> RemoveProfessionalClientRelation(Guid professionalId, Guid clientId)
+    {
+        var result = await _clientService.RemoveProfessionalClientRelation(professionalId, clientId);
+
+        if (result.Success)
+        {
+            return Ok(result);
+        }
+        else if (result.Message == "Relation not found.")
+        {
+            return NotFound(result);
+        }
+        else
+        {
+            return BadRequest(new { message = result.Message });
+        }
+    }
 }
