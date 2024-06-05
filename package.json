@@ -5,7 +5,7 @@
   "scripts": {
     "install": "cd frontend && npm install",
     "dev": "cd frontend && npm run dev",
-    "build": "cd frontend && npm run build"  
+    "build": "cd frontend && npm run build"
   },
   "keywords": [],
   "author": "",

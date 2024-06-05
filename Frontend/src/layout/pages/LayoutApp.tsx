@@ -4,12 +4,12 @@ import { Sidemenu } from '../components/sidemenu/SideMenu'
 
 export default function LayoutApp(): JSX.Element {
 	return (
-		<div>
-			<div className='flex '>
-				<aside className='bg-red-400 mr-[19rem] overflow-y-hidden '>
+		<div className=' '>
+			<div className='flex'>
+				<aside className=' '>
 					<Sidemenu />
 				</aside>
-				<main className=''>
+				<main className='w-full '>
 					<Outlet />
 				</main>
 			</div>
