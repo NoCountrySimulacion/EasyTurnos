@@ -1,33 +1,27 @@
-import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import {
-	AdministrarNegocio,
-	Agenda,
-	Calendario,
-	Clientes,
-	Configuraciones,
-	Home,
-	Logout,
-	Servicios,
-	Usuarios
-} from '../../Icons/Icons'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { Agenda, Clientes, Home, Logout, Usuarios } from '../../Icons/Icons'
 import { useAuth } from '../../../auth/hooks/useAuth'
 import { Link } from 'react-router-dom'
 
 export function Sidemenu(): JSX.Element {
-	const [selectedPage, setSelectedPage] = useState<string>(
-		() => localStorage.getItem('selectedPage') || 'Home'
-	)
 	const { logout } = useAuth()
 	const navigate = useNavigate()
+	const location = useLocation()
 
-	useEffect(() => {
-		localStorage.setItem('selectedPage', selectedPage)
-	}, [selectedPage])
-
-	const handlePageChange = (page: string) => {
-		setSelectedPage(page)
+	const getSelectedPage = () => {
+		const path = location.pathname
+		if (path.startsWith('/clients')) {
+			return 'Clientes'
+		} else if (path.startsWith('/calendar')) {
+			return 'Agenda'
+		} else if (path.startsWith('/home')) {
+			return 'Inicio'
+		} else {
+			return 'Home'
+		}
 	}
+
+	const selectedPage = getSelectedPage()
 
 	const handleLogout = () => {
 		logout()
@@ -35,40 +29,21 @@ export function Sidemenu(): JSX.Element {
 	}
 
 	const principalMenu = [
-		{ name: 'Home', icon: <Home width={24} height={24} />, to: '/home' },
+		{ name: 'Inicio', icon: <Home width={24} height={24} />, to: '/home' },
 		{
 			name: 'Agenda',
 			icon: <Agenda width={24} height={24} />,
-			to: '/diary'
+			to: '/calendar'
 		},
 		{
 			name: 'Clientes',
 			icon: <Clientes width={24} height={24} />,
 			to: '/clients'
-		},
-		{
-			name: 'Calendario',
-			icon: <Calendario width={24} height={24} />,
-			to: '/calendar'
-		}
-	]
-
-	const administrador = [
-		{ name: 'Servicios', icon: <Servicios width={24} height={24} /> },
-		{
-			name: 'Administrar Negocio',
-			icon: <AdministrarNegocio width={24} height={24} />,
-			to: '/manage'
 		}
 	]
 
 	const configuracion = [
-		{ name: 'Usuario', icon: <Usuarios width={24} height={24} /> },
-		{
-			name: 'Configuraciones',
-			icon: <Configuraciones width={24} height={24} />,
-			to: '/settings'
-		}
+		{ name: 'Perfil', icon: <Usuarios width={24} height={24} /> }
 	]
 
 	return (
@@ -90,35 +65,12 @@ export function Sidemenu(): JSX.Element {
 							<Link
 								to={item.to}
 								className='flex flex-row flex-wrap pb-[10px] pt-3 cursor-pointer'
-								onClick={() => handlePageChange(item.name)}
 							>
 								<span className='pl-[5px]'>{item.icon}</span>
 								<h4 className='ml-3 text-[18px] font-bold font-montserrat'>
 									{item.name}
 								</h4>
 							</Link>
-						</div>
-					))}
-				</section>
-
-				<section className='ml-1 mt-1 mb-[17.67px]'>
-					<p className='text-[18px] pb-3 pl-[10px] font-montserrat text-[#828282]'>
-						Administrar emprendimiento
-					</p>
-					{administrador.map(item => (
-						<div
-							key={item.name}
-							className={`w-[80%] ml-3 rounded-[16px] ${selectedPage === item.name ? 'bg-[#D3CAFF] border border-solid border-[#7445C7] duration-500' : 'hover:bg-purple-100'}`}
-						>
-							<div
-								className='flex flex-row flex-wrap pb-[10px] pt-2 cursor-pointer'
-								onClick={() => handlePageChange(item.name)}
-							>
-								<span className='pl-[6px]'>{item.icon}</span>
-								<h4 className='ml-3 text-[18px] font-bold font-montserrat'>
-									{item.name}
-								</h4>
-							</div>
 						</div>
 					))}
 				</section>
@@ -132,10 +84,7 @@ export function Sidemenu(): JSX.Element {
 							key={item.name}
 							className={`w-[80%] ml-3 rounded-[16px] ${selectedPage === item.name ? 'bg-[#D3CAFF] border border-solid border-[#7445C7] duration-500' : 'hover:bg-purple-100'}`}
 						>
-							<div
-								className='flex flex-row flex-wrap pb-[10px] pt-2 cursor-pointer'
-								onClick={() => handlePageChange(item.name)}
-							>
+							<div className='flex flex-row flex-wrap pb-[10px] pt-2 cursor-pointer'>
 								<span className='pl-[5px]'>{item.icon}</span>
 								<h4 className='ml-3 text-[18px] font-bold font-montserrat'>
 									{item.name}
@@ -144,16 +93,13 @@ export function Sidemenu(): JSX.Element {
 						</div>
 					))}
 				</section>
-
 				<div className='flex flex-row justify-center items-center mt-[10px]'>
 					<button
 						className='flex flex-row justify-center p-1 bg-[#7445C7] rounded-md w-[290px] hover:bg-purple-600'
 						onClick={handleLogout}
 					>
 						<Logout width={24} height={24} />
-						<p className='ml-2 text-[#fff] font-montserrat font-[700]'>
-							Log out
-						</p>
+						<p className='ml-2 text-[#fff] font-montserrat font-[700]'>Salir</p>
 					</button>
 				</div>
 			</nav>

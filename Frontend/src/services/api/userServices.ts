@@ -42,7 +42,7 @@ export async function register(credentials: RegisterCredentials) {
 	try {
 		console.log('Sending register request with credentials:', credentials)
 		const response = await fetch(
-			'https://easyturnos.somee.com/api/Account/register',
+			'https://easyturnos.somee.com/api/Professional/RegisterProfessionalUser',
 			{
 				method: 'POST',
 				headers: {

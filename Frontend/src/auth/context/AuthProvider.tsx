@@ -6,44 +6,39 @@ import {
 } from '../typescript/interface'
 import { createContext, useEffect, useState } from 'react'
 
-
-
 export const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export default function AuthProvider({ children }: AuthProviderProps) {
 	const [user, setUser] = useState<UserLogged | null>(null)
-	const [error, setError] = useState<string | null>(null);
-
+	const [error, setError] = useState<string | null>(null)
 
 	useEffect(() => {
 		const storedToken = localStorage.getItem('token')
 		if (storedToken) {
 			setUser({ id: '', email: '', token: storedToken })
+			decodeToken(storedToken)
 		}
 	}, [])
 
 	const loginUser = async (email: string, password: string) => {
-		const credentials = {
-			email,
-			password
-		}
+		const credentials = { email, password }
 		try {
 			console.log('Logging in with credentials:', credentials)
 			const response = await logIn(credentials)
 			console.log('Login response:', response)
 			setUser({ id: response.id, email: response.email, token: response.token })
 			localStorage.setItem('token', response.token)
-			setError(null) 
+			decodeToken(response.token)
+			setError(null)
 		} catch (err: unknown) {
 			if (err instanceof Error) {
 				setError(err.message)
-				throw error
+				throw err
 			} else {
 				setError('Error desconocido durante el inicio de sesión')
-				throw error
+				throw new Error('Error desconocido durante el inicio de sesión')
 			}
 		}
-		
 	}
 
 	const logout = () => {
@@ -68,12 +63,30 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 			confirmPassword
 		}
 		console.log('Registering user with credentials:', credentials)
-		const response = await register(credentials)
-		console.log('Register response:', response)
-		setUser({ id: response.userId, email: '', token: response.token })
-		localStorage.setItem('token', response.token)
+		try {
+			const response = await register(credentials)
+			console.log('Register response:', response)
+			setUser({ id: response.userId, email: '', token: response.token })
+			localStorage.setItem('token', response.token)
+			decodeToken(response.token)
+		} catch (err: unknown) {
+			if (err instanceof Error) {
+				setError(err.message)
+				throw err
+			} else {
+				setError('Error desconocido durante el registro')
+				throw new Error('Error desconocido durante el registro')
+			}
+		}
+	}
 
-		
+	const decodeToken = (token: string) => {
+		try {
+			const decodedToken = JSON.parse(atob(token.split('.')[1])) 
+			console.log('Decoded token:', decodedToken)
+		} catch (error) {
+			console.error('Error decoding token:', error)
+		}
 	}
 
 	const authContextValue: AuthContextType = {
