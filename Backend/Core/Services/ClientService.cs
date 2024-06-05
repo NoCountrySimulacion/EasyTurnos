@@ -92,18 +92,20 @@ public class ClientService : IClientService
         return serviceResponse;
     }
 
-    public async Task<ServiceResponse<List<ClientListDto>>> GetClients()
+    public async Task<ServiceResponse<List<ClientListDto>>> GetClients(Guid professionalId)
     {
         var serviceResponse = new ServiceResponse<List<ClientListDto>>();
         try
         {
             var clients = await _clientRepository.GetAll()
                .Include(c => c.ApplicationUser)
+               .Where(c => c.ProfessionalClients.Any(pc => pc.ProfessionalId == professionalId))
                .ToListAsync();
 
             var clientsList = _mapper.Map<List<ClientListDto>>(clients);
 
             serviceResponse.Data = clientsList;
+            serviceResponse.Message = "Clients retrieved successfully.";
         }
         catch (Exception ex)
         {

@@ -9,5 +9,5 @@ public interface IClientService
     //Task<ClientCreatedDto> AddClientAsync(Guid professionalId, ClientAddDto clientAddDto);
     Task<ServiceResponse<RegistrationResponse>> RegisterClientUser(Guid professionalId, ClientAddDto clientDto);
     Task<ServiceResponse<ClientGetDto>> GetClientById(Guid id);
-    Task<ServiceResponse<List<ClientListDto>>> GetClients();
+    Task<ServiceResponse<List<ClientListDto>>> GetClients(Guid professionalId);
 }
