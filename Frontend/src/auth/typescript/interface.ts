@@ -1,14 +1,15 @@
 import { ReactNode } from 'react'
 
 export interface ModalProps {
-  open: boolean;
-  handleClose: () => void;
+  open: boolean
+  handleClose: () => void
 }
 
 export interface AuthContextType {
-  user: UserLogged | null;
-  error: string | null;
-  loginUser: (email: string, password: string) => Promise<void>;
+  user: UserLogged | null
+  decodedToken: DecodedToken | null
+  error: string | null
+  loginUser: (email: string, password: string) => Promise<void>
   registerUser: (
     firstName: string,
     lastName: string,
@@ -16,30 +17,44 @@ export interface AuthContextType {
     phoneNumber: string,
     password: string,
     confirmPassword: string
-  ) => Promise<void>;
-  logout: () => void;
+  ) => Promise<void>
+  logout: () => void
 }
 
 export interface UserLogged {
-  id: string;
-  email: string;
-  token: string;
+  token: string
+  firstName: string
+  lastName: string
 }
 
+export interface DecodedToken {
+  sub: string;
+  jti: string;
+  email: string;
+  professionalId: string;
+  role: string;
+  clientId: string;
+  exp: number;
+  iss: string;
+  aud: string;
+}
+
+
+
 export interface AuthProviderProps {
-  children: ReactNode;
+  children: ReactNode
 }
 
 export interface LoginFormValues {
-  userEmail: string;
-  userPassword: string;
+  userEmail: string
+  userPassword: string
 }
 
 export interface FormValues {
-  userName: string;
-  userLastName: string;
-  userEmail: string;
-  userPhoneNumber: string;
-  userPassword: string;
-  userPasswordConfirm: string;
+  userName: string
+  userLastName: string
+  userEmail: string
+  userPhoneNumber: string
+  userPassword: string
+  userPasswordConfirm: string
 }

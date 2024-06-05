@@ -1,38 +1,21 @@
 /* eslint-disable quotes */
 import { DateTime } from 'luxon'
-import { AddClientIcon, SearchIcon } from '../components/icons/Icons'
 import { appointmentsMock } from '../mocks/appointments'
 import { AppointmentsList } from '../components/AppointmentsList'
 import { WithoutAppointments } from '../components/WithoutAppointments'
+import { Search } from '../components/Search'
+import { useAuth } from '../../auth/hooks/useAuth'
 
 function Home(): React.ReactElement {
 	const now = DateTime.now()
 	const formattedDate = now.setLocale('es').toFormat("cccc, dd 'de' LLLL")
-
+	const { user } = useAuth()
 	return (
 		<section className=' h-full flex flex-col font-montserrat px-10 gap-6 '>
-			<header className='flex gap-[22px] items-center mt-[20px]'>
-				<form className='relative w-[833px] h-[65px] gap-[18px] rounded-[26px] shadow-search '>
-					<div className='flex items-center h-full ml-[19px] gap-[10px]'>
-						<button className='relative' type='submit'>
-							<SearchIcon height={34} width={34} />
-						</button>
-						<input
-							id='search'
-							type='text'
-							placeholder='Buscar cliente'
-							className='h-[23px]'
-						/>
-					</div>
-				</form>
-				<button className='bg-[#7445C7] text-[#F8F9FA] flex items-center justify-center gap-[10px] h-[38px] w-[161px] rounded-lg text-[13px] font-bold'>
-					<AddClientIcon height={18} width={18} />
-					<span>Agregar cliente</span>
-				</button>
-			</header>
+			<Search />
 			<section className='flex flex-col items-start gap-[18px]'>
 				<h1 className='text-[35px] font-bold leading-[56px]'>
-					Bienvenido a tu espacio, Enzo.
+					Bienvenido a tu espacio, <span className='capitalize'>{user?.firstName}.</span>
 				</h1>
 				<h2 className='text-[28px] font-bold leading-[56px]'>
 					Hoy {formattedDate}.

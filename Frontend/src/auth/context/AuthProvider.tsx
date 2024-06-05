@@ -1,54 +1,65 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { logIn, register } from '../../services/api/userServices'
 import {
 	AuthContextType,
 	AuthProviderProps,
-	UserLogged
+	UserLogged,
+	DecodedToken
 } from '../typescript/interface'
 import { createContext, useEffect, useState } from 'react'
-
-
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export default function AuthProvider({ children }: AuthProviderProps) {
 	const [user, setUser] = useState<UserLogged | null>(null)
-	const [error, setError] = useState<string | null>(null);
-
+	const [decodedToken, setDecodedToken] = useState<DecodedToken | null>(null)
+	const [error, setError] = useState<string | null>(null)
 
 	useEffect(() => {
 		const storedToken = localStorage.getItem('token')
 		if (storedToken) {
-			setUser({ id: '', email: '', token: storedToken })
+			const storedFirstName = localStorage.getItem('firstName')
+			const storedLastName = localStorage.getItem('lastName')
+			setUser({
+				token: storedToken,
+				firstName: storedFirstName ?? '',
+				lastName: storedLastName ?? ''
+			})
+			decodeAndSetToken(storedToken)
 		}
 	}, [])
 
 	const loginUser = async (email: string, password: string) => {
-		const credentials = {
-			email,
-			password
-		}
+		const credentials = { email, password }
 		try {
-			console.log('Logging in with credentials:', credentials)
 			const response = await logIn(credentials)
-			console.log('Login response:', response)
-			setUser({ id: response.id, email: response.email, token: response.token })
+			setUser({
+				token: response.token,
+				firstName: response.firstName,
+				lastName: response.lastName
+			})
 			localStorage.setItem('token', response.token)
-			setError(null) 
+			localStorage.setItem('firstName', response.firstName)
+			localStorage.setItem('lastName', response.lastName)
+			decodeAndSetToken(response.token)
+			setError(null)
 		} catch (err: unknown) {
 			if (err instanceof Error) {
 				setError(err.message)
-				throw error
+				throw err
 			} else {
 				setError('Error desconocido durante el inicio de sesión')
-				throw error
+				throw new Error('Error desconocido durante el inicio de sesión')
 			}
 		}
-		
 	}
 
 	const logout = () => {
 		setUser(null)
+		setDecodedToken(null)
 		localStorage.removeItem('token')
+		localStorage.removeItem('firstName')
+		localStorage.removeItem('lastName')
 	}
 
 	const registerUser = async (
@@ -67,17 +78,45 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 			password,
 			confirmPassword
 		}
-		console.log('Registering user with credentials:', credentials)
-		const response = await register(credentials)
-		console.log('Register response:', response)
-		setUser({ id: response.userId, email: '', token: response.token })
-		localStorage.setItem('token', response.token)
-
-		
+		try {
+			const response = await register(credentials)
+			console.log('Register response:', response)
+			setUser({
+				token: response.token,
+				firstName: response.firstName,
+				lastName: response.lastName
+			})
+			localStorage.setItem('token', response.token)
+			localStorage.setItem('firstName', response.firstName)
+			localStorage.setItem('lastName', response.lastName)
+			decodeAndSetToken(response.token)
+		} catch (err: unknown) {
+			if (err instanceof Error) {
+				setError(err.message)
+				throw err
+			} else {
+				setError('Error desconocido durante el registro')
+				throw new Error('Error desconocido durante el registro')
+			}
+		}
 	}
+
+	const decodeAndSetToken = (token: string) => {
+		try {
+		  const decoded: DecodedToken & { [key: string]: any } = JSON.parse(atob(token.split('.')[1]))
+		  console.log('Decoded token:', decoded)
+		  
+		  const role = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']
+		  setDecodedToken({ ...decoded, role })
+		} catch (error) {
+		  console.error('Error decoding token:', error)
+		}
+	  }
+	  
 
 	const authContextValue: AuthContextType = {
 		user,
+		decodedToken,
 		error,
 		loginUser,
 		registerUser,
