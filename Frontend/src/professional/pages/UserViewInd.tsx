@@ -63,7 +63,7 @@ export function UserViewInd(): JSX.Element {
 				</section>
 			</section>
 
-			<section className='flex mt-7  justify-end'>
+			<section className='flex mt-1  justify-end'>
 				<div className='flex flex-row justify-end w-[30rem] gap-2 mb-10 mr-4'>
 					<button className='flex justify-center item-center content-center bg-[#7445C7] font-montserrat font-[700] p-2 rounded-md text-[#fff] '>
 						<span className='pr-1 pt-[.5px]'>
@@ -76,7 +76,7 @@ export function UserViewInd(): JSX.Element {
 					</button>
 				</div>
 			</section>
-			<section className='ml-5'>
+			<section className='ml-5 mb-2'>
 				<div>
 					<Link to={'/clients'}>
 						<button className='bg-[#7445C7] p-[10px] rounded-md font-montserrat font-[700] text-[#fff]'>
