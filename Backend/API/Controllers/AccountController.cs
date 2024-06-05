@@ -29,10 +29,10 @@ namespace API.Controllers
 
       }
 
-      [HttpPost("register")]
-      public async Task<ActionResult<RegistrationResponse>> RegisterAsync(RegistrationRequest request)
-      {
-         return Ok(await _authenticationService.RegisterAsync(request));
-      }
+      //[HttpPost("register")]
+      //public async Task<ActionResult<RegistrationResponse>> RegisterAsync(RegistrationRequest request)
+      //{
+      //   return Ok(await _authenticationService.RegisterAsync(request));
+      //}
    }
 }
