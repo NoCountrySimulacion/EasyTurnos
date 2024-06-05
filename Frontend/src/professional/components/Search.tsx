@@ -1,4 +1,5 @@
 import { AddClientIcon, SearchIcon } from './icons/Icons'
+import { NavLink } from 'react-router-dom'
 
 export function Search(): React.ReactElement {
 	return (
@@ -16,10 +17,10 @@ export function Search(): React.ReactElement {
 					/>
 				</div>
 			</form>
-			<button className='bg-[#7445C7] text-[#F8F9FA] flex items-center justify-center gap-[10px] h-[38px] w-[161px] rounded-lg text-[13px] font-bold'>
+			<NavLink to={'/professional/add-client'} className='bg-[#7445C7] text-[#F8F9FA] flex items-center justify-center gap-[10px] h-[38px] w-[161px] rounded-lg text-[13px] font-bold'>
 				<AddClientIcon height={18} width={18} />
 				<span>Agregar cliente</span>
-			</button>
+			</NavLink>
 		</header>
 	)
 }
