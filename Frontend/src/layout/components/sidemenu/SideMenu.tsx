@@ -55,11 +55,11 @@ export function Sidemenu(): JSX.Element {
 	]
 
 	const principalMenuClient = [
-		{ name: 'Inicio', icon: <HomeIcon width={24} height={24} />, to: '/home-client' },
+		{ name: 'Inicio', icon: <HomeIcon width={24} height={24} />, to: '/home' },
 		{
 			name: 'Agendar turno',
 			icon: <FaCalendarAlt size={24} />,
-			to: '/add-appoinment'
+			to: '/calendar'
 		},
 		{
 			name: 'Profesionales',
@@ -69,7 +69,7 @@ export function Sidemenu(): JSX.Element {
 		{
 			name: 'Mis turnos',
 			icon: <FaClipboardCheck size={24} />,
-			to: '/my-appointments'
+			to: '/my-appoinments'
 		}
 	]
 
