@@ -64,12 +64,12 @@ export function Sidemenu(): JSX.Element {
 		{
 			name: 'Profesionales',
 			icon: <FaUserMd size={24} />,
-			to: '/profesionales'
+			to: '/professionals'
 		},
 		{
 			name: 'Mis turnos',
 			icon: <FaClipboardCheck size={24} />,
-			to: '/misTurnos'
+			to: '/my-appoinments'
 		}
 	]
 
