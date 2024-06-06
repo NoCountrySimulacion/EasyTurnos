@@ -1,7 +1,4 @@
-// src/pages/Calendar.tsx
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
 	Calendar as BigCalendar,
 	momentLocalizer,
@@ -10,9 +7,9 @@ import {
 import moment from 'moment'
 import 'moment/locale/es'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
-import CalendarSlider from '../components/CalendarSlider'
 import patients from '../mocks/mock'
 import AddEvent from '../components/AddEvent'
+import CalendarConfig from '../components/CalendarConfig'
 
 moment.locale('es')
 const localizer = momentLocalizer(moment)
@@ -33,7 +30,6 @@ const messages = {
 	showMore: (total: any) => `+ Ver más (${total})`
 }
 
-// Obtener los días no disponibles dinámicamente para el mes actual
 const getUnavailableDates = () => {
 	const currentYear = new Date().getFullYear()
 	const currentMonth = new Date().getMonth()
@@ -54,23 +50,34 @@ const Calendar: React.FC = () => {
 			end: patient.end
 		}))
 	)
-	const [timeRange, setTimeRange] = useState([1, 23])
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [selectedSlot, setSelectedSlot] = useState<{
 		start: Date
 		end: Date
 	} | null>(null)
+	const [calendarConfig, setCalendarConfig] = useState<any[]>([])
 
-	const handleTimeRangeChange = (values: number[]) => {
-		setTimeRange(values)
+	useEffect(() => {
+		const savedConfig = localStorage.getItem('calendarConfig')
+		if (savedConfig) {
+			setCalendarConfig(JSON.parse(savedConfig))
+		}
+	}, [])
+
+	const handleConfigChange = (config: any[]) => {
+		setCalendarConfig(config)
+		localStorage.setItem('calendarConfig', JSON.stringify(config))
 	}
 
 	const handleSelectSlot = ({ start, end }: { start: Date; end: Date }) => {
 		const isUnavailable = unavailableDates.some(
 			unavailableDate => unavailableDate.toDateString() === start.toDateString()
 		)
+		const isInTimeRange = calendarConfig.some(
+			config => start >= new Date(config.initial) && end <= new Date(config.end)
+		)
 
-		if (!isUnavailable) {
+		if (!isUnavailable && isInTimeRange) {
 			setSelectedSlot({ start, end })
 			setIsModalOpen(true)
 		}
@@ -78,15 +85,15 @@ const Calendar: React.FC = () => {
 
 	const handleAddEvent = (title: string, start: Date, end: Date) => {
 		setMyEvents([...myEvents, { title, start, end }])
-		setIsModalOpen(false) // Close the modal after adding the event
+		setIsModalOpen(false)
 	}
 
-	const dayPropGetter = (date: Date) => {
-		const isUnavailable = unavailableDates.some(
-			unavailableDate => unavailableDate.toDateString() === date.toDateString()
+	const slotPropGetter = (date: Date) => {
+		const isInTimeRange = calendarConfig.some(
+			config => date >= new Date(config.initial) && date < new Date(config.end)
 		)
 
-		if (isUnavailable) {
+		if (!isInTimeRange) {
 			return {
 				style: {
 					backgroundColor: '#f0d0d0',
@@ -100,10 +107,7 @@ const Calendar: React.FC = () => {
 
 	return (
 		<div className='p-4 w-full h-[100%] flex flex-col gap-5'>
-			<CalendarSlider
-				timeRange={timeRange}
-				onTimeRangeChange={handleTimeRangeChange}
-			/>
+			<CalendarConfig onConfigChange={handleConfigChange} />
 			<BigCalendar
 				localizer={localizer}
 				events={myEvents}
@@ -112,11 +116,11 @@ const Calendar: React.FC = () => {
 				defaultView='week'
 				views={[Views.AGENDA, Views.WEEK, Views.MONTH]}
 				messages={messages}
-				min={new Date(2023, 1, 1, timeRange[0], 0)}
-				max={new Date(2023, 1, 1, timeRange[1], 0)}
+				min={new Date(2023, 1, 1, 1, 0)} // Mínimo a las 01:00 AM
+				max={new Date(2023, 1, 1, 23, 0)} // Máximo a las 11:00 PM
 				selectable
 				onSelectSlot={handleSelectSlot}
-				dayPropGetter={dayPropGetter}
+				slotPropGetter={slotPropGetter}
 			/>
 			{selectedSlot && (
 				<AddEvent
