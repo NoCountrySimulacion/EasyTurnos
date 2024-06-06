@@ -17,7 +17,8 @@ import ProtectedRoutes from './ProtectedRoutes'
 import { useAuth } from '../auth/hooks/useAuth'
 
 export default function AppRoutes() {
-	const { isSignIn } = useAuth()
+	const { isUserSignedIn } = useAuth()
+	console.log(isUserSignedIn())
 	return (
 		<BrowserRouter>
 			<Routes>
@@ -30,7 +31,7 @@ export default function AppRoutes() {
 					<Route path='/loginOptions' element={<LoginOptionsModal />} />
 					<Route path='/register' element={<SignUpModal />} />
 				</Route>
-				<Route element={<ProtectedRoutes canActivate={isSignIn} />} >
+				<Route element={<ProtectedRoutes canActivate={isUserSignedIn()} />} >
 					<Route element={<LayoutApp />}>
 						<Route path='/home' element={<Home />} />
 						<Route path='/calendar' element={<Calendar />} />

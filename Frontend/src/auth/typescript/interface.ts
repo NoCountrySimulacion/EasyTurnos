@@ -10,6 +10,7 @@ export interface AuthContextType {
   decodedToken: DecodedToken | null
   error: string | null
   isSignIn: boolean
+  isUserSignedIn: () => boolean
   loginUser: (email: string, password: string) => Promise<void>
   registerUser: (
     firstName: string,

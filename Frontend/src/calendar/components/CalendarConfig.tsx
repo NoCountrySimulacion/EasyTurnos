@@ -68,6 +68,10 @@ const CalendarConfig: React.FC<CalendarConfigProps> = ({ onConfigChange }) => {
 		return `${daysOfWeek[range[0]]} - ${daysOfWeek[range[1]]}`
 	}
 
+	const formatHourRange = (range: number[]) => {
+		return `${range[0]}:00 - ${range[1]}:00`
+	}
+
 	return (
 		<div className='p-4'>
 			<h2 className='text-lg font-bold mb-4'>Configuración del Calendario</h2>
@@ -107,6 +111,9 @@ const CalendarConfig: React.FC<CalendarConfigProps> = ({ onConfigChange }) => {
 						)}
 						onChange={handleTimeRangeChange}
 					/>
+					<div className='text-sm text-center mt-3'>
+						El rango horario es: {formatHourRange(timeRange)}
+					</div>
 				</div>
 				<div className=' '>
 					<Slider
@@ -142,14 +149,14 @@ const CalendarConfig: React.FC<CalendarConfigProps> = ({ onConfigChange }) => {
 						)}
 						onChange={handleDaysRangeChange}
 					/>
-					<div className='text-sm text-center mt-4'>
-						{formatDayRange(selectedDaysRange)}
+					<div className='text-sm text-center mt-5'>
+						El rango semanal es: {formatDayRange(selectedDaysRange)}
 					</div>
 				</div>
 			</section>
 			<div className='mt-4'>
 				<button
-					className='px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600'
+					className='px-4 py-2 bg-[#7445C7] text-white rounded hover:bg-blue-600'
 					onClick={handleSendConfig}
 				>
 					Guardar Configuración

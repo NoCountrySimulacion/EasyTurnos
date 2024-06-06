@@ -28,6 +28,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 				lastName: storedLastName ?? ''
 			})
 			decodeAndSetToken(storedToken)
+			setIsSignIn(true)
 		}
 	}, [])
 
@@ -55,7 +56,6 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 				setError('Error desconocido durante el inicio de sesión')
 				setIsSignIn(false)
 				throw new Error('Error desconocido durante el inicio de sesión')
-				
 			}
 		}
 	}
@@ -97,6 +97,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 			localStorage.setItem('firstName', response.firstName)
 			localStorage.setItem('lastName', response.lastName)
 			decodeAndSetToken(response.token)
+			setIsSignIn(true)
 		} catch (err: unknown) {
 			if (err instanceof Error) {
 				setError(err.message)
@@ -110,16 +111,19 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 
 	const decodeAndSetToken = (token: string) => {
 		try {
-		  const decoded: DecodedToken & { [key: string]: any } = JSON.parse(atob(token.split('.')[1]))
-		  console.log('Decoded token:', decoded)
-		  
-		  const role = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']
-		  setDecodedToken({ ...decoded, role })
+			const decoded: DecodedToken & { [key: string]: any } = JSON.parse(atob(token.split('.')[1]))
+			console.log('Decoded token:', decoded)
+			
+			const role = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']
+			setDecodedToken({ ...decoded, role })
 		} catch (error) {
-		  console.error('Error decoding token:', error)
+			console.error('Error decoding token:', error)
 		}
-	  }
-	  
+	}
+
+	const isUserSignedIn = (): boolean => {
+		return !!localStorage.getItem('token')
+	}
 
 	const authContextValue: AuthContextType = {
 		user,
@@ -128,7 +132,8 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 		error,
 		loginUser,
 		registerUser,
-		logout
+		logout,
+		isUserSignedIn
 	}
 
 	return (
