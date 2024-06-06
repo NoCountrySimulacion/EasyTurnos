@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Azure.Core;
 using Core.Services.Interfaces;
 using Domain.Entities;
 using DTOs;
@@ -112,6 +113,48 @@ namespace Core.Services
             }
             return serviceResponse;
         }
+
+        public async Task<ServiceResponse<ProfessionalGetDto>> UpdateProfessionalUser(string currentEmail, ProfessionalAddDto addProfessional)
+        {
+            var serviceResponse = new ServiceResponse<ProfessionalGetDto>();
+            try
+            {
+                // Check if new email alredy exist in DB
+                ApplicationUser userWithTheSameEmail = await _userManager.FindByEmailAsync(addProfessional.newEmail);
+                if (userWithTheSameEmail != null)
+                    throw new ArgumentException($"User's email: {addProfessional.newEmail} already exists");
+
+                // Check if current email actually exists
+                ApplicationUser user = await _userManager.FindByEmailAsync(currentEmail);
+                if (user == null)
+                    throw new ArgumentException($"There are not records with email: {currentEmail}");
+                
+                var professional = await _professionalRepository.GetById(user.ProfessionalId.Value);
+                professional.Speciality = addProfessional.Speciality;
+                professional.Description = addProfessional.Description;
+                professional.Location = addProfessional.Location;
+
+                user.FirstName = addProfessional.FirstName;
+                user.LastName = addProfessional.LastName;
+                user.PhoneNumber = addProfessional.PhoneNumber;
+                user.Email = addProfessional.newEmail;
+                user.UserName = addProfessional.newEmail;
+                user.Professional = professional;
+
+                var result = await _userManager.UpdateAsync(user);
+
+                serviceResponse.Message = $"Professional with Id {professional.Id} has been updated, successfully";
+
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+                _logger.LogError(ex, $"Error adding new Professional - {ex.Message}");
+            }
+            return serviceResponse;
+        }
+
 
 
         public async Task<ServiceResponse<ProfessionalGetDto>> DeleteProfessional(Guid professionalId)
