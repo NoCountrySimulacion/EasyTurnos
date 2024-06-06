@@ -69,6 +69,9 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 		localStorage.removeItem('lastName')
 	}
 
+	const isUserSignedIn = (): boolean => {
+		return !!localStorage.getItem('token')
+	}
 	const registerUser = async (
 		firstName: string,
 		lastName: string,
@@ -83,7 +86,8 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 			email,
 			phoneNumber,
 			password,
-			confirmPassword
+			confirmPassword,
+			isUserSignedIn
 		}
 		try {
 			const response = await register(credentials)
@@ -131,6 +135,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 	const authContextValue: AuthContextType = {
 		user,
 		isSignIn,
+		isUserSignedIn,
 		decodedToken,
 		error,
 		loginUser,

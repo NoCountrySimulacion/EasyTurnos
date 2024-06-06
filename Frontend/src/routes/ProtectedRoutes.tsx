@@ -13,5 +13,5 @@ export default function ProtectedRoutes({
 		console.log('no puede entrar',canActivate)
 		return <Navigate to={redirectPath} replace />
 	}
-	return <Outlet />
+	return <Outlet />  
 }
