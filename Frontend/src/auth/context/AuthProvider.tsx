@@ -12,6 +12,8 @@ export const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export default function AuthProvider({ children }: AuthProviderProps) {
 	const [user, setUser] = useState<UserLogged | null>(null)
+	const [isSignIn, setIsSignIn] = useState<boolean>(false)
+
 	const [decodedToken, setDecodedToken] = useState<DecodedToken | null>(null)
 	const [error, setError] = useState<string | null>(null)
 
@@ -41,21 +43,26 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 			localStorage.setItem('token', response.token)
 			localStorage.setItem('firstName', response.firstName)
 			localStorage.setItem('lastName', response.lastName)
+			setIsSignIn(true)
 			decodeAndSetToken(response.token)
 			setError(null)
 		} catch (err: unknown) {
 			if (err instanceof Error) {
 				setError(err.message)
+				setIsSignIn(false)
 				throw err
 			} else {
 				setError('Error desconocido durante el inicio de sesión')
+				setIsSignIn(false)
 				throw new Error('Error desconocido durante el inicio de sesión')
+				
 			}
 		}
 	}
 
 	const logout = () => {
 		setUser(null)
+		setIsSignIn(false)
 		setDecodedToken(null)
 		localStorage.removeItem('token')
 		localStorage.removeItem('firstName')
@@ -116,6 +123,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 
 	const authContextValue: AuthContextType = {
 		user,
+		isSignIn,
 		decodedToken,
 		error,
 		loginUser,

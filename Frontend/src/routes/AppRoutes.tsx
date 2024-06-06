@@ -13,8 +13,11 @@ import Calendar from '../calendar/pages/Calendar'
 import Clients from '../professional/pages/Clients'
 import { AddClientForm } from '../professional/pages/AddClientForm'
 import { UserViewInd } from '../professional/pages/UserViewInd'
+import ProtectedRoutes from './ProtectedRoutes'
+import { useAuth } from '../auth/hooks/useAuth'
 
 export default function AppRoutes() {
+	const { isSignIn } = useAuth();
 	return (
 		<BrowserRouter>
 			<Routes>
@@ -27,12 +30,17 @@ export default function AppRoutes() {
 					<Route path='/loginOptions' element={<LoginOptionsModal />} />
 					<Route path='/register' element={<SignUpModal />} />
 				</Route>
-				<Route element={<LayoutApp />}>
-					<Route path='/home' element={<Home />} />
-					<Route path='/calendar' element={<Calendar />} />
-					<Route path='/clients' element={<Clients />} />
-					<Route path='/clients/clients_see' element={<UserViewInd />} />
-					<Route path='/professional/add-client' element={<AddClientForm />} />
+				<Route element={<ProtectedRoutes canActivate={isSignIn} />} >
+					<Route element={<LayoutApp />}>
+						<Route path='/home' element={<Home />} />
+						<Route path='/calendar' element={<Calendar />} />
+						<Route path='/clients' element={<Clients />} />
+						<Route path='/clients/clients_see' element={<UserViewInd />} />
+						<Route
+							path='/professional/add-client'
+							element={<AddClientForm />}
+						/>
+					</Route>
 				</Route>
 			</Routes>
 		</BrowserRouter>
