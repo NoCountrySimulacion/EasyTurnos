@@ -9,5 +9,6 @@
         Task<bool> Delete(TId id);
         bool Delete(T Entity);
         Task SaveChangesAsync();
+        Task InsertRange(IEnumerable<T> entities);
     }
 }

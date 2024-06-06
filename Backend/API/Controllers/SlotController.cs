@@ -18,16 +18,16 @@ namespace API.Controllers
 
         private Guid GetCurrentProfessionalId()
         {
-            var claim = HttpContext.User.Claims.Where(c => c.Type == "professionalid").FirstOrDefault();
+            var claim = HttpContext.User.Claims.Where(c => c.Type == "professionalId").FirstOrDefault();
             return new Guid(claim.Value);
         }
 
         [HttpPost]
-        public async Task<ActionResult<ServiceResponse<List<SlotGetDto>>>> AddSlot(SlotAddDto newSlot, Guid Id)
-        {            
+        public async Task<ActionResult<ServiceResponse<bool>>> AddSlots(List<SlotAddDto> newSlots)
+        {
             var professionalId = GetCurrentProfessionalId();
 
-            return Ok(await _slotService.AddSlot(newSlot, professionalId));
+            return Ok(await _slotService.AddSlots(newSlots, professionalId));
         }
 
         [HttpGet]
@@ -39,11 +39,11 @@ namespace API.Controllers
         }
 
         [HttpDelete]
-        public async Task<ActionResult<ServiceResponse<List<SlotGetDto>>>> DeleteSlot(Guid slotId)
+        public async Task<ActionResult<ServiceResponse<bool>>> DeleteSlots(List<Guid> slotIds)
         {
             var professionalId = GetCurrentProfessionalId();
 
-            return Ok(await _slotService.DeleteSlot(professionalId, slotId));
+            return Ok(await _slotService.DeleteSlots(professionalId, slotIds));
         }
     }
 }

@@ -24,7 +24,21 @@ namespace Infrastructure.Repositories
             return await GetAll()
                 .Where(s => s.ProfessionalId == professionalId)
                 .ProjectTo<SlotGetDto>(_mapper.ConfigurationProvider)
+            .ToListAsync();
+        }
+
+        public async Task<bool> DeleteSlots(Guid professionalId, List<Guid> slotIds)
+        {
+            var dbEntities = await Entities
+                .Where(e => slotIds.Contains(e.Id) && e.ProfessionalId == professionalId)
                 .ToListAsync();
+
+            if (dbEntities.Count > 0)
+            {
+                Entities.RemoveRange(dbEntities);
+            }
+
+            return dbEntities.Count > 0;
         }
     }
 }
