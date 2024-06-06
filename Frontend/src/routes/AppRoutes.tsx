@@ -17,7 +17,7 @@ import ProtectedRoutes from './ProtectedRoutes'
 import { useAuth } from '../auth/hooks/useAuth'
 
 export default function AppRoutes() {
-	const { isSignIn } = useAuth();
+	const { isSignIn } = useAuth()
 	return (
 		<BrowserRouter>
 			<Routes>
