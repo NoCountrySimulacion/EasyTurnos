@@ -9,6 +9,7 @@ export interface AuthContextType {
   user: UserLogged | null
   decodedToken: DecodedToken | null
   error: string | null
+  isSignIn: boolean
   loginUser: (email: string, password: string) => Promise<void>
   registerUser: (
     firstName: string,
