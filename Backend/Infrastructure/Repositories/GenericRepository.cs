@@ -23,6 +23,11 @@ namespace Infrastructure.Repositories
             return result.Entity;
         }
 
+        public async Task InsertRange(IEnumerable<T> entities)
+        {
+            await Entities.AddRangeAsync(entities);
+        }
+
         public virtual async Task<T?> GetById(TId id)
             => await Entities.FirstOrDefaultAsync(x => x.Id.Equals(id));
 

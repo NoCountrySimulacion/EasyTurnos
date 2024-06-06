@@ -5,8 +5,8 @@ namespace Core.Services.Interfaces
 {
     public interface ISlotService
     {
-        Task<ServiceResponse<List<SlotGetDto>>> AddSlot(SlotAddDto addSlot, Guid professionalId);
+        Task<ServiceResponse<bool>> AddSlots(List<SlotAddDto> addSlots, Guid professionalId);
         Task<ServiceResponse<List<SlotGetDto>>> GetAllSlots(Guid professionalId);
-        Task<ServiceResponse<List<SlotGetDto>>> DeleteSlot(Guid professionalId, Guid slotId);
+        Task<ServiceResponse<bool>> DeleteSlots(Guid professionalId, List<Guid> slotIds);
     }
 }
