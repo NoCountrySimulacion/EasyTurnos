@@ -77,4 +77,23 @@ public class ProfessionalClientController : ControllerBase
             return BadRequest(new { message = result.Message });
         }
     }
+
+    [HttpPut("{clientId}")]
+    public async Task<IActionResult> UpdateClientAsync(Guid clientId, ClientUpdateRequest clientRequest)
+    {
+        var result = await _clientService.UpdateClientAsync(clientId, clientRequest);
+
+        if (result.Success)
+        {
+            return Ok(result);
+        }
+        else if (result.Message == "Client not found.")
+        {
+            return NotFound(result);
+        }
+        else
+        {
+            return BadRequest(new { message = result.Message });
+        }
+    }
 }
