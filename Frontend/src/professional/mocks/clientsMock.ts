@@ -1,4 +1,4 @@
-export const rowsMock = [
+export const clientsMock = [
 	{
 		name: 'Enzo',
 		lastName: 'Sanchez',

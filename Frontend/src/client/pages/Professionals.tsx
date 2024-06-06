@@ -1,4 +1,3 @@
-import { Search } from '../components/Search'
 import {
 	Table,
 	TableBody,
@@ -8,11 +7,14 @@ import {
 	TableRow,
 	Paper
 } from '@mui/material'
-import { ScheduleAppointmentButton } from '../components/ScheduleAppointmentButton'
-import { UnsubscribeButton } from '../components/UnsubscribeButton'
 import { styled } from '@mui/system'
+
 import { Link } from 'react-router-dom'
-import { clientsMock } from '../mocks/clientsMock'
+import { ScheduleAppointmentButton } from '../../professional/components/ScheduleAppointmentButton'
+import { UnsubscribeButton } from '../../professional/components/UnsubscribeButton'
+import { Search } from '../../professional/components/Search'
+import { professionalsMock } from '../mocks/professionalsMock'
+
 function TableClient() {
 	const CustomTableCell = styled(TableCell)({
 		borderBottom: 'none',
@@ -42,26 +44,30 @@ function TableClient() {
 				<Table>
 					<TableHead>
 						<CustomTableRow>
-							<CustomTableCellHeader>Nombre</CustomTableCellHeader>
-							<CustomTableCellHeader>Apellido</CustomTableCellHeader>
+							<CustomTableCellHeader>
+								Nombre del profesional
+							</CustomTableCellHeader>
+							<CustomTableCellHeader>Especialidad</CustomTableCellHeader>
 							<CustomTableCellHeader>Teléfono</CustomTableCellHeader>
 							<CustomTableCellHeader>Acciones</CustomTableCellHeader>
 						</CustomTableRow>
 					</TableHead>
 					<TableBody>
-						{clientsMock.map((row, index) => (
+						{professionalsMock.map((row, index) => (
 							<CustomTableRow
 								key={index}
 								className={index % 2 == 0 ? 'bg-[#F7F6FE]' : 'bg-white'}
 							>
-								<CustomTableCell className='w-[15%]'>
-									<Link to={row.to}>{row.name}</Link>
+								<CustomTableCell className='w-[25%]'>
+									<Link to={row.to}>
+										{row.name} {row.lastName}
+									</Link>
 								</CustomTableCell>
 
-								<CustomTableCell className='w-[15%]'>
-									<Link to={row.to}>{row.lastName}</Link>
+								<CustomTableCell className='w-[20%]'>
+									<Link to={row.to}>{row.specialty}</Link>
 								</CustomTableCell>
-								<CustomTableCellTel className='w-[30%]'>
+								<CustomTableCellTel className='w-[25%]'>
 									<Link to={row.to}>{row.tel}</Link>
 								</CustomTableCellTel>
 								<CustomTableCell align='right'>
@@ -79,7 +85,7 @@ function TableClient() {
 	)
 }
 
-export default function Clients() {
+export default function Professionals() {
 	return (
 		<section className='h-full w-full flex flex-col font-montserrat px-10 gap-6 '>
 			<Search />

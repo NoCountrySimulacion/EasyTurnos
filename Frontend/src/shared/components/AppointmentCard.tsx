@@ -1,5 +1,5 @@
-import { AppointmentCardProps } from '../typescript/interface'
-import { ClientImg } from './icons/Icons'
+import { ClientImg } from '../../professional/components/icons/Icons'
+import { AppointmentCardProps } from '../typescript/interfaces'
 
 export function AppointmentCard({
 	name,

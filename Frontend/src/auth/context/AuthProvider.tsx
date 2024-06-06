@@ -111,10 +111,13 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 
 	const decodeAndSetToken = (token: string) => {
 		try {
-			const decoded: DecodedToken & { [key: string]: any } = JSON.parse(atob(token.split('.')[1]))
+			const decoded: DecodedToken & { [key: string]: any } = JSON.parse(
+				atob(token.split('.')[1])
+			)
 			console.log('Decoded token:', decoded)
-			
-			const role = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']
+
+			const role =
+				decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']
 			setDecodedToken({ ...decoded, role })
 		} catch (error) {
 			console.error('Error decoding token:', error)
