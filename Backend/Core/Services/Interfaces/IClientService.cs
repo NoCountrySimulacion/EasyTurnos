@@ -11,4 +11,5 @@ public interface IClientService
     Task<ServiceResponse<ClientGetDto>> GetClientById(Guid id);
     Task<ServiceResponse<List<ClientListDto>>> GetClients(Guid professionalId);
     Task<ServiceResponse<bool>> RemoveProfessionalClientRelation(Guid professionalId, Guid clientId);
+    Task<ServiceResponse<ClientGetDto>> UpdateClientAsync(Guid clientId, ClientUpdateRequest clientRequest);
 }
