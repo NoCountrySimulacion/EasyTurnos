@@ -36,9 +36,9 @@ public class ProfessionalClientController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<ServiceResponse<List<ClientListDto>>>> GetAllClients()
+    public async Task<ActionResult<ServiceResponse<List<ClientListDto>>>> GetAllClients(Guid professionalId)
     {
-        var result = await _clientService.GetClients();
+        var result = await _clientService.GetClients(professionalId);
         if (result == null)
         {
             return StatusCode(500, new { message = "Internal server error occurred." });
@@ -69,6 +69,25 @@ public class ProfessionalClientController : ControllerBase
             return Ok(result);
         }
         else if (result.Message == "Relation not found.")
+        {
+            return NotFound(result);
+        }
+        else
+        {
+            return BadRequest(new { message = result.Message });
+        }
+    }
+
+    [HttpPut("{clientId}")]
+    public async Task<IActionResult> UpdateClientAsync(Guid clientId, ClientUpdateRequest clientRequest)
+    {
+        var result = await _clientService.UpdateClientAsync(clientId, clientRequest);
+
+        if (result.Success)
+        {
+            return Ok(result);
+        }
+        else if (result.Message == "Client not found.")
         {
             return NotFound(result);
         }

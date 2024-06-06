@@ -18,13 +18,13 @@ namespace API.Controllers
             _appointmentService = appointmentService;
         }
 
-        [HttpPost]
+        [HttpPost("{clientId}/{professionalId}")]
         public async Task<ActionResult<ServiceResponse<List<AppointmentGetDto>>>> AddAppointment(Guid clientId, Guid professionalId, AppointmentAddDto newAppointment)
         {
             return Ok(await _appointmentService.AddAppointment(clientId, professionalId, newAppointment));
         }
 
-        [HttpDelete]
+        [HttpDelete("{appointmentId}/{professionalId}")]
         public async Task<ActionResult<ServiceResponse<List<AppointmentGetDto>>>> DeleteAppointment(Guid appointmentId, Guid professionalId)
         {
             return Ok(await _appointmentService.DeleteAppointment(appointmentId, professionalId));
@@ -37,9 +37,9 @@ namespace API.Controllers
         }
 
         [HttpGet("{professionalId}")]
-        public async Task<ActionResult<ServiceResponse<List<AppointmentGetDto>>>> GetAppointments(Guid professionalId, [FromQuery]AppointmentFilterDto appointmentFilter)
+        public async Task<ActionResult<ServiceResponse<List<AppointmentGetDto>>>> GetAppointments(Guid professionalId)
         {
-            return Ok(await _appointmentService.GetAppointments(professionalId, appointmentFilter));
+            return Ok(await _appointmentService.GetAppointments(professionalId));
         }
     }
 }

@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using Domain.Entities;
 using DTOs.Client;
+using DTOs.Identity;
 using Infrastructure.Data;
 using Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +27,14 @@ public class ClientRepository : GenericRepository<Client, Guid>, IClientReposito
             .Include(c => c.ApplicationUser)
             .ProjectTo<ClientGetDto>(_mapper.ConfigurationProvider)
             .FirstOrDefaultAsync(x => x.Id == id);
+    }
+    // Test
+    public async Task<ClientUpdateResponse?> GetByIdToUpdate(Guid id)
+    {
+        return await Entities
+            .Include(c => c.ApplicationUser)
+            .ProjectTo<ClientUpdateResponse>(_mapper.ConfigurationProvider)
+            .FirstOrDefaultAsync(c => c.Id == id);
     }
 
     public async Task<bool> RemoveProfessionalClientRelation(Guid professionalId, Guid clientId)

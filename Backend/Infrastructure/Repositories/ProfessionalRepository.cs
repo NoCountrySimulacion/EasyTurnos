@@ -19,7 +19,7 @@ namespace Infrastructure.Repositories
         }
 
         // Overriding method from GenericRepository to use ProjectTo instead of db class.
-        public new async Task<ProfessionalGetDto?> GetById(Guid id)
+        public new async Task<ProfessionalGetDto?> GetProfessionalById(Guid id)
         {
             return await Entities
                 .ProjectTo<ProfessionalGetDto>(_mapper.ConfigurationProvider)
@@ -33,6 +33,13 @@ namespace Infrastructure.Repositories
                     .ToListAsync();
 
             return professionals;
+        }
+
+        public new async Task<Professional> Update(Professional entity)
+        {
+            var result = Entities.Update(entity);
+
+            return result.Entity;
         }
     }
 }

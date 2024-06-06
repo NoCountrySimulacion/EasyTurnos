@@ -12,10 +12,19 @@ namespace Core.Validators
     {
         public AppointmentAddValidator()
         {
-            RuleFor(a => a.SlotDate)
+            RuleFor(a => a.Name)
+                .MaximumLength(50).WithMessage("{PropertyName} cannot be more than {MaxLength} characters.");
+
+            RuleFor(a => a.StartDate)
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .Must(BeAValidDate).WithMessage("{PropertyName} must be a valid date.")
                 .Must(BeInTheFuture).WithMessage("{PropertyName} must be in the future.");
+
+            RuleFor(a => a.EndDate)
+                .NotEmpty().WithMessage("{PropertyName} is required.")
+                .Must(BeAValidDate).WithMessage("{PropertyName} must be a valid date.")
+                .Must((appointment, endDate) => BeInTheFutureAfterStartDate(appointment.StartDate, endDate))
+                .WithMessage("{PropertyName} must be in the future or equal to Start Date.");
         }
 
         private bool BeAValidDate(DateTime date)
@@ -25,7 +34,12 @@ namespace Core.Validators
 
         private bool BeInTheFuture(DateTime date)
         {
-            return date > DateTime.UtcNow;
+            return date > DateTime.Now;
+        }
+
+        private bool BeInTheFutureAfterStartDate(DateTime startDate, DateTime endDate)
+        {
+            return endDate > startDate;
         }
     }
 }

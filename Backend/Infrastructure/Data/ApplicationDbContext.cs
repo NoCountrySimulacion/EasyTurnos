@@ -1,6 +1,7 @@
 ﻿using Domain.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 using Utilities.Enums;
 
 namespace Infrastructure.Data
@@ -22,25 +23,9 @@ namespace Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            
-            // Client
-            modelBuilder.Entity<ApplicationUser>()
-                .HasOne(au => au.Client)
-                .WithOne(c => c.ApplicationUser)
-                .HasForeignKey<ApplicationUser>(au => au.ClientId);
 
-            modelBuilder.Entity<ProfessionalClient>()
-                .HasKey(pc => new { pc.ProfessionalId, pc.ClientId });
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-            modelBuilder.Entity<ProfessionalClient>()
-                .HasOne(pc => pc.Professional)
-                .WithMany(p => p.ProfessionalClients)
-                .HasForeignKey(pc => pc.ProfessionalId);
-
-            modelBuilder.Entity<ProfessionalClient>()
-                .HasOne(pc => pc.Client)
-                .WithMany(c => c.ProfessionalClients)
-                .HasForeignKey(pc => pc.ClientId);
 
             //Records
             modelBuilder.Entity<Record>()
@@ -57,10 +42,6 @@ namespace Infrastructure.Data
             modelBuilder.Entity<Appointment>()
                 .Property(a => a.Id)
                 .HasDefaultValueSql("NEWID()");
-
-            modelBuilder.Entity<Appointment>()
-                .Property(a => a.Status)
-                .HasDefaultValue(Status.Pending);
 
             modelBuilder.Entity<Appointment>()
                 .HasOne(p => p.Professional)

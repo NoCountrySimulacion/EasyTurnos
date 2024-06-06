@@ -45,6 +45,18 @@ namespace API.Controllers
             return Ok(await _professionalService.RegisterProfessionalUser(request));
         }
 
+        [HttpPut("{professionalId}")]
+        public async Task<ActionResult<ServiceResponse<RegistrationResponse>>> UpdateProfessional(Guid professionalId, ProfessionalAddDto updateProfessional)
+        {
+            return Ok(await _professionalService.UpdateProfessional(professionalId, updateProfessional));
+        }
+
+        [HttpPut("UpdateProfessionalUser/{currentEmail}")]
+        public async Task<ActionResult<ServiceResponse<RegistrationResponse>>> UpdateProfessionalUser(string currentEmail, ProfessionalAddDto addProfessional)
+        {
+            return Ok(await _professionalService.UpdateProfessionalUser(currentEmail, addProfessional));
+        }
+
         [HttpDelete]
         public async Task<ActionResult<ServiceResponse<ProfessionalAddDto>>> DeleteProfessional(Guid id)
         {
