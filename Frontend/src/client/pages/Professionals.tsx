@@ -12,7 +12,6 @@ import { styled } from '@mui/system'
 import { Link } from 'react-router-dom'
 import { ScheduleAppointmentButton } from '../../professional/components/ScheduleAppointmentButton'
 import { UnsubscribeButton } from '../../professional/components/UnsubscribeButton'
-import { Search } from '../../professional/components/Search'
 import { professionalsMock } from '../mocks/professionalsMock'
 
 function TableClient() {
@@ -88,7 +87,6 @@ function TableClient() {
 export default function Professionals() {
 	return (
 		<section className='h-full w-full flex flex-col font-montserrat px-10 gap-6 '>
-			<Search />
 			<section className='mb-[100px]'>
 				<TableClient />
 			</section>

@@ -2,7 +2,6 @@
 import { DateTime } from 'luxon'
 import { AppointmentsList } from '../components/AppointmentsList'
 import { WithoutAppointments } from '../components/WithoutAppointments'
-import { Search } from '../components/Search'
 import { useAuth } from '../../auth/hooks/useAuth'
 import { useEffect, useState } from 'react'
 import {
@@ -34,7 +33,6 @@ function Home(): React.ReactElement {
 	}, [])
 	return (
 		<section className=' h-full flex flex-col font-montserrat px-10 gap-6 '>
-			<Search />
 			<section className='flex flex-col items-start gap-[18px]'>
 				<h1 className='text-[35px] font-bold leading-[56px]'>
 					Bienvenido a tu espacio,{' '}
