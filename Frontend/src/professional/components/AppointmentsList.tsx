@@ -1,5 +1,5 @@
+import { AppointmentList } from '../../services/typescript/interface'
 import { AppointmentCard } from '../../shared/components/AppointmentCard'
-import { AppointmentList } from '../pages/Home'
 import { CalendarIcon } from './icons/Icons'
 
 export function AppointmentsList(
@@ -17,10 +17,9 @@ export function AppointmentsList(
 					{appointmentList?.data.map(appointment => (
 						<AppointmentCard
 							key={appointment.id}
-							name={appointment.description}
-							lastName={appointment.description}
-							profession={appointment.specialty}
-							time={appointment.specialty}
+							name={appointment.name}
+							startDate={appointment.startDate}
+							endDate={appointment.endDate}
 						/>
 					))}
 				</ul>

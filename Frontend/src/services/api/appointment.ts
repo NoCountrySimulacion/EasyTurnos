@@ -1,13 +1,15 @@
 import { DecodedToken } from '../../auth/typescript/interface'
-import { AppointmentList } from '../../professional/pages/Home'
+import { Professional } from '../typescript/interface'
 
-const BASE_APPOINTMENT_URL = 'https://easyturnos.somee.com/api/Professional/'
-const PATH_GET_BY_ID = 'GetById/'
+const BASE_APPOINTMENT_URL = 'https://easyturnos.somee.com/api/Appointmet/'
+const BASE_PROFESSIONAL_URL = 'https://easyturnos.somee.com/api/Professional/'
 
-export async function getProfessionalAppointments(decodedToken: DecodedToken): Promise<AppointmentList> {
+export async function getProfessionalAppointments(
+	decodedToken: DecodedToken
+): Promise<Professional> {
 	try {
-		const response = await fetch(
-			`${BASE_APPOINTMENT_URL}${PATH_GET_BY_ID}${decodedToken?.professionalId}`,
+		const res = await fetch(
+			`${BASE_APPOINTMENT_URL}${decodedToken?.professionalId}`,
 			{
 				method: 'GET',
 				headers: {
@@ -15,15 +17,31 @@ export async function getProfessionalAppointments(decodedToken: DecodedToken): P
 				}
 			}
 		)
-		if (!response.ok) {
-			throw new Error(`Error al obtener turnos: ${response.statusText}`)
-		}
+		if (!res.ok) throw new Error(`Error al obtener turnos: ${res.statusText}`)
 
-		const data: AppointmentList = await response.json()
+		const data: Professional = await res.json()
 		console.log(data)
 		return data
 	} catch (error) {
 		console.error('Error getting appointments:', error)
+		throw error
+	}
+}
+
+export async function getProfessional(decodedToken: DecodedToken) {
+	try {
+		const res = await fetch(`${BASE_PROFESSIONAL_URL}`, {
+			method: 'GET',
+			headers: {
+				Authorization: `Bearer ${decodedToken}`
+			}
+		})
+		if (!res.ok)
+			throw new Error(`Error al obtener profesional: ${res.statusText}`)
+		const data = res.json()
+		return data
+	} catch (error) {
+		console.error('Error getting professional:', error)
 		throw error
 	}
 }

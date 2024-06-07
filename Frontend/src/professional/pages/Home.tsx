@@ -5,24 +5,14 @@ import { WithoutAppointments } from '../components/WithoutAppointments'
 import { Search } from '../components/Search'
 import { useAuth } from '../../auth/hooks/useAuth'
 import { useEffect, useState } from 'react'
-import { getProfessionalAppointments } from '../../services/api/appointment'
-
-interface availableSlot {
-	availableSlot: string
-}
-
-interface Appointment {
-	id: string
-	specialty: string
-	description: string
-	slots: availableSlot[]
-}
-
-export interface AppointmentList {
-	data: Appointment[]
-	success: boolean
-	message: string
-}
+import {
+	getProfessional,
+	getProfessionalAppointments
+} from '../../services/api/appointment'
+import {
+	AppointmentList,
+	Professional
+} from '../../services/typescript/interface'
 
 function Home(): React.ReactElement {
 	const now = DateTime.now()
@@ -31,12 +21,16 @@ function Home(): React.ReactElement {
 
 	const [appointmentList, setAppointmentList] =
 		useState<AppointmentList | null>(null)
+	// const [professional, setProfessional] = useState<Professional | null>(null)
 
 	useEffect(() => {
 		if (!decodedToken) return
 		getProfessionalAppointments(decodedToken).then(newAppointments =>
 			setAppointmentList(newAppointments)
 		)
+		// getProfessional(decodedToken).then(newProfessional =>
+		// 	setProfessional(newProfessional)
+		// )
 	}, [])
 	return (
 		<section className=' h-full flex flex-col font-montserrat px-10 gap-6 '>
