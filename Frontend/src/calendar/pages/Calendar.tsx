@@ -1,128 +1,166 @@
-// src/components/Calendar.tsx
-import React, { useState } from 'react'
-import {
-	Calendar as BigCalendar,
-	momentLocalizer,
-	Views,
-	SlotInfo
-} from 'react-big-calendar'
-import moment from 'moment'
+import React, { useState, useEffect } from 'react'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
+import { DateCalendar, PickersDay } from '@mui/x-date-pickers'
+import moment, { Moment } from 'moment'
 import 'moment/locale/es'
-import 'react-big-calendar/lib/css/react-big-calendar.css'
-import AddEvent from '../components/AddEvent'
-import CalendarConfig from '../components/CalendarConfig'
 import mockConfigSlots from '../mocks/mockConfigSlot'
+import clsx from 'clsx' // For conditional class names
 
 moment.locale('es')
-const localizer = momentLocalizer(moment)
 
-const messages = {
-	allDay: 'Todo el día',
-	previous: 'Anterior',
-	next: 'Siguiente',
-	today: 'Hoy',
-	month: 'Mes',
-	week: 'Semana',
-	day: 'Día',
-	agenda: 'Agenda',
-	date: 'Fecha',
-	time: 'Hora',
-	event: 'Evento',
-	noEventsInRange: 'No hay eventos en este rango.',
-	showMore: (total: any) => `+ Ver más (${total})`
+// Agrega la importación de ConfigSlot
+import { ConfigSlot } from '../mocks/mockConfigSlot'
+
+// Extract unique days with slots
+const getUniqueDaysWithSlots = () => {
+	const uniqueDays = new Set<string>()
+	mockConfigSlots.forEach(slot => {
+		const day = moment(slot.initial).format('YYYY-MM-DD')
+		uniqueDays.add(day)
+	})
+	return Array.from(uniqueDays)
 }
 
-interface Event {
-	title: string
-	start: Date
-	end: Date
-}
+const CustomDay = props => {
+	const {
+		day,
+		selectedDay,
+		hoveredDay,
+		onPointerEnter,
+		onPointerLeave,
+		...other
+	} = props
+	const isDayWithSlot = getUniqueDaysWithSlots().includes(
+		day.format('YYYY-MM-DD')
+	)
 
-interface ConfigSlot {
-	day: string
-	initial: string
-	end: string
+	return (
+		<PickersDay
+			{...other}
+			day={day}
+			onMouseEnter={onPointerEnter}
+			onMouseLeave={onPointerLeave}
+			style={{
+				...(isDayWithSlot && {
+					border: '2px solid #3b82f6', // Tailwind blue-500 color
+					borderRadius: '50%',
+					color: '#3b82f6' // Tailwind blue-500 color
+				}),
+				...(day.isSame(selectedDay, 'day') && {
+					backgroundColor: 'rgba(59, 130, 246, 0.12)', // Tailwind blue-500 background
+					color: '#3b82f6' // Tailwind blue-500 color
+				}),
+				...(day.isSame(hoveredDay, 'day') && {
+					backgroundColor: 'rgba(59, 130, 246, 0.04)' // Tailwind blue-500 hover background
+				})
+			}}
+		/>
+	)
 }
 
 const Calendar: React.FC = () => {
-	const [myEvents, setMyEvents] = useState<Event[]>([])
-	const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
-	const [selectedSlot, setSelectedSlot] = useState<{
-		start: Date
-		end: Date
-	} | null>(null)
-	const [calendarConfig, setCalendarConfig] =
-		useState<ConfigSlot[]>(mockConfigSlots)
+	const [selectedDate, setSelectedDate] = useState<Moment | null>(moment())
+	const [hoveredDay, setHoveredDay] = useState<Moment | null>(null)
+	const [selectedSlots, setSelectedSlots] = useState<ConfigSlot[]>([])
+	const [selectedSlot, setSelectedSlot] = useState<ConfigSlot | null>(null)
+	const [showConfirmButton, setShowConfirmButton] = useState<boolean>(false)
 
-	const handleSelectSlot = (slotInfo: SlotInfo) => {
-		const { start, end } = slotInfo
+	const handleDateChange = (date: Moment | null) => {
+		setSelectedDate(date)
+	}
 
-		const isValidSlot = calendarConfig.some(
-			config =>
-				new Date(config.initial).getTime() === start.getTime() &&
-				new Date(config.end).getTime() === end.getTime()
-		)
-
-		if (isValidSlot) {
-			setSelectedSlot({ start, end })
-			setIsModalOpen(true)
+	useEffect(() => {
+		if (selectedDate) {
+			const selectedDaySlots = mockConfigSlots.filter(slot =>
+				moment(slot.initial).isSame(selectedDate, 'day')
+			)
+			setSelectedSlots(selectedDaySlots)
+			setSelectedSlot(null)
+			setShowConfirmButton(false)
 		}
-	}
+	}, [selectedDate])
 
-	const handleAddEvent = (title: string, start: Date, end: Date) => {
-		setMyEvents([...myEvents, { title, start, end }])
-		setIsModalOpen(false)
-	}
-
-	const slotPropGetter = (date: Date) => {
-		const isInTimeRange = calendarConfig.some(
-			config => date >= new Date(config.initial) && date < new Date(config.end)
-		)
-
-		if (!isInTimeRange) {
-			return {
-				style: {
-					backgroundColor: '#7445C7',
-					pointerEvents: 'none',
-					opacity: 0.5
-				}
-			}
+	const handleSlotClick = (
+		slot: ConfigSlot,
+		event: React.MouseEvent<HTMLDivElement>
+	  ) => {
+		if (selectedSlot === slot && showConfirmButton) {
+		  // Si se hace clic nuevamente en el mismo horario y el botón de confirmación está visible, ocultarlo y limpiar el horario seleccionado
+		  setSelectedSlot(null);
+		  setShowConfirmButton(false);
 		} else {
-			return {
-				style: {
-					cursor: 'pointer'
-				}
-			}
+		  // De lo contrario, mostrar el botón de confirmación y seleccionar el horario
+		  setSelectedSlot(slot);
+		  setShowConfirmButton(true);
 		}
+	  };
+	  
+
+	const handleConfirmClick = () => {
+		alert(
+			`Horario confirmado: ${moment(selectedSlot?.initial).format('HH:mm')} - ${moment(selectedSlot?.end).format('HH:mm')}`
+		)
 	}
 
 	return (
-		<div className='p-4 w-full h-[100%] flex flex-col gap-5'>
-			<CalendarConfig />
-			<BigCalendar
-				localizer={localizer}
-				events={myEvents}
-				startAccessor='start'
-				endAccessor='end'
-				defaultView='week'
-				views={[Views.AGENDA, Views.WEEK, Views.MONTH]}
-				messages={messages}
-				min={new Date(2023, 1, 1, 1, 0)} // Mínimo a las 01:00 AM
-				max={new Date(2023, 1, 1, 23, 0)} // Máximo a las 11:00 PM
-				selectable
-				onSelectSlot={handleSelectSlot}
-				slotPropGetter={slotPropGetter}
-			/>
-			{selectedSlot && (
-				<AddEvent
-					open={isModalOpen}
-					onClose={() => setIsModalOpen(false)}
-					onAddEvent={handleAddEvent}
-					initialStart={selectedSlot.start}
-					initialEnd={selectedSlot.end}
-				/>
-			)}
-		</div>
+		<LocalizationProvider dateAdapter={AdapterMoment}>
+			<div className='h-screen px-20'>
+				<div className=''>
+					<div className='flex gap-4'>
+						<DateCalendar
+							value={selectedDate}
+							onChange={handleDateChange}
+							showDaysOutsideCurrentMonth
+							displayWeekNumber
+							slots={{ day: CustomDay }}
+							slotProps={{
+								day: ownerState =>
+									({
+										selectedDay: selectedDate,
+										hoveredDay,
+										onPointerEnter: () => setHoveredDay(ownerState.day),
+										onPointerLeave: () => setHoveredDay(null)
+									}) as any
+							}}
+						/>
+						<div className='p-4 flex flex-col gap-2'>
+							{selectedSlots.length > 0 ? (
+								selectedSlots.map((slot, index) => (
+									<div
+										key={index}
+										className={clsx(
+											'p-2 border border-gray-300 rounded cursor-pointer relative',
+											{
+												'bg-gray-800 text-white': selectedSlot === slot,
+												'bg-white text-black': selectedSlot !== slot
+											}
+										)}
+										onClick={e => handleSlotClick(slot, e)}
+									>
+										{moment(slot.initial).format('HH:mm')} -{' '}
+										{moment(slot.end).format('HH:mm')}
+									</div>
+								))
+							) : (
+								<p>No hay horarios disponibles para este día.</p>
+							)}
+
+							<div>
+								{showConfirmButton && selectedSlot && (
+									<button
+										className='p-2 bg-blue-500 text-white rounded'
+										onClick={handleConfirmClick}
+									>
+										Confirmar
+									</button>
+								)}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</LocalizationProvider>
 	)
 }
 

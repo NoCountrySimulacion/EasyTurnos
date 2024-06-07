@@ -24,3 +24,4 @@ export function Search(): React.ReactElement {
 		</header>
 	)
 }
+

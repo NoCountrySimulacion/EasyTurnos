@@ -1,5 +1,4 @@
 import { useAuth } from '../../auth/hooks/useAuth'
-import { Search } from '../../professional/components/Search'
 import { AppointmentsList } from '../components/AppointmentsList'
 import { WithoutAppointments } from '../components/WhitoutAppointments'
 import { appointmentsClientMock } from '../mocks/appointmentsClientMock'
@@ -20,7 +19,6 @@ export function HomeClient(): React.ReactElement {
 	const { user } = useAuth()
 	return (
 		<section className=' h-full flex flex-col px-10  gap-10'>
-			<Search />
 			<section className='flex flex-col items-start gap-[18px]'>
 				<h1 className='text-[35px] font-bold leading-[56px] font-montserrat'>
 					Bienvenido a tu espacio,{' '}

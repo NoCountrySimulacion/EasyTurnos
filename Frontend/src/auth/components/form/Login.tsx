@@ -46,6 +46,19 @@ export default function Login(): React.ReactElement {
 		}
 	}
 
+	const handleKeyDown = (
+		event: React.KeyboardEvent<HTMLInputElement>,
+		submitForm: () => void
+	) => {
+		if (event.key === 'Enter') {
+			if (event.currentTarget.name === 'userEmail') {
+				document.getElementById(id + 'password')?.focus() 
+			} else if (event.currentTarget.name === 'userPassword') {
+				submitForm() 
+			}
+		}
+	}
+
 	return (
 		<div className='flex gap-10 font-montserrat'>
 			<div className='w-full max-w-md mx-auto'>
@@ -67,7 +80,8 @@ export default function Login(): React.ReactElement {
 						handleChange,
 						handleBlur,
 						values,
-						handleSubmit
+						handleSubmit,
+						submitForm
 					}) => (
 						<form className='space-y-6' onSubmit={handleSubmit}>
 							<div className='flex flex-col gap-[24px] w-full mt-[25px]'>
@@ -80,6 +94,7 @@ export default function Login(): React.ReactElement {
 										value={values.userEmail}
 										onInput={handleChange}
 										onBlur={handleBlur}
+										onKeyDown={e => handleKeyDown(e, submitForm)}
 										class='rounded-lg w-[100%] h-[56px]'
 									/>
 									<div className='h-[8px] flex'>
@@ -100,6 +115,7 @@ export default function Login(): React.ReactElement {
 											value={values.userPassword}
 											onInput={handleChange}
 											onBlur={handleBlur}
+											onKeyDown={e => handleKeyDown(e, submitForm)}
 											class='w-full flex items-center text-[12px]'
 										/>
 										<button
@@ -178,7 +194,6 @@ export default function Login(): React.ReactElement {
 									)}
 								</button>
 							</div>
-
 							<div className='text-center text-sm text-gray-600'>
 								<p>
 									No tienes una cuenta?{' '}
