@@ -8,7 +8,7 @@ import {
 } from '../../Icons/Icons'
 import { useAuth } from '../../../auth/hooks/useAuth'
 import { Link } from 'react-router-dom'
-import { FaCalendarAlt, FaUserMd, FaClipboardCheck } from 'react-icons/fa'
+import { FaUserMd, FaClipboardCheck } from 'react-icons/fa'
 
 export function Sidemenu(): JSX.Element {
 	const { logout } = useAuth()
@@ -28,6 +28,8 @@ export function Sidemenu(): JSX.Element {
 			return 'Profesionales'
 		} else if (path.startsWith('/misTurnos')) {
 			return 'MisTurnos'
+		} else if (path.startsWith('/profile')) {
+			return 'Perfil'
 		} else {
 			return 'Home'
 		}
@@ -57,11 +59,6 @@ export function Sidemenu(): JSX.Element {
 	const principalMenuClient = [
 		{ name: 'Inicio', icon: <HomeIcon width={24} height={24} />, to: '/home' },
 		{
-			name: 'Agendar turno',
-			icon: <FaCalendarAlt size={24} />,
-			to: '/calendar'
-		},
-		{
 			name: 'Profesionales',
 			icon: <FaUserMd size={24} />,
 			to: '/professionals'
@@ -72,11 +69,6 @@ export function Sidemenu(): JSX.Element {
 			to: '/my-appointments'
 		}
 	]
-
-	const configuracion =
-		decodedToken?.role === 'Professional'
-			? [{ name: 'Perfil', icon: <Usuarios width={24} height={24} /> }]
-			: []
 
 	const principalMenu =
 		decodedToken?.role === 'Professional'
@@ -97,11 +89,11 @@ export function Sidemenu(): JSX.Element {
 					{principalMenu.map(item => (
 						<div
 							key={item.name}
-							className={`w-[80%] ml-3 rounded-[16px] ${selectedPage === item.name ? 'bg-[#D3CAFF] border border-solid border-[#7445C7] duration-500' : 'hover:bg-purple-100'}`}
+							className={`w-[80%] ml-3 rounded-[16px] ${selectedPage === 'Perfil' ? 'bg-[#D3CAFF] border border-solid border-[#7445C7] duration-500' : 'hover:bg-purple-100'}`}
 						>
 							<Link
 								to={item.to}
-								className='flex flex-row flex-wrap pb-[10px] pt-3 cursor-pointer'
+								className='flex flex-row flex-wrap py-3  cursor-pointer'
 							>
 								<span className='pl-[5px]'>{item.icon}</span>
 								<h4 className='ml-3 text-[18px] font-bold font-montserrat'>
@@ -112,26 +104,26 @@ export function Sidemenu(): JSX.Element {
 					))}
 				</section>
 
-				{configuracion.length > 0 && (
-					<section className='ml-1 mt-1 mb-[17.67px]'>
-						<p className='text-[18px] pb-3 pl-[10px] font-montserrat text-[#828282]'>
-							Configuraciones
-						</p>
-						{configuracion.map(item => (
-							<div
-								key={item.name}
-								className={`w-[80%] ml-3 rounded-[16px] ${selectedPage === item.name ? 'bg-[#D3CAFF] border border-solid border-[#7445C7] duration-500' : 'hover:bg-purple-100'}`}
-							>
-								<div className='flex flex-row flex-wrap pb-[10px] pt-2 cursor-pointer'>
-									<span className='pl-[5px]'>{item.icon}</span>
-									<h4 className='ml-3 text-[18px] font-bold font-montserrat'>
-										{item.name}
-									</h4>
-								</div>
-							</div>
-						))}
-					</section>
-				)}
+				<section className='ml-1 mt-1 mb-[17.67px]'>
+					<p className='text-[18px] pb-3 pl-[10px] font-montserrat text-[#828282]'>
+						Configuraciones
+					</p>
+					<div
+						className={`w-[80%] ml-3 rounded-[16px] ${selectedPage === 'Perfil' ? 'bg-[#D3CAFF] border border-solid border-[#7445C7] duration-500' : 'hover:bg-purple-100'}`}
+					>
+						<Link
+							className='flex items-center py-3  cursor-pointer'
+							to='profile'
+						>
+							<span className='pl-[5px]'>
+								<Usuarios width={24} height={24} />
+							</span>
+							<h4 className='ml-3 text-[18px] font-bold font-montserrat'>
+								Perfil
+							</h4>
+						</Link>
+					</div>
+				</section>
 
 				<div className='flex flex-row justify-center items-center mt-[10px]'>
 					<button

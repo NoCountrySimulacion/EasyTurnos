@@ -16,7 +16,7 @@ export function Search(): React.ReactElement {
 			case '/home':
 				return 'Inicio'
 			case '/calendar':
-				return 'Calendario'
+				return 'Agenda'
 			case '/clients':
 				return 'Clientes'
 			case '/professionals':
@@ -56,7 +56,7 @@ export function Search(): React.ReactElement {
 						? '/clients/addClient'
 						: '/professionals'
 				}
-				className='bg-[#7445C7] text-[#F8F9FA] flex items-center justify-center gap-[10px] h-[38px] min-w-[161px] rounded-lg text-[13px] font-bold '
+				className='bg-[#7445C7] text-[#F8F9FA] flex items-center justify-center gap-[10px] h-[38px] min-w-[161px] rounded-lg text-[13px] font-bold hover:bg-purple-600'
 			>
 				{decodedToken?.role === 'Professional' ? (
 					<AddClientIcon height={18} width={18} />

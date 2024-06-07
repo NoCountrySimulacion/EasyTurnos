@@ -94,9 +94,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 				firstName: response.firstName,
 				lastName: response.lastName
 			})
-			localStorage.setItem('token', response.token)
-			localStorage.setItem('firstName', response.firstName)
-			localStorage.setItem('lastName', response.lastName)
+			loginUser(email, password)
 			decodeAndSetToken(response.token)
 			setIsSignIn(true)
 		} catch (err: unknown) {
