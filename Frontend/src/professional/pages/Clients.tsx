@@ -1,4 +1,3 @@
-import { Search } from '../components/Search'
 import {
 	Table,
 	TableBody,
@@ -82,7 +81,6 @@ function TableClient() {
 export default function Clients() {
 	return (
 		<section className='h-full w-full flex flex-col font-montserrat px-10 gap-6 '>
-			<Search />
 			<section className='mb-[100px]'>
 				<TableClient />
 			</section>

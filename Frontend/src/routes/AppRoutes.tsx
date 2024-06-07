@@ -55,7 +55,7 @@ export default function AppRoutes() {
 							<>
 								<Route path='/home' element={<HomeClient />} />
 								<Route path='/professionals' element={<Professionals />} />
-								<Route path='/my-appoinments' element={<Appointments />} />
+								<Route path='/my-appointments' element={<Appointments />} />
 							</>
 						)}
 					</Route>
