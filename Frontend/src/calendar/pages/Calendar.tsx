@@ -5,7 +5,8 @@ import { DateCalendar, PickersDay } from '@mui/x-date-pickers'
 import moment, { Moment } from 'moment'
 import 'moment/locale/es'
 import mockConfigSlots from '../mocks/mockConfigSlot'
-import clsx from 'clsx' // For conditional class names
+import clsx from 'clsx'
+import '../styles/calendar.css' // For conditional class names
 
 moment.locale('es')
 
@@ -43,16 +44,16 @@ const CustomDay = props => {
 			onMouseLeave={onPointerLeave}
 			style={{
 				...(isDayWithSlot && {
-					border: '2px solid #3b82f6', // Tailwind blue-500 color
+					border: '2px solid #7445C7', // Tailwind blue-500 color
 					borderRadius: '50%',
-					color: '#3b82f6' // Tailwind blue-500 color
+					color: '#7445C7' // Tailwind blue-500 color
 				}),
 				...(day.isSame(selectedDay, 'day') && {
-					backgroundColor: 'rgba(59, 130, 246, 0.12)', // Tailwind blue-500 background
-					color: '#3b82f6' // Tailwind blue-500 color
+					backgroundColor: 'rgba(116, 69, 199, 0.12)', // Tailwind blue-500 background
+					color: '#FD8847' // Tailwind blue-500 color
 				}),
 				...(day.isSame(hoveredDay, 'day') && {
-					backgroundColor: 'rgba(59, 130, 246, 0.04)' // Tailwind blue-500 hover background
+					backgroundColor: 'rgba(116, 69, 199, 0.04)' // Tailwind blue-500 hover background
 				})
 			}}
 		/>
@@ -84,18 +85,17 @@ const Calendar: React.FC = () => {
 	const handleSlotClick = (
 		slot: ConfigSlot,
 		event: React.MouseEvent<HTMLDivElement>
-	  ) => {
+	) => {
 		if (selectedSlot === slot && showConfirmButton) {
-		  // Si se hace clic nuevamente en el mismo horario y el botón de confirmación está visible, ocultarlo y limpiar el horario seleccionado
-		  setSelectedSlot(null);
-		  setShowConfirmButton(false);
+			// Si se hace clic nuevamente en el mismo horario y el botón de confirmación está visible, ocultarlo y limpiar el horario seleccionado
+			setSelectedSlot(null)
+			setShowConfirmButton(false)
 		} else {
-		  // De lo contrario, mostrar el botón de confirmación y seleccionar el horario
-		  setSelectedSlot(slot);
-		  setShowConfirmButton(true);
+			// De lo contrario, mostrar el botón de confirmación y seleccionar el horario
+			setSelectedSlot(slot)
+			setShowConfirmButton(true)
 		}
-	  };
-	  
+	}
 
 	const handleConfirmClick = () => {
 		alert(
@@ -107,23 +107,36 @@ const Calendar: React.FC = () => {
 		<LocalizationProvider dateAdapter={AdapterMoment}>
 			<div className='h-screen px-20'>
 				<div className=''>
-					<div className='flex gap-4'>
-						<DateCalendar
-							value={selectedDate}
-							onChange={handleDateChange}
-							showDaysOutsideCurrentMonth
-							displayWeekNumber
-							slots={{ day: CustomDay }}
-							slotProps={{
-								day: ownerState =>
-									({
-										selectedDay: selectedDate,
-										hoveredDay,
-										onPointerEnter: () => setHoveredDay(ownerState.day),
-										onPointerLeave: () => setHoveredDay(null)
-									}) as any
-							}}
-						/>
+					<div className='flex gap-4 h-screen'>
+						<div className='shadow-md w-2/3 h-[550px]  rounded-lg p-2'>
+							<DateCalendar
+								value={selectedDate}
+								onChange={handleDateChange}
+								showDaysOutsideCurrentMonth
+								displayWeekNumber
+								slots={{ day: CustomDay }}
+								sx={{
+									'& .MuiPickersDay-root': {
+										width: 60,
+										height: 60,
+										fontSize:18,
+										display: 'flex',
+										gap: 5,
+										margin: '5px'
+									},
+								}}	
+
+								slotProps={{
+									day: ownerState =>
+										({
+											selectedDay: selectedDate,
+											hoveredDay,
+											onPointerEnter: () => setHoveredDay(ownerState.day),
+											onPointerLeave: () => setHoveredDay(null)
+										}) as any
+								}}
+							/>
+						</div>
 						<div className='p-4 flex flex-col gap-2'>
 							{selectedSlots.length > 0 ? (
 								selectedSlots.map((slot, index) => (
