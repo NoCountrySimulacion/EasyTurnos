@@ -19,13 +19,13 @@ namespace API.Controllers
         }
 
         [HttpPost("{clientId}/{professionalId}")]
-        public async Task<ActionResult<ServiceResponse<List<AppointmentGetDto>>>> AddAppointment(Guid clientId, Guid professionalId, AppointmentAddDto newAppointment)
+        public async Task<ActionResult<ServiceResponse<AppointmentGetDto>>> AddAppointment(Guid clientId, Guid professionalId, AppointmentAddDto newAppointment)
         {
             return Ok(await _appointmentService.AddAppointment(clientId, professionalId, newAppointment));
         }
 
         [HttpDelete("{appointmentId}/{professionalId}")]
-        public async Task<ActionResult<ServiceResponse<List<AppointmentGetDto>>>> DeleteAppointment(Guid appointmentId, Guid professionalId)
+        public async Task<ActionResult<ServiceResponse<AppointmentGetDto>>> DeleteAppointment(Guid appointmentId, Guid professionalId)
         {
             return Ok(await _appointmentService.DeleteAppointment(appointmentId, professionalId));
         }

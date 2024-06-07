@@ -35,9 +35,9 @@ namespace Core.Services
             _validationBehavior = validationBehavior;
         }
 
-        public async Task<ServiceResponse<List<AppointmentGetDto>>> AddAppointment(Guid clientId, Guid professionalId, AppointmentAddDto addAppointment)
+        public async Task<ServiceResponse<AppointmentGetDto>> AddAppointment(Guid clientId, Guid professionalId, AppointmentAddDto addAppointment)
         {
-            var serviceResponse = new ServiceResponse<List<AppointmentGetDto>>();
+            var serviceResponse = new ServiceResponse<AppointmentGetDto>();
 
             try
             {
@@ -62,9 +62,9 @@ namespace Core.Services
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<List<AppointmentGetDto>>> DeleteAppointment(Guid appointmentId, Guid professionalId)
+        public async Task<ServiceResponse<AppointmentGetDto>> DeleteAppointment(Guid appointmentId, Guid professionalId)
         {
-            var serviceResponse = new ServiceResponse<List<AppointmentGetDto>>();
+            var serviceResponse = new ServiceResponse<AppointmentGetDto>();
 
             try
             {
