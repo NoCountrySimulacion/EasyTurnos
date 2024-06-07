@@ -69,7 +69,7 @@ export function Sidemenu(): JSX.Element {
 		{
 			name: 'Mis turnos',
 			icon: <FaClipboardCheck size={24} />,
-			to: '/my-appoinments'
+			to: '/my-appointments'
 		}
 	]
 
