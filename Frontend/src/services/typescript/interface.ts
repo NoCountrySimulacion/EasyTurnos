@@ -42,7 +42,7 @@ export interface Professional {
 	message: string
 }
 
-interface Apponitment {
+interface Appointment {
 	id: string
 	name: string
 	startDate: string
@@ -52,7 +52,7 @@ interface Apponitment {
 }
 
 export interface AppointmentList {
-	data: Apponitment[]
+	data: Appointment[]
 	success: boolean
 	message: string
 }

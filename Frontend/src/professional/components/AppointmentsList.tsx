@@ -1,10 +1,9 @@
-import { AppointmentList } from '../../services/typescript/interface'
 import { AppointmentCard } from '../../shared/components/AppointmentCard'
+import { useAppointments } from '../hooks/useAppointments'
 import { CalendarIcon } from './icons/Icons'
 
-export function AppointmentsList(
-	appointmentList: AppointmentList
-): React.ReactElement {
+export function AppointmentsList(): React.ReactElement {
+	const { appointmentList } = useAppointments()
 	return (
 		<section className='w-full flex flex-col gap-[52px] mb-[56px]'>
 			<header className='flex justify-between items-center h-[76px]'>

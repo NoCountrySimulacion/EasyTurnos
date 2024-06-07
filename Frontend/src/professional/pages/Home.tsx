@@ -3,34 +3,14 @@ import { DateTime } from 'luxon'
 import { AppointmentsList } from '../components/AppointmentsList'
 import { WithoutAppointments } from '../components/WithoutAppointments'
 import { useAuth } from '../../auth/hooks/useAuth'
-import { useEffect, useState } from 'react'
-import {
-	getProfessional,
-	getProfessionalAppointments
-} from '../../services/api/appointment'
-import {
-	AppointmentList,
-	Professional
-} from '../../services/typescript/interface'
+import { useAppointments } from '../hooks/useAppointments'
 
 function Home(): React.ReactElement {
 	const now = DateTime.now()
 	const formattedDate = now.setLocale('es').toFormat("cccc, dd 'de' LLLL")
-	const { user, decodedToken } = useAuth()
+	const { user } = useAuth()
+	const { isThereAppointments } = useAppointments()
 
-	const [appointmentList, setAppointmentList] =
-		useState<AppointmentList | null>(null)
-	// const [professional, setProfessional] = useState<Professional | null>(null)
-
-	useEffect(() => {
-		if (!decodedToken) return
-		getProfessionalAppointments(decodedToken).then(newAppointments =>
-			setAppointmentList(newAppointments)
-		)
-		// getProfessional(decodedToken).then(newProfessional =>
-		// 	setProfessional(newProfessional)
-		// )
-	}, [])
 	return (
 		<section className=' h-full flex flex-col font-montserrat px-10 gap-6 '>
 			<section className='flex flex-col items-start gap-[18px]'>
@@ -42,11 +22,7 @@ function Home(): React.ReactElement {
 					Hoy {formattedDate}.
 				</h2>
 			</section>
-			{appointmentList?.data.length ? (
-				<AppointmentsList appointmentList={appointmentList} />
-			) : (
-				<WithoutAppointments />
-			)}
+			{isThereAppointments ? <AppointmentsList /> : <WithoutAppointments />}
 		</section>
 	)
 }
