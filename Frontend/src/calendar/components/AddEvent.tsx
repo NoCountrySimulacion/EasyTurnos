@@ -1,10 +1,6 @@
 // src/components/AddEvent.tsx
 import React, { useState } from 'react'
-import {
-	DatePicker,
-	TimePicker,
-	LocalizationProvider
-} from '@mui/x-date-pickers'
+import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
@@ -30,11 +26,9 @@ const AddEvent: React.FC<AddEventProps> = ({
 	initialStart,
 	initialEnd
 }) => {
-	const [title, setTitle] = useState('')
-	const [start, setStart] = useState<DateTime>(
-		DateTime.fromJSDate(initialStart)
-	)
-	const [end, setEnd] = useState<DateTime>(DateTime.fromJSDate(initialEnd))
+	const [title, setTitle] = useState<string>('')
+	const [start] = useState<DateTime>(DateTime.fromJSDate(initialStart))
+	const [end] = useState<DateTime>(DateTime.fromJSDate(initialEnd))
 
 	const handleAddEvent = () => {
 		onAddEvent(title, start.toJSDate(), end.toJSDate())
@@ -46,7 +40,7 @@ const AddEvent: React.FC<AddEventProps> = ({
 			<DialogTitle>Añadir Turno</DialogTitle>
 			<DialogContent>
 				<TextField
-					label='Titulo'
+					label='Título'
 					fullWidth
 					value={title}
 					onChange={e => setTitle(e.target.value)}
@@ -54,37 +48,25 @@ const AddEvent: React.FC<AddEventProps> = ({
 				/>
 				<LocalizationProvider dateAdapter={AdapterLuxon}>
 					<Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-						<DatePicker
-							label='Fecha de inicio'
-							value={start}
-							onChange={newValue => setStart(newValue as DateTime)}
-							renderInput={props => (
-								<TextField {...props} fullWidth margin='normal' />
-							)}
+						<TextField
+							label='Fecha'
+							fullWidth
+							margin='normal'
+							value={start.toFormat('dd-MM-yyyy')}
+							InputProps={{
+								readOnly: true
+							}}
+							variant="filled"
 						/>
-						<TimePicker
-							label='Hora de inicio'
-							value={start}
-							onChange={newValue => setStart(newValue as DateTime)}
-							renderInput={props => (
-								<TextField {...props} fullWidth margin='normal' />
-							)}
-						/>
-						<DatePicker
-							label='Fecha de fin'
-							value={end}
-							onChange={newValue => setEnd(newValue as DateTime)}
-							renderInput={props => (
-								<TextField {...props} fullWidth margin='normal' />
-							)}
-						/>
-						<TimePicker
-							label='Hora de fin'
-							value={end}
-							onChange={newValue => setEnd(newValue as DateTime)}
-							renderInput={props => (
-								<TextField {...props} fullWidth margin='normal' />
-							)}
+						<TextField
+							label='Horario'
+							fullWidth
+							margin='normal'
+							value={`${start.toFormat('HH:mm')} - ${end.toFormat('HH:mm')}`}
+							InputProps={{
+								readOnly: true
+							}}
+							variant="filled"
 						/>
 					</Box>
 				</LocalizationProvider>

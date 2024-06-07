@@ -69,9 +69,6 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 		localStorage.removeItem('lastName')
 	}
 
-	const isUserSignedIn = (): boolean => {
-		return !!localStorage.getItem('token')
-	}
 	const registerUser = async (
 		firstName: string,
 		lastName: string,
@@ -141,7 +138,6 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 		loginUser,
 		registerUser,
 		logout,
-		isUserSignedIn
 	}
 
 	return (

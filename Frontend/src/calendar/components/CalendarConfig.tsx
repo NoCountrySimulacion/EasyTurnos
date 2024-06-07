@@ -85,6 +85,9 @@ const CalendarConfig: React.FC<CalendarConfigProps> = ({ onConfigChange }) => {
 				<option value={60}>1 hora</option>
 				<option value={120}>2 horas</option>
 			</select>
+			<div className='text-sm text-center mt-2'>
+				{formatHourRange(timeRange)}
+			</div>
 			<section className='flex gap-4'>
 				<div className='flex flex-col'>
 					<Slider
@@ -111,7 +114,7 @@ const CalendarConfig: React.FC<CalendarConfigProps> = ({ onConfigChange }) => {
 						)}
 						onChange={handleTimeRangeChange}
 					/>
-					<div className='text-sm text-center mt-3'>
+					<div className='text-sm text-center mt-4'>
 						El rango horario es: {formatHourRange(timeRange)}
 					</div>
 				</div>

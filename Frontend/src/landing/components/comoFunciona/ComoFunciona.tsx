@@ -116,7 +116,7 @@ export default function ComoFunciona(): JSX.Element {
 					</AccordionDetails>
 				</Accordion>
 			</div>
-			<div className='hidden md:block md:w-1/2 bg-gray-400 h-[510px]' />
+	{/* 		<div className='hidden md:block md:w-1/2 bg-gray-400 h-[510px]' /> */}
 		</div>
 	)
 }

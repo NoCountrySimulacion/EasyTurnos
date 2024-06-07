@@ -12,10 +12,10 @@ export const generateSlots = (
 		if (selectedDays.includes(i)) {
 			for (let j = startHour; j < endHour; j += interval / 60) {
 				const initialDate = new Date()
-				initialDate.setHours(j, 0, 0, 0)
+				initialDate.setHours(j - 3, 0, 0, 0) // Restamos 3 horas
 				initialDate.setDate(initialDate.getDate() + i - initialDate.getDay())
 				const endDate = new Date(initialDate)
-				endDate.setHours(j + interval / 60, 0, 0, 0)
+				endDate.setHours(j - 3 + interval / 60, 0, 0, 0) // Restamos 3 horas
 				slots.push({
 					day,
 					initial: initialDate.toISOString(),

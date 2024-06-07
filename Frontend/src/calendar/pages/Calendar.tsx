@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react'
+// src/components/Calendar.tsx
+import React, { useState } from 'react'
 import {
 	Calendar as BigCalendar,
 	momentLocalizer,
-	Views
+	Views,
+	SlotInfo
 } from 'react-big-calendar'
 import moment from 'moment'
 import 'moment/locale/es'
@@ -30,18 +32,41 @@ const messages = {
 	showMore: (total: any) => `+ Ver más (${total})`
 }
 
+interface Event {
+	title: string
+	start: Date
+	end: Date
+}
+
+interface ConfigSlot {
+	day: string
+	initial: string
+	end: string
+}
+
 const Calendar: React.FC = () => {
-	const [myEvents, setMyEvents] = useState([])
-	const [isModalOpen, setIsModalOpen] = useState(false)
+	const [myEvents, setMyEvents] = useState<Event[]>([])
+	const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 	const [selectedSlot, setSelectedSlot] = useState<{
 		start: Date
 		end: Date
 	} | null>(null)
-	const [calendarConfig, setCalendarConfig] = useState(mockConfigSlots)
+	const [calendarConfig, setCalendarConfig] =
+		useState<ConfigSlot[]>(mockConfigSlots)
 
-	const handleSelectSlot = ({ start, end }: { start: Date; end: Date }) => {
-		setSelectedSlot({ start, end })
-		setIsModalOpen(true)
+	const handleSelectSlot = (slotInfo: SlotInfo) => {
+		const { start, end } = slotInfo
+
+		const isValidSlot = calendarConfig.some(
+			config =>
+				new Date(config.initial).getTime() === start.getTime() &&
+				new Date(config.end).getTime() === end.getTime()
+		)
+
+		if (isValidSlot) {
+			setSelectedSlot({ start, end })
+			setIsModalOpen(true)
+		}
 	}
 
 	const handleAddEvent = (title: string, start: Date, end: Date) => {
