@@ -1,24 +1,26 @@
 import { AppointmentCard } from '../../shared/components/AppointmentCard'
-import { appointmentsMock } from '../mocks/appointments'
+import { AppointmentList } from '../pages/Home'
 import { CalendarIcon } from './icons/Icons'
 
-export function AppointmentsList(): React.ReactElement {
+export function AppointmentsList(
+	appointmentList: AppointmentList
+): React.ReactElement {
 	return (
 		<section className='w-full flex flex-col gap-[52px] mb-[56px]'>
 			<header className='flex justify-between items-center h-[76px]'>
 				<button className='w-full shadow-search text-[33px] font-bold leading-[56px] rounded-[15px] py-[15px] hover:bg-[#D3CAFF] transition duration-300 hover:border hover:border-[#7445C7]'>
-					Para el día de hoy tienes {appointmentsMock.length} citas.
+					Para el día de hoy tienes {appointmentList?.data.length} citas.
 				</button>
 			</header>
 			<section>
 				<ul className='grid grid-cols-2 gap-[54px]'>
-					{appointmentsMock.map(appointment => (
+					{appointmentList?.data.map(appointment => (
 						<AppointmentCard
 							key={appointment.id}
-							name={appointment.name}
-							lastName={appointment.lastName}
-							profession={appointment.profession}
-							time={appointment.time}
+							name={appointment.description}
+							lastName={appointment.description}
+							profession={appointment.specialty}
+							time={appointment.specialty}
 						/>
 					))}
 				</ul>
