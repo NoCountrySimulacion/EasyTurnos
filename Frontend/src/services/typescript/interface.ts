@@ -1,10 +1,10 @@
 export interface LoginResponse {
-	userId: string;
-	email: string;
-	token: string;
-	firstName: string;
-	lastName: string;
-  }
+	userId: string
+	email: string
+	token: string
+	firstName: string
+	lastName: string
+}
 
 export interface RegisterResponse {
 	userId: string
@@ -23,4 +23,17 @@ export interface RegisterCredentials {
 	phoneNumber: string
 	password: string
 	confirmPassword: string
+}
+
+interface ProfessionalClient {
+	id: string
+	firstName: string
+	lastName: string
+	phoneNumber: string
+}
+
+export interface ProfessionalClients {
+	data: ProfessionalClient[]
+	success: boolean
+	message: string
 }
