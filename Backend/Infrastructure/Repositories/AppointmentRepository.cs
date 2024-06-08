@@ -37,7 +37,10 @@ namespace Infrastructure.Repositories
 
         public async Task<AppointmentGetDto> GetAppointmentByProfessional(Guid appointmentId, Guid professionalId)
         {
-            var appointment = await Entities.FirstOrDefaultAsync(a => a.Id.Equals(appointmentId) && a.ProfessionalId.Equals(professionalId));
+            var appointment = await Entities
+                .Include(a => a.Client)
+                .ThenInclude(c => c.ApplicationUser)
+                .FirstOrDefaultAsync(a => a.Id.Equals(appointmentId) && a.ProfessionalId.Equals(professionalId));
 
             return appointment == null ?
                 throw new KeyNotFoundException($"Appointment not found.") :
