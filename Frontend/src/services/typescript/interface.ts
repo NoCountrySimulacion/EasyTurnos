@@ -48,7 +48,8 @@ interface Appointment {
 	startDate: string
 	endDate: string
 	professionalId: string
-	clientId: string
+	firstName: string
+	lastName: string
 }
 
 export interface AppointmentList {
