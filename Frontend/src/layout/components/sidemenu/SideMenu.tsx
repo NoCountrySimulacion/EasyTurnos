@@ -76,7 +76,7 @@ export function Sidemenu(): JSX.Element {
 			: principalMenuClient
 
 	return (
-		<aside className='h-[100%] bg-[#fff] text-[#000] font-mono w-[325px] shadow-md shadow-black '>
+		<aside className='h-screen sticky top-0 bg-[#fff] text-[#000] font-mono w-[325px] shadow-md shadow-black '>
 			<nav className=''>
 				<div id='logo' className='flex flex-col ml-2 pb-[0px]'>
 					<h4 className='text-[48px] font-bold'>EasyTurno</h4>

@@ -10,9 +10,12 @@ import {
 import { ScheduleAppointmentButton } from '../components/ScheduleAppointmentButton'
 import { UnsubscribeButton } from '../components/UnsubscribeButton'
 import { styled } from '@mui/system'
-import { Link } from 'react-router-dom'
-import { clientsMock } from '../mocks/clientsMock'
+import { useProfessionalClients } from '../hooks/useProfessionalClients'
 function TableClient() {
+	const { professionalClients, isThereProfessionalClients } =
+		useProfessionalClients()
+	console.log(professionalClients)
+
 	const CustomTableCell = styled(TableCell)({
 		borderBottom: 'none',
 		fontFamily: 'Roboto, sans-serif',
@@ -36,45 +39,53 @@ function TableClient() {
 	})
 
 	return (
-		<Paper elevation={0}>
-			<TableContainer>
-				<Table>
-					<TableHead>
-						<CustomTableRow>
-							<CustomTableCellHeader>Nombre</CustomTableCellHeader>
-							<CustomTableCellHeader>Apellido</CustomTableCellHeader>
-							<CustomTableCellHeader>Teléfono</CustomTableCellHeader>
-							<CustomTableCellHeader>Acciones</CustomTableCellHeader>
-						</CustomTableRow>
-					</TableHead>
-					<TableBody>
-						{clientsMock.map((row, index) => (
-							<CustomTableRow
-								key={index}
-								className={index % 2 == 0 ? 'bg-[#F7F6FE]' : 'bg-white'}
-							>
-								<CustomTableCell className='w-[15%]'>
-									<Link to={row.to}>{row.name}</Link>
-								</CustomTableCell>
+		<>
+			{isThereProfessionalClients ? (
+				<Paper elevation={0}>
+					<TableContainer>
+						<Table>
+							<TableHead>
+								<CustomTableRow>
+									<CustomTableCellHeader>Nombre</CustomTableCellHeader>
+									<CustomTableCellHeader>Apellido</CustomTableCellHeader>
+									<CustomTableCellHeader>Teléfono</CustomTableCellHeader>
+									<CustomTableCellHeader>Acciones</CustomTableCellHeader>
+								</CustomTableRow>
+							</TableHead>
+							<TableBody>
+								{professionalClients?.data.map((row, index) => (
+									<CustomTableRow
+										key={index}
+										className={index % 2 == 0 ? 'bg-[#F7F6FE]' : 'bg-white'}
+									>
+										<CustomTableCell className='w-[15%]'>
+											<span>{row.firstName}</span>
+										</CustomTableCell>
 
-								<CustomTableCell className='w-[15%]'>
-									<Link to={row.to}>{row.lastName}</Link>
-								</CustomTableCell>
-								<CustomTableCellTel className='w-[30%]'>
-									<Link to={row.to}>{row.tel}</Link>
-								</CustomTableCellTel>
-								<CustomTableCell align='right'>
-									<div className='flex gap-[20.75px] justify-start'>
-										<ScheduleAppointmentButton />
-										<UnsubscribeButton />
-									</div>
-								</CustomTableCell>
-							</CustomTableRow>
-						))}
-					</TableBody>
-				</Table>
-			</TableContainer>
-		</Paper>
+										<CustomTableCell className='w-[15%]'>
+											<span>{row.lastName}</span>
+										</CustomTableCell>
+										<CustomTableCellTel className='w-[30%]'>
+											<span>{row.phoneNumber}</span>
+										</CustomTableCellTel>
+										<CustomTableCell align='right'>
+											<div className='flex gap-[20.75px] justify-start'>
+												<ScheduleAppointmentButton />
+												<UnsubscribeButton />
+											</div>
+										</CustomTableCell>
+									</CustomTableRow>
+								))}
+							</TableBody>
+						</Table>
+					</TableContainer>
+				</Paper>
+			) : (
+				<section className='flex justify-center '>
+					<h1 className='text-4xl font-montserrat'>Aún no tienes clientes</h1>
+				</section>
+			)}
+		</>
 	)
 }
 

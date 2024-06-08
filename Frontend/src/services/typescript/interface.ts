@@ -25,6 +25,19 @@ export interface RegisterCredentials {
 	confirmPassword: string
 }
 
+interface ProfessionalClient {
+	id: string
+	firstName: string
+	lastName: string
+	phoneNumber: string
+}
+
+export interface ProfessionalClients {
+	data: ProfessionalClient[]
+	success: boolean
+	message: string
+}
+
 interface availableSlot {
 	availableSlot: string
 }

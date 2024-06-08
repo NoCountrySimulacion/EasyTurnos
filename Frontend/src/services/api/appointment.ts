@@ -13,7 +13,9 @@ export async function getProfessionalAppointments(
 				method: 'GET'
 			}
 		)
-		if (!res.ok) throw new Error(`Error al obtener turnos: ${res.statusText}`)
+		console.log(res)
+		if (!res.ok)
+			throw new Error(`Error getting appointments: ${res.statusText}`)
 
 		const data: AppointmentList = await res.json()
 		console.log(data)
