@@ -29,10 +29,24 @@ public class ProfessionalClientController : ControllerBase
     public async Task<ActionResult> GetClientById(Guid clientId)
     {
         var result = await _clientService.GetClientById(clientId);
-        if (result != null)
+        if (result == null)
+        {
+            return StatusCode(500, new { message = "Internal server error occurred." });
+        }
+
+        if (result.Success)
+        {
+            if (result.Data == null)
+            {
+                return NotFound(new { message = $"Client with ID {clientId} not found." });
+            }
+
             return Ok(result);
+        }
         else
-            return NotFound(new { message = $"Client with ID {clientId} not found." });
+        {
+            return BadRequest(new { message = result.Message });
+        }
     }
 
     [HttpGet]
@@ -48,7 +62,7 @@ public class ProfessionalClientController : ControllerBase
         {
             if (result.Data == null || result.Data.Count == 0)
             {
-                return NotFound(new { message = "No clients found." });
+                return NoContent();
             }
 
             return Ok(result);

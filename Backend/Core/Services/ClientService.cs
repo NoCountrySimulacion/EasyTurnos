@@ -80,6 +80,7 @@ public class ClientService : IClientService
         try
         {
             serviceResponse.Data = await _clientRepository.GetById(id);
+            serviceResponse.Message = "Client retrieved successfully.";
         }
         catch (Exception ex)
         {
