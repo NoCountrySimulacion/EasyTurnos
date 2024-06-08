@@ -10,12 +10,13 @@ namespace Infrastructure.Repositories
 {
     public class ProfessionalRepository : GenericRepository<Professional, Guid>, IProfessionalRepository
     {
-        private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
+        private readonly ApplicationDbContext _context;
 
         public ProfessionalRepository(IMapper mapper, ApplicationDbContext context) : base(context)
         {
             _mapper = mapper;
+            this._context = context;
         }
 
         // Overriding method from GenericRepository to use ProjectTo instead of db class.
@@ -31,6 +32,17 @@ namespace Infrastructure.Repositories
             var professionals = await Entities
                     .ProjectTo<ProfessionalWithSlotsDto>(_mapper.ConfigurationProvider)
                     .ToListAsync();
+
+            return professionals;
+        }
+
+        public new async Task<List<ProfessionalWithSlotsDto>> GetAllProfessionalsByClientId(Guid clientId)
+        {
+            var professionals = await Entities
+            .Include(p => p.ProfessionalClients)
+            .Where(p => p.ProfessionalClients.Any(pc => pc.ClientId == clientId))
+            .ProjectTo<ProfessionalWithSlotsDto>(_mapper.ConfigurationProvider)
+            .ToListAsync();
 
             return professionals;
         }

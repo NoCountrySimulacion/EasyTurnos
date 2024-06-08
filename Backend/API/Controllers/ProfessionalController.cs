@@ -33,11 +33,17 @@ namespace API.Controllers
             return Ok(await _professionalService.GetAllProfessionalsWithSlots());
         }
 
-        [HttpPost]
-        public async Task<ActionResult<ServiceResponse<RegistrationResponse>>> AddProfessional(ProfessionalAddDto newProfessional)
+        [HttpGet("/GetAllByClientId/{clientId}")]
+        public async Task<ActionResult<ServiceResponse<List<ProfessionalWithSlotsDto>>>> GetAllProfessionalsByClientId(Guid clientId)
         {
-            return Ok(await _professionalService.AddProfessional(newProfessional));
+            return Ok(await _professionalService.GetAllProfessionalsByClientId(clientId));
         }
+
+        //[HttpPost]
+        //public async Task<ActionResult<ServiceResponse<RegistrationResponse>>> AddProfessional(ProfessionalAddDto newProfessional)
+        //{
+        //    return Ok(await _professionalService.AddProfessional(newProfessional));
+        //}
 
         [HttpPost("RegisterProfessionalUser")]
         public async Task<ActionResult<ServiceResponse<RegistrationResponse>>> RegisterProfessionalUser(RegistrationRequest request)
@@ -45,11 +51,11 @@ namespace API.Controllers
             return Ok(await _professionalService.RegisterProfessionalUser(request));
         }
 
-        [HttpPut("{professionalId}")]
-        public async Task<ActionResult<ServiceResponse<RegistrationResponse>>> UpdateProfessional(Guid professionalId, ProfessionalAddDto updateProfessional)
-        {
-            return Ok(await _professionalService.UpdateProfessional(professionalId, updateProfessional));
-        }
+        //[HttpPut("{professionalId}")]
+        //public async Task<ActionResult<ServiceResponse<RegistrationResponse>>> UpdateProfessional(Guid professionalId, ProfessionalAddDto updateProfessional)
+        //{
+        //    return Ok(await _professionalService.UpdateProfessional(professionalId, updateProfessional));
+        //}
 
         [HttpPut("UpdateProfessionalUser/{currentEmail}")]
         public async Task<ActionResult<ServiceResponse<RegistrationResponse>>> UpdateProfessionalUser(string currentEmail, ProfessionalAddDto addProfessional)
