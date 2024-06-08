@@ -6,10 +6,12 @@ import {
 	SearchIcon
 } from '../../../professional/components/icons/Icons'
 import { NavLink, useLocation } from 'react-router-dom'
+import { useSearch } from '../../hooks/useSearch'
 
 export function Search(): React.ReactElement {
 	const { decodedToken } = useAuth()
 	const location = useLocation()
+	const { handleSubmit } = useSearch()
 
 	const getTitle = () => {
 		switch (location.pathname) {
@@ -33,13 +35,17 @@ export function Search(): React.ReactElement {
 			<h1 className='text-[48px] font-semibold font-montserrat whitespace-nowrap'>
 				{getTitle()}
 			</h1>
-			<form className='relative w-full h-[65px] gap-[18px]  rounded-[26px] shadow-search '>
+			<form
+				className='relative w-full h-[65px] gap-[18px]  rounded-[26px] shadow-search '
+				onSubmit={handleSubmit}
+			>
 				<div className='flex items-center h-full ml-[19px] gap-[10px]'>
 					<button className='relative' type='submit'>
 						<SearchIcon height={34} width={34} />
 					</button>
 					<input
 						id='search'
+						name='search'
 						type='text'
 						placeholder={
 							decodedToken?.role === 'Professional'

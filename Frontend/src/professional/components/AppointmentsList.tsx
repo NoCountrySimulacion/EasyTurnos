@@ -1,24 +1,31 @@
+/* eslint-disable indent */
+import { useSearch } from '../../layout/hooks/useSearch'
 import { AppointmentCard } from '../../shared/components/AppointmentCard'
 import { useAppointments } from '../hooks/useAppointments'
+import { appointmentsMock } from '../mocks/appointments'
 import { CalendarIcon } from './icons/Icons'
 
 export function AppointmentsList(): React.ReactElement {
 	const { appointmentList } = useAppointments()
+	const { filterResults } = useSearch()
+
+	const filterAppointmentsList = filterResults(appointmentsMock)
+
 	return (
 		<section className='w-full flex flex-col gap-[52px] mb-[56px]'>
 			<header className='flex justify-between items-center h-[76px]'>
 				<button className='w-full shadow-search text-[33px] font-bold leading-[56px] rounded-[15px] py-[15px] hover:bg-[#D3CAFF] transition duration-300 hover:border hover:border-[#7445C7]'>
-					Para el día de hoy tienes {appointmentList?.data.length} citas.
+					Para el día de hoy tienes {appointmentsMock.length} citas.
 				</button>
 			</header>
 			<section>
 				<ul className='grid grid-cols-2 gap-[54px]'>
-					{appointmentList?.data.map(appointment => (
+					{filterAppointmentsList.map(appointment => (
 						<AppointmentCard
 							key={appointment.id}
 							name={appointment.name}
-							startDate={appointment.startDate}
-							endDate={appointment.endDate}
+							// startDate={appointment.startDate}
+							// endDate={appointment.endDate}
 						/>
 					))}
 				</ul>

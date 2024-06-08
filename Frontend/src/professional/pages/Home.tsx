@@ -22,7 +22,7 @@ function Home(): React.ReactElement {
 					Hoy {formattedDate}.
 				</h2>
 			</section>
-			{isThereAppointments ? <AppointmentsList /> : <WithoutAppointments />}
+			{!isThereAppointments ? <AppointmentsList /> : <WithoutAppointments />}
 		</section>
 	)
 }
