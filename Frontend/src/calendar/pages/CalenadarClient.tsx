@@ -8,8 +8,6 @@ import mockConfigSlots from '../mocks/mockConfigSlot'
 import clsx from 'clsx'
 import '../styles/calendar.css' // Para nombres de clases condicionales
 
-import mockAppointments from '../mocks/appoinmet' // Importar mock de turnos
-
 moment.locale('es')
 
 // Agrega la importación de ConfigSlot
@@ -62,13 +60,12 @@ const CustomDay = props => {
 	)
 }
 
-const CalendarProfesional: React.FC = () => {
+const CalendarClient: React.FC = () => {
 	const [selectedDate, setSelectedDate] = useState<Moment | null>(moment())
 	const [hoveredDay, setHoveredDay] = useState<Moment | null>(null)
 	const [selectedSlots, setSelectedSlots] = useState<ConfigSlot[]>([])
 	const [selectedSlot, setSelectedSlot] = useState<ConfigSlot | null>(null)
 	const [showConfirmButton, setShowConfirmButton] = useState<boolean>(false)
-	const [appointmentsForSelectedDate, setAppointmentsForSelectedDate] = useState([])
 
 	const handleDateChange = (date: Moment | null) => {
 		setSelectedDate(date)
@@ -82,12 +79,6 @@ const CalendarProfesional: React.FC = () => {
 			setSelectedSlots(selectedDaySlots)
 			setSelectedSlot(null)
 			setShowConfirmButton(false)
-
-			// Filtrar los turnos para la fecha seleccionada
-			const appointments = mockAppointments.data.filter(appointment =>
-				moment(appointment.startDate).isSame(selectedDate, 'day')
-			)
-			setAppointmentsForSelectedDate(appointments)
 		}
 	}, [selectedDate])
 
@@ -177,24 +168,6 @@ const CalendarProfesional: React.FC = () => {
 									</button>
 								)}
 							</div>
-
-							{/* Lista de turnos */}
-							<div className='mt-4'>
-								<h3 className='text-lg font-bold'>Turnos del día</h3>
-								{appointmentsForSelectedDate.length > 0 ? (
-									appointmentsForSelectedDate.map((appointment, index) => (
-										<div key={index} className='p-2 border border-gray-300 rounded my-2'>
-											<p className='font-bold'>{appointment.name}</p>
-											<p>
-												{moment(appointment.startDate).format('HH:mm')} -{' '}
-												{moment(appointment.endDate).format('HH:mm')}
-											</p>
-										</div>
-									))
-								) : (
-									<p>No hay turnos para este día.</p>
-								)}
-							</div>
 						</div>
 					</div>
 				</div>
@@ -203,4 +176,4 @@ const CalendarProfesional: React.FC = () => {
 	)
 }
 
-export default CalendarProfesional
+export default CalendarClient
