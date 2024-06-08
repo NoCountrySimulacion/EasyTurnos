@@ -1,10 +1,10 @@
 export interface LoginResponse {
-	userId: string;
-	email: string;
-	token: string;
-	firstName: string;
-	lastName: string;
-  }
+	userId: string
+	email: string
+	token: string
+	firstName: string
+	lastName: string
+}
 
 export interface RegisterResponse {
 	userId: string
@@ -23,4 +23,36 @@ export interface RegisterCredentials {
 	phoneNumber: string
 	password: string
 	confirmPassword: string
+}
+
+interface availableSlot {
+	availableSlot: string
+}
+
+interface ProfessionalData {
+	id: string
+	specialty: string
+	description: string
+	slots: availableSlot[]
+}
+
+export interface Professional {
+	data: ProfessionalData[]
+	success: boolean
+	message: string
+}
+
+interface Appointment {
+	id: string
+	name: string
+	startDate: string
+	endDate: string
+	professionalId: string
+	clientId: string
+}
+
+export interface AppointmentList {
+	data: Appointment[]
+	success: boolean
+	message: string
 }

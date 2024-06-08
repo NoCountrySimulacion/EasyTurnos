@@ -7,8 +7,8 @@ export interface AdaptedUser {
 
 export interface AppointmentCardProps {
 	name: string
-	lastName: string
 	profession?: string
 	date?: string
-	time: string
+	startDate: string
+	endDate: string
 }

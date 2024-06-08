@@ -13,7 +13,6 @@ export const AuthContext = createContext<AuthContextType | undefined>(undefined)
 export default function AuthProvider({ children }: AuthProviderProps) {
 	const [user, setUser] = useState<UserLogged | null>(null)
 	const [isSignIn, setIsSignIn] = useState<boolean>(false)
-
 	const [decodedToken, setDecodedToken] = useState<DecodedToken | null>(null)
 	const [error, setError] = useState<string | null>(null)
 
