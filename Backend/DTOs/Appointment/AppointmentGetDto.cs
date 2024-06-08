@@ -14,6 +14,7 @@ namespace DTOs.Appointment
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public Guid ProfessionalId { get; set; }
-        public Guid ClientId { get; set; }
+        public string FirstName { get; set; } = string.Empty;
+        public string LastName { get; set; } = string.Empty;
     }
 }
