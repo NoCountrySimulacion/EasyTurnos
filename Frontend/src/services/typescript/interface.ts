@@ -37,3 +37,36 @@ export interface ProfessionalClients {
 	success: boolean
 	message: string
 }
+
+interface availableSlot {
+	availableSlot: string
+}
+
+interface ProfessionalData {
+	id: string
+	specialty: string
+	description: string
+	slots: availableSlot[]
+}
+
+export interface Professional {
+	data: ProfessionalData[]
+	success: boolean
+	message: string
+}
+
+interface Appointment {
+	id: string
+	name: string
+	startDate: string
+	endDate: string
+	professionalId: string
+	firstName: string
+	lastName: string
+}
+
+export interface AppointmentList {
+	data: Appointment[]
+	success: boolean
+	message: string
+}

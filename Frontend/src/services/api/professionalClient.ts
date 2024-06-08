@@ -6,34 +6,53 @@ const BASE_PROFESSIONAL_CLIENTS_URL =
 
 export async function getProfessionalClients(
 	decodedToken: DecodedToken
-): Promise<ProfessionalClients> {
+): Promise<ProfessionalClients | null> {
 	try {
-		const token = localStorage.getItem('token')
-		const response = await fetch(
-			`${BASE_PROFESSIONAL_CLIENTS_URL}${decodedToken?.professionalId}/clients`,
-			{
-				method: 'GET',
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${token}`
-				}
-			}
-		)
-		if (!response.ok) {
-			throw new Error('Error getting professional clients')
+		if (!decodedToken?.professionalId) {
+			throw new Error('Invalid professional ID')
 		}
-		const data: ProfessionalClients = await response.json()
-		console.log(data)
+
+		const url = `${BASE_PROFESSIONAL_CLIENTS_URL}${decodedToken.professionalId}/clients`
+
+		const res = await fetch(url, {
+			method: 'GET'
+		})
+
+		if (res.status === 204) {
+			console.warn('No content returned from the server')
+			return null
+		}
+
+		if (!res.ok) {
+			throw new Error(`Error getting professional clients: ${res.statusText}`)
+		}
+
+		const text = await res.text()
+		console.log('Response body:', text)
+
+		if (!text) {
+			throw new Error('Empty response body')
+		}
+
+		let data: ProfessionalClients
+		try {
+			data = JSON.parse(text)
+		} catch (jsonError) {
+			console.error('JSON parse error:', jsonError)
+			throw new Error('Invalid JSON response')
+		}
+
 		return data
 	} catch (error) {
-		throw new Error('Error getting professional clients')
+		console.error('Error getting professional clients:', error)
+		throw error
 	}
 }
 
 export async function updateProfessionalClients(
 	decodedToken: DecodedToken,
 	idClient: string,
-	professionalClients: ProfessionalClients
+	newProfessionalClients: ProfessionalClients
 ): Promise<ProfessionalClients> {
 	try {
 		const response = await fetch(
@@ -43,7 +62,7 @@ export async function updateProfessionalClients(
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify(professionalClients)
+				body: JSON.stringify(newProfessionalClients)
 			}
 		)
 		if (!response.ok) {

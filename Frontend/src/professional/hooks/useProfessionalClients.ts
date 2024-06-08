@@ -4,9 +4,10 @@ import { useAuth } from '../../auth/hooks/useAuth'
 import { getProfessionalClients } from '../../services/api/professionalClient'
 
 export const useProfessionalClients = () => {
+	const { decodedToken } = useAuth()
+
 	const [professionalClients, setProfessionalClients] =
 		useState<ProfessionalClients | null>(null)
-	const { decodedToken } = useAuth()
 
 	useEffect(() => {
 		if (!decodedToken) return
