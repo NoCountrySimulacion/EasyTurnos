@@ -51,9 +51,9 @@ namespace Core.Services
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<List<ProfessionalWithSlotsDto>>> GetAllProfessionalsWithSlots()
+        public async Task<ServiceResponse<List<ProfessionalGetDto>>> GetAllProfessionalsWithSlots()
         {
-            var serviceResponse = new ServiceResponse<List<ProfessionalWithSlotsDto>>();
+            var serviceResponse = new ServiceResponse<List<ProfessionalGetDto>>();
 
             try
             {
@@ -69,9 +69,9 @@ namespace Core.Services
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<List<ProfessionalWithSlotsDto>>> GetAllProfessionalsByClientId(Guid clientId)
+        public async Task<ServiceResponse<List<ProfessionalGetDto>>> GetAllProfessionalsByClientId(Guid clientId)
         {
-            var serviceResponse = new ServiceResponse<List<ProfessionalWithSlotsDto>>();
+            var serviceResponse = new ServiceResponse<List<ProfessionalGetDto>>();
 
             try
             {

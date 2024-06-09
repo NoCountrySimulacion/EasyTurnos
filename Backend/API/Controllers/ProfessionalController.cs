@@ -28,13 +28,13 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ServiceResponse<List<ProfessionalWithSlotsDto>>>> GetAllProfessionalsWithSlots()
+        public async Task<ActionResult<ServiceResponse<List<ProfessionalGetDto>>>> GetAllProfessionalsWithSlots()
         {
             return Ok(await _professionalService.GetAllProfessionalsWithSlots());
         }
 
         [HttpGet("/GetAllByClientId/{clientId}")]
-        public async Task<ActionResult<ServiceResponse<List<ProfessionalWithSlotsDto>>>> GetAllProfessionalsByClientId(Guid clientId)
+        public async Task<ActionResult<ServiceResponse<List<ProfessionalGetDto>>>> GetAllProfessionalsByClientId(Guid clientId)
         {
             return Ok(await _professionalService.GetAllProfessionalsByClientId(clientId));
         }

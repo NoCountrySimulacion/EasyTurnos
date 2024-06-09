@@ -27,21 +27,22 @@ namespace Infrastructure.Repositories
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public new async Task<List<ProfessionalWithSlotsDto>> GetAllProfessionalsWithSlots()
+        public new async Task<List<ProfessionalGetDto>> GetAllProfessionalsWithSlots()
         {
             var professionals = await Entities
-                    .ProjectTo<ProfessionalWithSlotsDto>(_mapper.ConfigurationProvider)
+                    .ProjectTo<ProfessionalGetDto>(_mapper.ConfigurationProvider)
                     .ToListAsync();
 
             return professionals;
         }
 
-        public new async Task<List<ProfessionalWithSlotsDto>> GetAllProfessionalsByClientId(Guid clientId)
+        public new async Task<List<ProfessionalGetDto>> GetAllProfessionalsByClientId(Guid clientId)
         {
             var professionals = await Entities
             .Include(p => p.ProfessionalClients)
+            .Include(p => p.ApplicationUser)
             .Where(p => p.ProfessionalClients.Any(pc => pc.ClientId == clientId))
-            .ProjectTo<ProfessionalWithSlotsDto>(_mapper.ConfigurationProvider)
+            .ProjectTo<ProfessionalGetDto>(_mapper.ConfigurationProvider)
             .ToListAsync();
 
             return professionals;
