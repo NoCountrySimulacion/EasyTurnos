@@ -28,7 +28,7 @@ export function Sidemenu(): JSX.Element {
 			return 'Profesionales'
 		} else if (path.startsWith('/misTurnos')) {
 			return 'MisTurnos'
-		} else if (path.startsWith('/profile')) {
+		} else if (path.startsWith('/profesionalprofile')) {
 			return 'Perfil'
 		} else {
 			return 'Home'
@@ -113,7 +113,7 @@ export function Sidemenu(): JSX.Element {
 					>
 						<Link
 							className='flex items-center py-3  cursor-pointer'
-							to='profile'
+							to='/profile'
 						>
 							<span className='pl-[5px]'>
 								<Usuarios width={24} height={24} />
