@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react'
 import Slider from 'react-slider'
 import { DateRange } from 'react-date-range'
@@ -26,7 +27,6 @@ const CalendarConfig: React.FC<CalendarConfigProps> = ({ onConfigChange }) => {
 		endDate: new Date()
 	})
 	const [slots, setSlots] = useState<any[]>([])
-
 
 	const handleTimeRangeChange = (values: number[]) => {
 		setTimeRange(values)
@@ -95,80 +95,88 @@ const CalendarConfig: React.FC<CalendarConfigProps> = ({ onConfigChange }) => {
 			<select
 				value={interval}
 				onChange={handleIntervalChange}
-				className='p-2 border rounded-md'
+				className='p-2 border rounded-md mb-4'
 			>
 				<option value={15}>15 minutos</option>
 				<option value={30}>30 minutos</option>
 				<option value={60}>1 hora</option>
 				<option value={120}>2 horas</option>
 			</select>
-			<div className='text-sm text-center mt-2'>
-				{formatHourRange(timeRange)}
-			</div>
-			<section className='flex gap-4'>
-				<div className='flex flex-col'>
-					<Slider
-						className='w-64 mt-2'
-						value={timeRange}
-						min={defaultStartHour}
-						max={defaultEndHour}
-						step={1}
-						withTracks={true}
-						thumbClassName='bg-[#7445C7] h-6 w-6 rounded-full text-white flex items-center justify-center text-xs -translate-y-2'
-						renderTrack={(props, { index }) => {
-							let className = 'h-2 rounded '
-							if (index === 0) {
-								className += 'bg-gray-300'
-							} else if (index === 1) {
-								className += 'bg-[#7445C7]'
-							} else {
-								className += 'bg-gray-300'
-							}
-							return <div {...props} className={className} />
-						}}
-						renderThumb={(props, state) => (
-							<div {...props}>{state.valueNow}</div>
-						)}
-						onChange={handleTimeRangeChange}
-					/>
-					<div className='text-sm text-center mt-4'>
-						El rango horario es: {formatHourRange(timeRange)}
+			<section>
+				<section className='flex gap-4'>
+					<div className='flex flex-col'>
+						<Slider
+							className='w-64 mt-2'
+							value={timeRange}
+							min={defaultStartHour}
+							max={defaultEndHour}
+							step={1}
+							withTracks={true}
+							thumbClassName='bg-[#7445C7] h-6 w-6 rounded-full text-white flex items-center justify-center text-xs -translate-y-2'
+							renderTrack={(props, { index }) => {
+								let className = 'h-2 rounded '
+								if (index === 0) {
+									className += 'bg-gray-300'
+								} else if (index === 1) {
+									className += 'bg-[#7445C7]'
+								} else {
+									className += 'bg-gray-300'
+								}
+
+								const { key, ...restProps } = props
+
+								return <div key={key} {...restProps} className={className} />
+							}}
+							renderThumb={(props, state) => {
+								const { key, ...restProps } = props
+
+								return (
+									<div key={state.valueNow} {...restProps}>
+										{state.valueNow}
+									</div>
+								)
+							}}
+							onChange={handleTimeRangeChange}
+						/>
+						<div className='text-sm text-center mt-4'>
+							El rango horario es: {formatHourRange(timeRange)}
+						</div>
 					</div>
-				</div>
-				<div className='flex flex-col'>
-					<DateRange
-						ranges={[
-							{
-								startDate: selectedRange.startDate,
-								endDate: selectedRange.endDate,
-								key: 'selection'
-							}
-						]}
-						onChange={handleDateRangeChange}
-						moveRangeOnFirstSelection={false}
-						retainEndDateOnFirstSelection={true}
-						rangeColors={['#7445C7']}
-					/>
-					<div className='text-sm text-center mt-5'>
-						Rango de fechas: {selectedRange.startDate?.toLocaleDateString()} -{' '}
-						{selectedRange.endDate?.toLocaleDateString()}
+					<div className='flex flex-col'>
+						<DateRange
+							ranges={[
+								{
+									startDate: selectedRange.startDate,
+									endDate: selectedRange.endDate,
+									key: 'selection'
+								}
+							]}
+							onChange={handleDateRangeChange}
+							moveRangeOnFirstSelection={false}
+							retainEndDateOnFirstSelection={true}
+							rangeColors={['#7445C7']}
+						/>
+						<div className='text-sm text-center mt-5'>
+							Rango de fechas: {selectedRange.startDate?.toLocaleDateString()} -{' '}
+							{selectedRange.endDate?.toLocaleDateString()}
+						</div>
 					</div>
+				</section>
+				<div className='mt-4'>
+					<button
+						className='px-4 py-2 bg-[#7445C7] text-white rounded hover:bg-blue-600'
+						onClick={handleSendConfig}
+					>
+						Guardar Configuración
+					</button>
+					<button
+						className='px-4 py-2 ml-4 bg-red-500 text-white rounded hover:bg-red-600'
+						onClick={handleDeleteAllSlots}
+					>
+						Eliminar Todos los Slots
+					</button>
 				</div>
 			</section>
-			<div className='mt-4'>
-				<button
-					className='px-4 py-2 bg-[#7445C7] text-white rounded hover:bg-blue-600'
-					onClick={handleSendConfig}
-				>
-					Guardar Configuración
-				</button>
-				<button
-					className='px-4 py-2 ml-4 bg-red-500 text-white rounded hover:bg-red-600'
-					onClick={handleDeleteAllSlots}
-				>
-					Eliminar Todos los Slots
-				</button>
-			</div>
 		</div>
 	)
 }
