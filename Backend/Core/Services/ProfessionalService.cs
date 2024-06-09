@@ -51,13 +51,31 @@ namespace Core.Services
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<List<ProfessionalWithSlotsDto>>> GetAllProfessionalsWithSlots()
+        public async Task<ServiceResponse<List<ProfessionalGetDto>>> GetAllProfessionalsWithSlots()
         {
-            var serviceResponse = new ServiceResponse<List<ProfessionalWithSlotsDto>>();
+            var serviceResponse = new ServiceResponse<List<ProfessionalGetDto>>();
 
             try
             {
                 serviceResponse.Data = await _professionalRepository.GetAllProfessionalsWithSlots();
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+                _logger.LogError(ex, $"Error getting Professionals - {ex.Message}");
+            }
+
+            return serviceResponse;
+        }
+
+        public async Task<ServiceResponse<List<ProfessionalGetDto>>> GetAllProfessionalsByClientId(Guid clientId)
+        {
+            var serviceResponse = new ServiceResponse<List<ProfessionalGetDto>>();
+
+            try
+            {
+                serviceResponse.Data = await _professionalRepository.GetAllProfessionalsByClientId(clientId);
             }
             catch (Exception ex)
             {
