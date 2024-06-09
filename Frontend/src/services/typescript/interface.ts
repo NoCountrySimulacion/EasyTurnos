@@ -25,6 +25,19 @@ export interface RegisterCredentials {
 	confirmPassword: string
 }
 
+interface ProfessionalClientData {
+	id: string
+	firstName: string
+	lastName: string
+	phoneNumber: string
+}
+
+export interface ProfessionalClients {
+	data: ProfessionalClientData[]
+	success: boolean
+	message: string
+}
+
 interface availableSlot {
 	availableSlot: string
 }
@@ -34,10 +47,13 @@ interface ProfessionalData {
 	specialty: string
 	description: string
 	slots: availableSlot[]
+	firstName: string
+	lastName: string
+	phoneNumber: string
 }
 
 export interface Professional {
-	data: ProfessionalData[]
+	data: Omit<ProfessionalData[], 'firstName' | 'lastName' | 'phoneNumber'>
 	success: boolean
 	message: string
 }
@@ -48,11 +64,18 @@ interface Appointment {
 	startDate: string
 	endDate: string
 	professionalId: string
-	clientId: string
+	firstName: string
+	lastName: string
 }
 
 export interface AppointmentList {
 	data: Appointment[]
+	success: boolean
+	message: string
+}
+
+export interface AllProfessionals {
+	data: Omit<ProfessionalData[], 'slots'>
 	success: boolean
 	message: string
 }

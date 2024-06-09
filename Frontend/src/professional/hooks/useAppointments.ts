@@ -11,8 +11,8 @@ export const useAppointments = () => {
 
 	useEffect(() => {
 		if (!decodedToken) return
-		getProfessionalAppointments(decodedToken).then(newAppointments =>
-			setAppointmentList(newAppointments)
+		getProfessionalAppointments(decodedToken).then(data =>
+			setAppointmentList(data)
 		)
 	}, [])
 

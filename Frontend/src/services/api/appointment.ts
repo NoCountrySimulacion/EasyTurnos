@@ -7,16 +7,21 @@ export async function getProfessionalAppointments(
 	decodedToken: DecodedToken
 ): Promise<AppointmentList> {
 	try {
+		const token = localStorage.getItem('token')
 		const res = await fetch(
 			`${BASE_APPOINTMENT_URL}${decodedToken?.professionalId}`,
 			{
-				method: 'GET'
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: ` ${token}`
+				}
 			}
 		)
-		if (!res.ok) throw new Error(`Error al obtener turnos: ${res.statusText}`)
+		if (!res.ok)
+			throw new Error(`Error getting appointments: ${res.statusText}`)
 
 		const data: AppointmentList = await res.json()
-		console.log(data)
 		return data
 	} catch (error) {
 		console.error('Error getting appointments:', error)
