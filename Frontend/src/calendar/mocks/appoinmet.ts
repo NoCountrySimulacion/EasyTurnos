@@ -1,6 +1,6 @@
 // appointment.ts
 
-interface Appointment {
+export interface Appointment {
 	id: string
 	name: string
 	startDate: string
@@ -9,7 +9,7 @@ interface Appointment {
 	clientId: string
 }
 
-interface AppointmentResponse {
+export interface AppointmentResponse {
 	data: Appointment[]
 	success: boolean
 	message: string

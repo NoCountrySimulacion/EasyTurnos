@@ -1,29 +1,35 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const generateSlots = (
 	startHour: number,
 	endHour: number,
 	interval: number,
-	selectedDays: number[]
+	startDate: Date,
+	endDate: Date
 ) => {
-	const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 	const slots: any[] = []
+	const currentDate = new Date(startDate)
 
-	for (let i = 0; i < daysOfWeek.length; i++) {
-		const day = daysOfWeek[i]
-		if (selectedDays.includes(i)) {
-			for (let j = startHour; j < endHour; j += interval / 60) {
-				const initialDate = new Date()
-				initialDate.setHours(j - 3, 0, 0, 0) // Restamos 3 horas
-				initialDate.setDate(initialDate.getDate() + i - initialDate.getDay())
-				const endDate = new Date(initialDate)
-				endDate.setHours(j - 3 + interval / 60, 0, 0, 0) // Restamos 3 horas
-				slots.push({
-					day,
-					initial: initialDate.toISOString(),
-					end: endDate.toISOString()
-				})
-			}
-		}
+	// Función para formatear la fecha sin la "Z" al final
+	const formatDate = (date: Date) => {
+		const formattedDate = date.toISOString()
+		return formattedDate.slice(0, -1)
 	}
 
+	while (currentDate <= endDate) {
+		for (let j = startHour; j < endHour; j += interval / 60) {
+			const initialDate = new Date(currentDate)
+			initialDate.setHours(j - 3, 0, 0, 0)
+			const slotEndDate = new Date(initialDate)
+			slotEndDate.setHours(j + interval / 60 - 3, 0, 0, 0)
+			slots.push({
+				day: currentDate.toLocaleDateString('en-US', { weekday: 'short' }),
+				startDate: formatDate(initialDate), // Utiliza la función formatDate
+				endDate: formatDate(slotEndDate) // Utiliza la función formatDate
+			})
+		}
+		currentDate.setDate(currentDate.getDate() + 1)
+	}
+
+	console.log('Generated slots:', slots)
 	return slots
 }

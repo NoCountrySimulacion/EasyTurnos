@@ -1,6 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Slider from 'react-slider'
+import { DateRange } from 'react-date-range'
+import 'react-date-range/dist/styles.css' // Main style file
+import 'react-date-range/dist/theme/default.css' // Theme CSS file
 import { generateSlots } from '../utils/utils'
+import { createSlot, deleteSlot } from '../../services/api/slots' // Agregamos deleteAllSlots
 
 interface CalendarConfigProps {
 	onConfigChange: (slots: any[]) => void
@@ -9,63 +13,76 @@ interface CalendarConfigProps {
 const CalendarConfig: React.FC<CalendarConfigProps> = ({ onConfigChange }) => {
 	const defaultStartHour = 1
 	const defaultEndHour = 23
-	const [timeRange, setTimeRange] = useState([defaultStartHour, defaultEndHour])
-	const [interval, setInterval] = useState(60)
-	const [selectedDaysRange, setSelectedDaysRange] = useState([0, 6]) // Rango de todos los días por defecto
-	const [configurations, setConfigurations] = useState<any[]>([])
+	const [timeRange, setTimeRange] = useState<number[]>([
+		defaultStartHour,
+		defaultEndHour
+	])
+	const [interval, setInterval] = useState<number>(60)
+	const [selectedRange, setSelectedRange] = useState<{
+		startDate: Date | null
+		endDate: Date | null
+	}>({
+		startDate: new Date(),
+		endDate: new Date()
+	})
+	const [slots, setSlots] = useState<any[]>([])
+
 
 	const handleTimeRangeChange = (values: number[]) => {
 		setTimeRange(values)
 	}
 
-	const handleIntervalChange = (value: number) => {
-		setInterval(value)
+	const handleIntervalChange = (
+		event: React.ChangeEvent<HTMLSelectElement>
+	) => {
+		setInterval(Number(event.target.value))
 	}
 
-	const handleDaysRangeChange = (values: number[]) => {
-		setSelectedDaysRange(values)
+	const handleDateRangeChange = (ranges: any) => {
+		if (ranges.selection) {
+			setSelectedRange({
+				startDate: ranges.selection.startDate,
+				endDate: ranges.selection.endDate
+			})
+		}
 	}
 
-	const handleSendConfig = () => {
-		const selectedDays = Array.from(
-			{ length: selectedDaysRange[1] - selectedDaysRange[0] + 1 },
-			(_, i) => i + selectedDaysRange[0]
-		)
-		const slots = generateSlots(
-			timeRange[0],
-			timeRange[1],
-			interval,
-			selectedDays
-		)
+	const handleSendConfig = async () => {
+		if (selectedRange.startDate && selectedRange.endDate) {
+			const slotsToCreate = generateSlots(
+				timeRange[0],
+				timeRange[1],
+				interval,
+				selectedRange.startDate,
+				selectedRange.endDate
+			)
 
-		// Obtener la configuración existente del localStorage o inicializar como un array vacío
-		const existingConfigs =
-			JSON.parse(localStorage.getItem('calendarConfig')) || []
+			try {
+				// Enviar los slots generados como un array
+				await createSlot(slotsToCreate)
+				console.log('Slots creados correctamente:', slotsToCreate)
+				onConfigChange(slotsToCreate)
+			} catch (error) {
+				console.error('Error al crear los slots:', error)
 
-		// Generar un ID único para la nueva configuración
-		const newId = Math.random().toString(36).substr(2, 9)
-
-		// Crear un nuevo objeto con el ID y la configuración
-		const newConfig = { id: newId, slots }
-
-		// Agregar la nueva configuración al array existente
-		existingConfigs.push(newConfig)
-
-		// Guardar la nueva configuración en el localStorage
-		localStorage.setItem('calendarConfig', JSON.stringify(existingConfigs))
-
-		// Actualizar el estado con la nueva configuración
-		setConfigurations(existingConfigs)
-
-		setTimeout(() => {
-			console.log('Configuración enviada al backend:', slots)
-			onConfigChange(slots)
-		}, 1000)
+				// Si el error es un error 400, intenta obtener el mensaje de error detallado
+				if (error.response && error.response.status === 400) {
+					const errorMessage = await error.response.json()
+					console.error('Mensaje de error detallado:', errorMessage)
+				}
+			}
+		}
 	}
 
-	const formatDayRange = (range: number[]) => {
-		const daysOfWeek = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
-		return `${daysOfWeek[range[0]]} - ${daysOfWeek[range[1]]}`
+	const handleDeleteAllSlots = async () => {
+		try {
+			await deleteSlot() // Llamamos a la función para borrar todos los slots
+			console.log('Todos los slots fueron eliminados correctamente')
+			setSlots([]) // Limpiamos la lista de slots en el estado local
+			onConfigChange([]) // Informamos al padre que la configuración de slots ha cambiado
+		} catch (error) {
+			console.error('Error al eliminar todos los slots:', error)
+		}
 	}
 
 	const formatHourRange = (range: number[]) => {
@@ -77,7 +94,7 @@ const CalendarConfig: React.FC<CalendarConfigProps> = ({ onConfigChange }) => {
 			<h2 className='text-lg font-bold mb-4'>Configuración del Calendario</h2>
 			<select
 				value={interval}
-				onChange={e => handleIntervalChange(Number(e.target.value))}
+				onChange={handleIntervalChange}
 				className='p-2 border rounded-md'
 			>
 				<option value={15}>15 minutos</option>
@@ -118,42 +135,23 @@ const CalendarConfig: React.FC<CalendarConfigProps> = ({ onConfigChange }) => {
 						El rango horario es: {formatHourRange(timeRange)}
 					</div>
 				</div>
-				<div className=' '>
-					<Slider
-						className='w-64 mt-2'
-						value={selectedDaysRange}
-						min={0}
-						max={6}
-						step={1}
-						withTracks={true}
-						pearling={true}
-						pearlingInterval={1}
-						thumbClassName='bg-[#7445C7] h-6 w-6 rounded-full text-white flex items-center justify-center text-xs -translate-y-2'
-						renderTrack={(props, { index }) => {
-							let className = 'h-2 rounded '
-							if (
-								index >= selectedDaysRange[0] &&
-								index <= selectedDaysRange[1]
-							) {
-								className += 'bg-[#7445C7]'
-							} else {
-								className += 'bg-gray-300'
+				<div className='flex flex-col'>
+					<DateRange
+						ranges={[
+							{
+								startDate: selectedRange.startDate,
+								endDate: selectedRange.endDate,
+								key: 'selection'
 							}
-							return <div {...props} className={className} />
-						}}
-						renderThumb={(props, state) => (
-							<div className='' {...props}>
-								{
-									['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'][
-										state.valueNow
-									]
-								}
-							</div>
-						)}
-						onChange={handleDaysRangeChange}
+						]}
+						onChange={handleDateRangeChange}
+						moveRangeOnFirstSelection={false}
+						retainEndDateOnFirstSelection={true}
+						rangeColors={['#7445C7']}
 					/>
 					<div className='text-sm text-center mt-5'>
-						El rango semanal es: {formatDayRange(selectedDaysRange)}
+						Rango de fechas: {selectedRange.startDate?.toLocaleDateString()} -{' '}
+						{selectedRange.endDate?.toLocaleDateString()}
 					</div>
 				</div>
 			</section>
@@ -163,6 +161,12 @@ const CalendarConfig: React.FC<CalendarConfigProps> = ({ onConfigChange }) => {
 					onClick={handleSendConfig}
 				>
 					Guardar Configuración
+				</button>
+				<button
+					className='px-4 py-2 ml-4 bg-red-500 text-white rounded hover:bg-red-600'
+					onClick={handleDeleteAllSlots}
+				>
+					Eliminar Todos los Slots
 				</button>
 			</div>
 		</div>

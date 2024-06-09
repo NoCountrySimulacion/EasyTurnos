@@ -1,61 +1,72 @@
 import React, { useState, useEffect } from 'react'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
-import { DateCalendar, PickersDay } from '@mui/x-date-pickers'
+import { DateCalendar, PickersDay, PickersDayProps } from '@mui/x-date-pickers'
 import moment, { Moment } from 'moment'
 import 'moment/locale/es'
-import mockConfigSlots from '../mocks/mockConfigSlot'
+import { FaTrash } from 'react-icons/fa'
+import { getAllSlots, deleteSlot } from '../../services/api/slots'
+import CalendarConfig from '../components/CalendarConfig'
 import clsx from 'clsx'
-import '../styles/calendar.css' // Para nombres de clases condicionales
+import '../styles/calendar.css'
+import mockAppointments, { Appointment } from '../mocks/appoinmet'
 
-import mockAppointments from '../mocks/appoinmet' // Importar mock de turnos
-
-moment.locale('es')
-
-// Agrega la importación de ConfigSlot
-import { ConfigSlot } from '../mocks/mockConfigSlot'
-
-// Extrae los días únicos con slots
-const getUniqueDaysWithSlots = () => {
-	const uniqueDays = new Set<string>()
-	mockConfigSlots.forEach(slot => {
-		const day = moment(slot.initial).format('YYYY-MM-DD')
-		uniqueDays.add(day)
-	})
-	return Array.from(uniqueDays)
+interface ConfigSlot {
+	initial: string
+	end: string
+	startDate: string // Modificado para incluir startDate y endDate
+	endDate: string
 }
 
-const CustomDay = props => {
+interface CustomDayProps extends PickersDayProps<Moment> {
+	selectedDay: Moment | null
+	hoveredDay: Moment | null
+	onPointerEnter: (day: Moment) => void
+	onPointerLeave: () => void
+	slots: ConfigSlot[]
+}
+
+const CustomDay: React.FC<CustomDayProps> = props => {
 	const {
 		day,
 		selectedDay,
 		hoveredDay,
 		onPointerEnter,
 		onPointerLeave,
+		slots,
 		...other
 	} = props
-	const isDayWithSlot = getUniqueDaysWithSlots().includes(
-		day.format('YYYY-MM-DD')
+
+	const isDayWithSlot = slots.some(slot =>
+		moment(slot.startDate).isSame(day, 'day')
+	)
+	const isDayWithAppointment = mockAppointments.data.some(appointment =>
+		moment(appointment.startDate).isSame(day, 'day')
 	)
 
 	return (
 		<PickersDay
 			{...other}
 			day={day}
-			onMouseEnter={onPointerEnter}
+			onMouseEnter={() => onPointerEnter(day)}
 			onMouseLeave={onPointerLeave}
 			style={{
 				...(isDayWithSlot && {
-					border: '2px solid #7445C7', // Color azul-500 de Tailwind
+					border: '2px solid #7445C7',
 					borderRadius: '50%',
-					color: '#7445C7' // Color azul-500 de Tailwind
+					color: '#7445C7'
+				}),
+				...(isDayWithAppointment && {
+					border: '2px solid #7445C7',
+					borderRadius: '50%',
+					color: '#7445C7'
 				}),
 				...(day.isSame(selectedDay, 'day') && {
-					backgroundColor: 'rgba(116, 69, 199, 0.12)', // Fondo azul-500 de Tailwind
-					color: '#FD8847' // Color azul-500 de Tailwind
+					backgroundColor: 'rgba(116, 69, 199, 0.12)',
+					color: '#FD8847'
 				}),
 				...(day.isSame(hoveredDay, 'day') && {
-					backgroundColor: 'rgba(116, 69, 199, 0.04)' // Fondo hover azul-500 de Tailwind
+					backgroundColor: 'rgba(116, 69, 199, 0.04)'
 				})
 			}}
 		/>
@@ -65,42 +76,61 @@ const CustomDay = props => {
 const CalendarProfesional: React.FC = () => {
 	const [selectedDate, setSelectedDate] = useState<Moment | null>(moment())
 	const [hoveredDay, setHoveredDay] = useState<Moment | null>(null)
+	const [slots, setSlots] = useState<ConfigSlot[]>([])
 	const [selectedSlots, setSelectedSlots] = useState<ConfigSlot[]>([])
 	const [selectedSlot, setSelectedSlot] = useState<ConfigSlot | null>(null)
 	const [showConfirmButton, setShowConfirmButton] = useState<boolean>(false)
-	const [appointmentsForSelectedDate, setAppointmentsForSelectedDate] = useState([])
+	const [appointmentsForSelectedDate, setAppointmentsForSelectedDate] =
+		useState<Appointment[]>([])
+
+	useEffect(() => {
+		const fetchSlots = async () => {
+			try {
+				const slotsResponse = await getAllSlots()
+				setSlots(slotsResponse)
+			} catch (error) {
+				console.error('Error fetching slots:', error)
+			}
+		}
+
+		fetchSlots()
+	}, [])
 
 	const handleDateChange = (date: Moment | null) => {
 		setSelectedDate(date)
 	}
-
 	useEffect(() => {
-		if (selectedDate) {
-			const selectedDaySlots = mockConfigSlots.filter(slot =>
-				moment(slot.initial).isSame(selectedDate, 'day')
+		if (selectedDate && slots.length > 0) {
+			const selectedDaySlots = slots.filter(slot =>
+				moment(slot.startDate).isSame(selectedDate, 'day')
 			)
 			setSelectedSlots(selectedDaySlots)
 			setSelectedSlot(null)
 			setShowConfirmButton(false)
 
-			// Filtrar los turnos para la fecha seleccionada
 			const appointments = mockAppointments.data.filter(appointment =>
 				moment(appointment.startDate).isSame(selectedDate, 'day')
 			)
 			setAppointmentsForSelectedDate(appointments)
 		}
-	}, [selectedDate])
+	}, [selectedDate, slots])
 
-	const handleSlotClick = (
-		slot: ConfigSlot,
-		event: React.MouseEvent<HTMLDivElement>
-	) => {
+	console.log('selectedSlots: ', slots)
+
+	const handleConfigChange = async (newSlots: ConfigSlot[]) => {
+		try {
+			setSlots(prevSlots => [...prevSlots, ...newSlots])
+			console.log('Configuración enviada al backend:', newSlots)
+		} catch (error) {
+			console.error('Error enviando configuración:', error)
+		}
+	}
+
+	const handleSlotClick = (slot: ConfigSlot) => {
 		if (selectedSlot === slot && showConfirmButton) {
-			// Si se hace clic nuevamente en el mismo horario y el botón de confirmación está visible, ocultarlo y limpiar el horario seleccionado
 			setSelectedSlot(null)
 			setShowConfirmButton(false)
 		} else {
-			// De lo contrario, mostrar el botón de confirmación y seleccionar el horario
 			setSelectedSlot(slot)
 			setShowConfirmButton(true)
 		}
@@ -108,12 +138,54 @@ const CalendarProfesional: React.FC = () => {
 
 	const handleConfirmClick = () => {
 		alert(
-			`Horario confirmado: ${moment(selectedSlot?.initial).format('HH:mm')} - ${moment(selectedSlot?.end).format('HH:mm')}`
+			`Horario confirmado: ${moment(selectedSlot?.initial).format('HH:mm')} - ${moment(
+				selectedSlot?.end
+			).format('HH:mm')}`
 		)
 	}
 
+	const handleDeleteAppointment = (appointmentId: number) => {
+		alert(`Eliminar turno con ID: ${appointmentId}`)
+		setAppointmentsForSelectedDate(
+			appointmentsForSelectedDate.filter(
+				appointment => appointment.id !== appointmentId
+			)
+		)
+	}
+
+	const handleDeleteSlot = async (
+		slotStartDate: string,
+		slotStartTime: string,
+		slotEndTime: string
+	) => {
+		try {
+			// Filtrar la lista de slots para encontrar el slot con la misma fecha, hora de inicio y hora de fin
+			const filteredSlots = slots.filter(
+				slot =>
+					moment(slot.startDate).format('YYYY-MM-DD HH:mm') ===
+						`${slotStartDate} ${slotStartTime}` &&
+					moment(slot.endDate).format('YYYY-MM-DD HH:mm') ===
+						`${slotStartDate} ${slotEndTime}`
+			)
+
+			if (filteredSlots.length > 0) {
+				const slotToDelete = filteredSlots[0] // Tomar el primer slot que coincida con los criterios
+
+				// Llama a la función para eliminar el slot
+				await deleteSlot(slotToDelete)
+				console.log('Slot eliminado correctamente:', slotToDelete)
+				// Actualiza la lista de slots después de eliminar el slot
+				setSlots(prevSlots => prevSlots.filter(slot => slot !== slotToDelete))
+			} else {
+				console.error('No se encontró ningún slot para eliminar')
+			}
+		} catch (error) {
+			console.error('Error al eliminar el slot:', error)
+		}
+	}
+
 	return (
-		<LocalizationProvider dateAdapter={AdapterMoment} >
+		<LocalizationProvider dateAdapter={AdapterMoment}>
 			<div className='h-screen px-20'>
 				<div className=''>
 					<div className='flex gap-4 h-screen'>
@@ -132,19 +204,20 @@ const CalendarProfesional: React.FC = () => {
 										display: 'flex',
 										gap: 5,
 										margin: '5px'
-									},
-								}}	
+									}
+								}}
 								slotProps={{
-									day: ownerState =>
-										({
-											selectedDay: selectedDate,
-											hoveredDay,
-											onPointerEnter: () => setHoveredDay(ownerState.day),
-											onPointerLeave: () => setHoveredDay(null)
-										}) as any
+									day: ownerState => ({
+										selectedDay: selectedDate,
+										hoveredDay,
+										onPointerEnter: (day: Moment) => setHoveredDay(day),
+										onPointerLeave: () => setHoveredDay(null),
+										slots: slots
+									})
 								}}
 							/>
 						</div>
+						{/* Horarios Libres */}
 						<div className='p-4 flex flex-col gap-2'>
 							{selectedSlots.length > 0 ? (
 								selectedSlots.map((slot, index) => (
@@ -157,10 +230,23 @@ const CalendarProfesional: React.FC = () => {
 												'bg-white text-black': selectedSlot !== slot
 											}
 										)}
-										onClick={e => handleSlotClick(slot, e)}
+										onClick={() => handleSlotClick(slot)}
 									>
-										{moment(slot.initial).format('HH:mm')} -{' '}
-										{moment(slot.end).format('HH:mm')}
+										{moment(slot.startDate).format('HH:mm')} -{' '}
+										{moment(slot.endDate).format('HH:mm')}
+										<button
+											className='absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center'
+											onClick={e => {
+												e.stopPropagation() // Evita que se propague el evento al hacer clic en el botón
+												handleDeleteSlot(
+													moment(slot.startDate).format('YYYY-MM-DD'), // Fecha de inicio del slot
+													moment(slot.startDate).format('HH:mm'), // Hora de inicio del slot
+													moment(slot.endDate).format('HH:mm') // Hora de fin del slot
+												) // Llama a la función para eliminar el slot
+											}}
+										>
+											<FaTrash />
+										</button>
 									</div>
 								))
 							) : (
@@ -177,18 +263,28 @@ const CalendarProfesional: React.FC = () => {
 									</button>
 								)}
 							</div>
-
-							{/* Lista de turnos */}
+							{/* Turnos */}
 							<div className='mt-4'>
 								<h3 className='text-lg font-bold'>Turnos del día</h3>
 								{appointmentsForSelectedDate.length > 0 ? (
 									appointmentsForSelectedDate.map((appointment, index) => (
-										<div key={index} className='p-2 border border-gray-300 rounded my-2'>
-											<p className='font-bold'>{appointment.name}</p>
-											<p>
-												{moment(appointment.startDate).format('HH:mm')} -{' '}
-												{moment(appointment.endDate).format('HH:mm')}
-											</p>
+										<div
+											key={index}
+											className='p-2 border border-gray-300 rounded my-2 flex justify-between items-center'
+										>
+											<div>
+												<p className='font-bold'>{appointment.name}</p>
+												<p>
+													{moment(appointment.startDate).format('HH:mm')} -{' '}
+													{moment(appointment.endDate).format('HH:mm')}
+												</p>
+											</div>
+											<button
+												className='p-2 bg-red-500 text-white rounded'
+												onClick={() => handleDeleteAppointment(appointment.id)}
+											>
+												<FaTrash />
+											</button>
 										</div>
 									))
 								) : (
@@ -198,6 +294,7 @@ const CalendarProfesional: React.FC = () => {
 						</div>
 					</div>
 				</div>
+				<CalendarConfig onConfigChange={handleConfigChange} />
 			</div>
 		</LocalizationProvider>
 	)
