@@ -10,5 +10,5 @@ export default function ProtectedRoutes({
 	if (!canActivate) {
 		return <Navigate to={redirectPath} replace />
 	}
-	return <Outlet />
+	return <Outlet />  
 }

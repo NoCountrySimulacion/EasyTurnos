@@ -13,7 +13,6 @@ export const AuthContext = createContext<AuthContextType | undefined>(undefined)
 export default function AuthProvider({ children }: AuthProviderProps) {
 	const [user, setUser] = useState<UserLogged | null>(null)
 	const [isSignIn, setIsSignIn] = useState<boolean>(false)
-
 	const [decodedToken, setDecodedToken] = useState<DecodedToken | null>(null)
 	const [error, setError] = useState<string | null>(null)
 
@@ -55,7 +54,6 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 				setError('Error desconocido durante el inicio de sesión')
 				setIsSignIn(false)
 				throw new Error('Error desconocido durante el inicio de sesión')
-				
 			}
 		}
 	}
@@ -69,6 +67,9 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 		localStorage.removeItem('lastName')
 	}
 
+	const isUserSignedIn = (): boolean => {
+		return !!localStorage.getItem('token')
+	}
 	const registerUser = async (
 		firstName: string,
 		lastName: string,
@@ -83,7 +84,8 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 			email,
 			phoneNumber,
 			password,
-			confirmPassword
+			confirmPassword,
+			isUserSignedIn
 		}
 		try {
 			const response = await register(credentials)
@@ -93,9 +95,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 				firstName: response.firstName,
 				lastName: response.lastName
 			})
-			localStorage.setItem('token', response.token)
-			localStorage.setItem('firstName', response.firstName)
-			localStorage.setItem('lastName', response.lastName)
+			loginUser(email, password)
 			decodeAndSetToken(response.token)
 		} catch (err: unknown) {
 			if (err instanceof Error) {
@@ -110,20 +110,23 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 
 	const decodeAndSetToken = (token: string) => {
 		try {
-		  const decoded: DecodedToken & { [key: string]: any } = JSON.parse(atob(token.split('.')[1]))
-		  console.log('Decoded token:', decoded)
-		  
-		  const role = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']
-		  setDecodedToken({ ...decoded, role })
+			const decoded: DecodedToken & { [key: string]: any } = JSON.parse(
+				atob(token.split('.')[1])
+			)
+			console.log('Decoded token:', decoded)
+
+			const role =
+				decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']
+			setDecodedToken({ ...decoded, role })
 		} catch (error) {
-		  console.error('Error decoding token:', error)
+			console.error('Error decoding token:', error)
 		}
-	  }
-	  
+	}
 
 	const authContextValue: AuthContextType = {
 		user,
 		isSignIn,
+		isUserSignedIn,
 		decodedToken,
 		error,
 		loginUser,
