@@ -16,7 +16,11 @@ export function AppointmentsList(): React.ReactElement {
 					{appointmentList?.data.map(appointment => (
 						<AppointmentCard
 							key={appointment.id}
-							name={appointment.name}
+							name={
+								appointment.name
+									? appointment.name
+									: appointment.firstName + ' ' + appointment.lastName
+							}
 							startDate={appointment.startDate}
 							endDate={appointment.endDate}
 						/>

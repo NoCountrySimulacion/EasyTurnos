@@ -25,6 +25,19 @@ export interface RegisterCredentials {
 	confirmPassword: string
 }
 
+interface ProfessionalClient {
+	id: string
+	firstName: string
+	lastName: string
+	phoneNumber: string
+}
+
+export interface ProfessionalClients {
+	data: ProfessionalClient[]
+	success: boolean
+	message: string
+}
+
 interface availableSlot {
 	availableSlot: string
 }
@@ -48,7 +61,8 @@ interface Appointment {
 	startDate: string
 	endDate: string
 	professionalId: string
-	clientId: string
+	firstName: string
+	lastName: string
 }
 
 export interface AppointmentList {
