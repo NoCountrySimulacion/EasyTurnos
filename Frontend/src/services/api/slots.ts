@@ -23,7 +23,7 @@ export const getAllSlots = async (): Promise<any[]> => {
 			throw new Error('Error al obtener los slots')
 		}
 		const slotsResponse: SlotResponse = await response.json()
-
+		console.log('Slots:', slotsResponse.data)
 		// Asignar un ID hardcodeado al primer slot si la respuesta está vacía
 		if (!slotsResponse.data.length) {
 			slotsResponse.data.push({

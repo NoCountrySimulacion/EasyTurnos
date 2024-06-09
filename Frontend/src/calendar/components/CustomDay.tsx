@@ -1,40 +1,34 @@
 import React from 'react'
 import { PickersDay } from '@mui/x-date-pickers'
-import moment, { Moment } from 'moment'
-import { ConfigSlot } from '../mocks/mockConfigSlot'
-import { Appointment } from '../mocks/appoinmet'
+import moment from 'moment' // Agrega Moment desde moment
+import 'moment/locale/es'
+import mockAppointments from '../mocks/appoinmet'
+import { CustomDayProps } from '../typescript/interface'
 
-interface CustomDayProps {
-	day: Moment
-	selectedDay: Moment | null
-	hoveredDay: Moment | null
-	slots: ConfigSlot[]
-	appointments: Appointment[]
-	onPointerEnter: () => void
-	onPointerLeave: () => void
-}
+const CustomDay: React.FC<CustomDayProps> = props => {
+	const {
+		day,
+		selectedDay,
+		hoveredDay,
+		onPointerEnter,
+		onPointerLeave,
+		slots,
+		...other
+	} = props
 
-const CustomDay: React.FC<CustomDayProps> = ({
-	day,
-	selectedDay,
-	hoveredDay,
-	slots,
-	appointments,
-	onPointerEnter,
-	onPointerLeave
-}) => {
 	const isDayWithSlot = slots.some(slot =>
-		moment(slot.initial).isSame(day, 'day')
+		moment(slot.startDate).isSame(day, 'day')
 	)
-
-	const isDayWithAppointment = appointments.some(appointment =>
+	const isDayWithAppointment = mockAppointments.data.some(appointment =>
 		moment(appointment.startDate).isSame(day, 'day')
 	)
 
 	return (
 		<PickersDay
+			{...other}
 			day={day}
-			onMouseEnter={onPointerEnter}
+			selected={selectedDay ? selectedDay.isSame(day, 'day') : false}
+			onMouseEnter={() => onPointerEnter(day)} // Cambia aquí
 			onMouseLeave={onPointerLeave}
 			style={{
 				...(isDayWithSlot && {
@@ -42,26 +36,17 @@ const CustomDay: React.FC<CustomDayProps> = ({
 					borderRadius: '50%',
 					color: '#7445C7'
 				}),
-				...(day.isSame(selectedDay, 'day') && {
+				...(isDayWithAppointment && {
+					border: '2px solid #7445C7',
+					borderRadius: '50%',
+					color: '#7445C7'
+				}),
+				...(selectedDay && day.isSame(selectedDay, 'day') && { // Añade selectedDay && para evitar errores
 					backgroundColor: 'rgba(116, 69, 199, 0.12)',
 					color: '#FD8847'
 				}),
 				...(day.isSame(hoveredDay, 'day') && {
 					backgroundColor: 'rgba(116, 69, 199, 0.04)'
-				}),
-				...(isDayWithAppointment && {
-					position: 'relative',
-					'&:after': {
-						content: '""',
-						position: 'absolute',
-						top: '50%',
-						left: '50%',
-						transform: 'translate(-50%, -50%)',
-						width: 8,
-						height: 8,
-						borderRadius: '50%',
-						backgroundColor: '#FBBF24'
-					}
 				})
 			}}
 		/>

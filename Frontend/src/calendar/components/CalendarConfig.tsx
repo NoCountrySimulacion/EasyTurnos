@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect, useState } from 'react'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useState } from 'react'
 import Slider from 'react-slider'
 import { DateRange } from 'react-date-range'
 import 'react-date-range/dist/styles.css' // Main style file
 import 'react-date-range/dist/theme/default.css' // Theme CSS file
 import { generateSlots } from '../utils/utils'
-import { createSlot, deleteSlot } from '../../services/api/slots' // Agregamos deleteAllSlots
+import { createSlot } from '../../services/api/slots' // Agregamos deleteAllSlots
 
 interface CalendarConfigProps {
 	onConfigChange: (slots: any[]) => void
@@ -20,11 +21,11 @@ const CalendarConfig: React.FC<CalendarConfigProps> = ({ onConfigChange }) => {
 	])
 	const [interval, setInterval] = useState<number>(60)
 	const [selectedRange, setSelectedRange] = useState<{
-		startDate: Date | null
-		endDate: Date | null
+		startDate: Date | undefined // Cambiado de Date | null a Date | undefined
+		endDate: Date | undefined // Cambiado de Date | null a Date | undefined
 	}>({
-		startDate: new Date(),
-		endDate: new Date()
+		startDate: undefined,
+		endDate: undefined
 	})
 	const [slots, setSlots] = useState<any[]>([])
 
@@ -62,7 +63,7 @@ const CalendarConfig: React.FC<CalendarConfigProps> = ({ onConfigChange }) => {
 				await createSlot(slotsToCreate)
 				console.log('Slots creados correctamente:', slotsToCreate)
 				onConfigChange(slotsToCreate)
-			} catch (error) {
+			} catch (error: any) {
 				console.error('Error al crear los slots:', error)
 
 				// Si el error es un error 400, intenta obtener el mensaje de error detallado
@@ -71,17 +72,6 @@ const CalendarConfig: React.FC<CalendarConfigProps> = ({ onConfigChange }) => {
 					console.error('Mensaje de error detallado:', errorMessage)
 				}
 			}
-		}
-	}
-
-	const handleDeleteAllSlots = async () => {
-		try {
-			await deleteSlot() // Llamamos a la función para borrar todos los slots
-			console.log('Todos los slots fueron eliminados correctamente')
-			setSlots([]) // Limpiamos la lista de slots en el estado local
-			onConfigChange([]) // Informamos al padre que la configuración de slots ha cambiado
-		} catch (error) {
-			console.error('Error al eliminar todos los slots:', error)
 		}
 	}
 
@@ -171,7 +161,7 @@ const CalendarConfig: React.FC<CalendarConfigProps> = ({ onConfigChange }) => {
 					</button>
 					<button
 						className='px-4 py-2 ml-4 bg-red-500 text-white rounded hover:bg-red-600'
-						onClick={handleDeleteAllSlots}
+						/* 	onClick={handleDeleteAllSlots} */
 					>
 						Eliminar Todos los Slots
 					</button>
