@@ -45,5 +45,13 @@ namespace API.Controllers
 
             return Ok(await _slotService.DeleteSlots(professionalId, slotIds));
         }
+
+        [HttpDelete("DeleteAllByProfessionalId")]
+        public async Task<ActionResult<ServiceResponse<bool>>> DeleteAllSlotsByProfessionalId()
+        {
+            var professionalId = GetCurrentProfessionalId();
+
+            return Ok(await _slotService.DeleteAllSlotsByProfessionalId(professionalId));
+        }
     }
 }

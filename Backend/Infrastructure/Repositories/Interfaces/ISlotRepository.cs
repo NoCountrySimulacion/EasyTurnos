@@ -7,5 +7,6 @@ namespace Infrastructure.Repositories.Interfaces
     {
         public new Task<List<SlotGetDto>> GetAllSlots(Guid professionalId);
         public new Task<bool> DeleteSlots(Guid professionalId, List<Guid> slotIds);
+        Task<bool> DeleteAllSlotsByProfessionalId(Guid professionalId);
     }
 }

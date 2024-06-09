@@ -70,6 +70,28 @@ namespace Core.Services
             return serviceResponse;
         }
 
+        public async Task<ServiceResponse<bool>> DeleteAllSlotsByProfessionalId(Guid professionalId)
+        {
+            var serviceResponse = new ServiceResponse<bool>();
+
+            try
+            {
+                if (await _slotRepository.DeleteAllSlotsByProfessionalId(professionalId))
+                    await _slotRepository.SaveChangesAsync();
+
+                serviceResponse.Data = true;
+                serviceResponse.Message = "Range deleted successfully.";
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+                _logger.LogError(ex, ex.Message);
+            }
+
+            return serviceResponse;
+        }
+
         public async Task<ServiceResponse<List<SlotGetDto>>> GetAllSlots(Guid professionalId)
         {
             var serviceResponse = new ServiceResponse<List<SlotGetDto>>();

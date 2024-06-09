@@ -40,5 +40,19 @@ namespace Infrastructure.Repositories
 
             return dbEntities.Count > 0;
         }
+
+        public async Task<bool> DeleteAllSlotsByProfessionalId(Guid professionalId)
+        {
+            var dbEntities = await Entities
+                .Where(e => e.ProfessionalId == professionalId)
+                .ToListAsync();
+
+            if (dbEntities.Count > 0)
+            {
+                Entities.RemoveRange(dbEntities);
+            }
+
+            return dbEntities.Count > 0;
+        }
     }
 }
