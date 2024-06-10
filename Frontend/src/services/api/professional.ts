@@ -19,6 +19,7 @@ export async function getProfessionalByClient(
 ): Promise<ProfessionalsByClient> {
 	try {
 		const token = localStorage.getItem('token')
+		console.log('El id del cliente es: ', decodedToken?.clientId)
 		const res = await fetch(
 			`${BASE_PROFESSIONAL_CLIENTS_URL}${decodedToken?.professionalId}`,
 			{

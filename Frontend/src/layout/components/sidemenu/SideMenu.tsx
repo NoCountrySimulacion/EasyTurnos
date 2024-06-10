@@ -38,8 +38,16 @@ export function Sidemenu(): JSX.Element {
 
 	const principalMenuProfessional = [
 		{ name: 'Inicio', icon: <HomeIcon width={24} height={24} />, to: '/home' },
-		{ name: 'Agenda', icon: <Agenda width={24} height={24} />, to: '/calendar' },
-		{ name: 'Clientes', icon: <Clientes width={24} height={24} />, to: '/clients' }
+		{
+			name: 'Agenda',
+			icon: <Agenda width={24} height={24} />,
+			to: '/professional/calendar'
+		},
+		{
+			name: 'Clientes',
+			icon: <Clientes width={24} height={24} />,
+			to: '/professional/clients'
+		}
 	]
 
 	const principalMenuClient = [
