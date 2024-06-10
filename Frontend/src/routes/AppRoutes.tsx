@@ -43,9 +43,9 @@ export default function AppRoutes() {
 						{decodedToken?.role === 'Professional' ? (
 							<>
 								<Route path='/home' element={<Home />} />
-								<Route path='/calendar' element={<Calendar />} />
-								<Route path='/clients' element={<Clients />} />
-								<Route path='/clients/clients_see' element={<UserViewInd />} />
+								<Route path='/professional/calendar' element={<Calendar />} />
+								<Route path='/professional/clients' element={<Clients />} />
+								<Route path='/professional/clients-views' element={<UserViewInd />} />
 								<Route
 									path='/professional/add-client'
 									element={<AddClientForm />}
@@ -56,6 +56,7 @@ export default function AppRoutes() {
 								<Route path='/home' element={<HomeClient />} />
 								<Route path='/professionals' element={<Professionals />} />
 								<Route path='/my-appointments' element={<Appointments />} />
+								<Route path='/calendar' element={<Calendar />} />
 							</>
 						)}
 					</Route>
