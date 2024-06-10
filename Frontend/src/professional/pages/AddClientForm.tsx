@@ -1,11 +1,19 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { UserProfile, Edit } from '../components/icons/Icons'
 import { Link } from 'react-router-dom'
+import { createClientForProfessional } from '../../services/api/professionalClient' // Adjust the import path as necessary
+import { DecodedToken } from '../../auth/typescript/interface'
+import { DatePicker } from '@mui/x-date-pickers'
+import { TextField } from '@mui/material'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import dayjs from 'dayjs'
+import { useAuth } from '../../auth/hooks/useAuth'
 
 interface FormValues {
 	nombre: string
 	apellido: string
-	edad: string
+	birthDate: Date | null
 	mail: string
 	tel: string
 	observaciones: string
@@ -15,6 +23,11 @@ interface FormValues {
 }
 
 export function AddClientForm(): JSX.Element {
+	
+	const {decodedToken} = useAuth()
+	console.log(decodedToken)
+	
+
 	return (
 		<section className='flex flex-col mt-10'>
 			<header className='flex flex-col h-[289px]'>
@@ -49,7 +62,7 @@ export function AddClientForm(): JSX.Element {
 					initialValues={{
 						nombre: '',
 						apellido: '',
-						edad: '',
+						birthDate: null,
 						mail: '',
 						tel: '',
 						observaciones: '',
@@ -65,10 +78,8 @@ export function AddClientForm(): JSX.Element {
 						if (!values.apellido) {
 							errors.apellido = 'El apellido es requerido'
 						}
-						if (!values.edad) {
-							errors.edad = 'La edad es requerida'
-						} else if (isNaN(Number(values.edad))) {
-							errors.edad = 'La edad debe ser un número'
+						if (!values.birthDate) {
+							errors.birthDate = 'La fecha de nacimiento es requerida'
 						}
 						if (!values.mail) {
 							errors.mail = 'El email es requerido'
@@ -101,13 +112,33 @@ export function AddClientForm(): JSX.Element {
 						}
 						return errors
 					}}
-					onSubmit={(values, { setSubmitting }) => {
-						// Handle form submission logic here
-						console.log(values)
-						setSubmitting(false)
+					
+					onSubmit={async (values, { setSubmitting, resetForm }) => {
+						try {
+							const newClientData = {
+								birthDate: values.birthDate!.toISOString(), // Ensure birthDate is not null
+								registrationRequest: {
+									firstName: values.nombre,
+									lastName: values.apellido,
+									email: values.mail,
+									phoneNumber: values.tel,
+									password: values.contraseñaCliente,
+									confirmPassword: values.confirmarContraseñaCliente
+								}
+							}
+
+							await createClientForProfessional(decodedToken, newClientData)
+							alert('Cliente creado con éxito')
+							resetForm()
+						} catch (error) {
+							console.error('Error creating client:', error)
+							alert('Error al crear el cliente')
+						} finally {
+							setSubmitting(false)
+						}
 					}}
 				>
-					{({ isSubmitting }) => (
+					{({ isSubmitting, setFieldValue, values }) => (
 						<Form className='flex flex-col flex-wrap  '>
 							<section className='mb-[65px] gap-[18px] flex flex-col ml-[74px]'>
 								<div className='flex flex-col gap-1'>
@@ -150,17 +181,23 @@ export function AddClientForm(): JSX.Element {
 
 								<div className='flex flex-col gap-1'>
 									<div className='flex flex-col gap-[8px]'>
-										<label htmlFor='edad'>Edad</label>
-										<Field
-											type='text'
-											name='edad'
-											className='border border-solid border-[#828282] w-[318px] p-[5px] rounded-md'
-											placeholder='Edad del cliente'
-										/>
+										<label htmlFor='birthDate'>Fecha de Nacimiento</label>
+										<LocalizationProvider dateAdapter={AdapterDayjs}>
+											<DatePicker
+												value={values.birthDate}
+												onChange={date => setFieldValue('birthDate', date)}
+												renderInput={params => (
+													<TextField
+														{...params}
+														className='border border-solid border-[#828282] w-[318px] p-[5px] rounded-md'
+													/>
+												)}
+											/>
+										</LocalizationProvider>
 									</div>
 									<div className='flex h-[7px]'>
 										<ErrorMessage
-											name='edad'
+											name='birthDate'
 											component='small'
 											className='text-[#FF8682] text-[14px]'
 										/>
@@ -204,18 +241,30 @@ export function AddClientForm(): JSX.Element {
 										/>
 									</div>
 								</div>
+
+								<div className='flex flex-col gap-1'>
+									<div className='flex flex-col gap-[8px]'>
+										<label htmlFor='observaciones'>Observaciones</label>
+										<Field
+											as='textarea'
+											name='observaciones'
+											className='border border-solid border-[#828282] w-[318px] p-[5px] rounded-md'
+											placeholder='Observaciones'
+										/>
+									</div>
+									<div className='flex h-[7px]'>
+										<ErrorMessage
+											name='observaciones'
+											component='small'
+											className='text-[#FF8682] text-[14px]'
+										/>
+									</div>
+								</div>
 							</section>
 
-							<section className='flex flex-col ml-[74px]'>
-								<div className='flex flex-row'>
-									<UserProfile width={44} height={44} />
-									<p className='ml-[16px] w-[465px]'>
-										Aquí puedes editar el usuario de tu cliente: usuario y
-										contraseña. Ten en cuenta que tu cliente reservará el turno
-										con este usuario.
-									</p>
-								</div>
-								<span className='flex mt-4 mb-4 border border-solid border-[#000] w-[551.5px]'></span>
+							<section className='flex flex-col mb-[52px] ml-[74px]'>
+								<h3 className='font-bold text-[18px]'>Accesos del Cliente</h3>
+								<span className='border border-solid border-[#000] w-[551.5px]'></span>
 								<section className='flex flex-col gap-[26px]'>
 									<div className='w-[466px]'>
 										<h4 className='font-bold'>Usuario del cliente</h4>
@@ -335,5 +384,3 @@ export function AddClientForm(): JSX.Element {
 		</section>
 	)
 }
-
-// C:\Users\Facundo Pettersson\Documents\NoCountry\Programacion\EasyTurnos\Frontend\public\images\Formulario.png
