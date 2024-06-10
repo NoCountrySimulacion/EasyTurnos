@@ -7,14 +7,14 @@ export const useClientProfessional = () => {
 	const { decodedToken } = useAuth()
 
 	const [clientProfessional, setClientProfessional] =
-		useState<ProfessionalsByClient>({} as ProfessionalsByClient)
+		useState<ProfessionalsByClient | null>(null)
 
 	useEffect(() => {
 		if (!decodedToken) return
 		getProfessionalByClient(decodedToken).then(data =>
 			setClientProfessional(data)
 		)
-	}, [])
+	}, [decodedToken])
 
 	const isThereClientProfessional = clientProfessional?.data.length
 

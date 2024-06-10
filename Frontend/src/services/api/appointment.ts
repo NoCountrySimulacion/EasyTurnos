@@ -13,6 +13,8 @@ export async function getProfessionalAppointments(
 	try {
 		const token = localStorage.getItem('token')
 		const isProfessional = decodedToken?.professionalId
+		console.log('El id del cliente es: ', decodedToken?.clientId)
+
 		const res = await fetch(
 			`${BASE_APPOINTMENT_URL}${isProfessional ? decodedToken?.professionalId : decodedToken?.clientId}`,
 			{

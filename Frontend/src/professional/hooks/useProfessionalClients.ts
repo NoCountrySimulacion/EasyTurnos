@@ -14,7 +14,7 @@ export const useProfessionalClients = () => {
 		getClientsByProfessional(decodedToken).then(data =>
 			setProfessionalClients(data)
 		)
-	}, [])
+	}, [decodedToken])
 
 	const isThereProfessionalClients = professionalClients?.data.length
 
