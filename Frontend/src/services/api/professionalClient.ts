@@ -79,3 +79,37 @@ export async function updateClientsByProfessional(
 		throw new Error('Error updating professional clients')
 	}
 }
+
+
+export async function createClientForProfessional(
+	decodedToken: DecodedToken,
+	newClientData: any
+): Promise<ClientsByProfessional> {
+	try {
+		const token = localStorage.getItem('token')
+		if (!decodedToken?.professionalId) {
+			throw new Error('Invalid professional ID')
+		}
+
+		const url = `${BASE_PROFESSIONAL_CLIENTS_URL}${decodedToken.professionalId}/clients/RegisterClient`
+
+		const res = await fetch(url, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`
+			},
+			body: JSON.stringify(newClientData)
+		})
+
+		if (!res.ok) {
+			throw new Error(`Error creating new client: ${res.statusText}`)
+		}
+
+		const data: ClientsByProfessional = await res.json()
+		return data
+	} catch (error) {
+		console.error('Error creating new client:', error)
+		throw error
+	}
+}

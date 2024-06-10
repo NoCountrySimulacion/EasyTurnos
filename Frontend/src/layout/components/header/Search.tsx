@@ -59,7 +59,7 @@ export function Search(): React.ReactElement {
 			<NavLink
 				to={
 					decodedToken?.role === 'Professional'
-						? '/clients/addClient'
+						? '/professional/add-client'
 						: '/professionals'
 				}
 				className='bg-[#7445C7] text-[#F8F9FA] flex items-center justify-center gap-[10px] h-[38px] min-w-[161px] rounded-lg text-[13px] font-bold hover:bg-purple-600'

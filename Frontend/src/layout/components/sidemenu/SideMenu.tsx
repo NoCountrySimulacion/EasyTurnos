@@ -47,12 +47,12 @@ export function Sidemenu(): JSX.Element {
 		{
 			name: 'Agenda',
 			icon: <Agenda width={24} height={24} />,
-			to: '/calendar'
+			to: '/professional/calendar'
 		},
 		{
 			name: 'Clientes',
 			icon: <Clientes width={24} height={24} />,
-			to: '/clients'
+			to: '/professional/clients'
 		}
 	]
 
