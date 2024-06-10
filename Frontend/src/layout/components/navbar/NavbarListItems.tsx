@@ -15,7 +15,7 @@ export default function NavbarListItems(): JSX.Element {
 					</NavHashLink>
 				</li>
 				<li className='cursor-pointer hover:text-orange-400'>
-					<NavHashLink smooth to='/#planos'>
+					<NavHashLink smooth to='/#planes'>
 						Planes
 					</NavHashLink>
 				</li>
