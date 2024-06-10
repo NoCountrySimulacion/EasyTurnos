@@ -34,6 +34,7 @@ namespace Infrastructure
             services.AddScoped<IAppointmentRepository, AppointmentRepository>();
             services.AddScoped<ISlotRepository, SlotRepository>();
             services.AddScoped<IClientRepository, ClientRepository>();
+            services.AddScoped<IProfessionalClientRepository, ProfessionalClientRepository>();
 
             // Identity
             services.AddIdentity<ApplicationUser, ApplicationRole>(opt =>
