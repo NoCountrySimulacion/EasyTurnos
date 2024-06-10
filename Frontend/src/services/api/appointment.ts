@@ -1,23 +1,36 @@
 import { DecodedToken } from '../../auth/typescript/interface'
-import { AppointmentList } from '../typescript/interface'
+import {
+	ClientAppointmentList,
+	ProfessionalAppointmentList
+} from '../typescript/interface'
 
-const BASE_APPOINTMENT_URL = 'https://easyturnos.somee.com/api/Appointment/'
+const BASE_APPOINTMENT_URL =
+	'https://easyturnos.somee.com/api/Appointment/user/'
 
 export async function getProfessionalAppointments(
 	decodedToken: DecodedToken
-): Promise<AppointmentList> {
+): Promise<ClientAppointmentList | ProfessionalAppointmentList> {
 	try {
+		const token = localStorage.getItem('token')
+		const isProfessional = decodedToken?.professionalId
 		const res = await fetch(
-			`${BASE_APPOINTMENT_URL}${decodedToken?.professionalId}`,
+			`${BASE_APPOINTMENT_URL}${isProfessional ? decodedToken?.professionalId : decodedToken?.clientId}`,
 			{
-				method: 'GET'
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: ` ${token}`
+				}
 			}
 		)
-		console.log(res)
 		if (!res.ok)
 			throw new Error(`Error getting appointments: ${res.statusText}`)
 
-		const data: AppointmentList = await res.json()
+		/* 	const data: AppointmentList = await res.json() */
+
+		const data: ClientAppointmentList | ProfessionalAppointmentList =
+			await res.json()
+
 		return data
 	} catch (error) {
 		console.error('Error getting appointments:', error)
