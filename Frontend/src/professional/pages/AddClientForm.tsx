@@ -1,13 +1,11 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik'
-import { UserProfile, Edit } from '../components/icons/Icons'
+import { Edit } from '../components/icons/Icons'
 import { Link } from 'react-router-dom'
 import { createClientForProfessional } from '../../services/api/professionalClient' // Adjust the import path as necessary
-import { DecodedToken } from '../../auth/typescript/interface'
 import { DatePicker } from '@mui/x-date-pickers'
 import { TextField } from '@mui/material'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import dayjs from 'dayjs'
 import { useAuth } from '../../auth/hooks/useAuth'
 
 interface FormValues {
@@ -23,10 +21,8 @@ interface FormValues {
 }
 
 export function AddClientForm(): JSX.Element {
-	
-	const {decodedToken} = useAuth()
+	const { decodedToken } = useAuth()
 	console.log(decodedToken)
-	
 
 	return (
 		<section className='flex flex-col mt-10'>
@@ -112,7 +108,6 @@ export function AddClientForm(): JSX.Element {
 						}
 						return errors
 					}}
-					
 					onSubmit={async (values, { setSubmitting, resetForm }) => {
 						try {
 							const newClientData = {

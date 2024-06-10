@@ -26,7 +26,7 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
 	const filterClientsAppointmentsList = (
 		valueToFilter: ClientAppointmentList
 	): ClientAppointmentList => {
-		if (!valueToFilter?.data.length) {
+		if (!valueToFilter?.data) {
 			return valueToFilter
 		}
 
@@ -78,7 +78,7 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
 	const filterProfessionalsAppointmentsList = (
 		valueToFilter: ProfessionalAppointmentList
 	): ProfessionalAppointmentList => {
-		if (!valueToFilter?.data.length) {
+		if (!valueToFilter?.data) {
 			return valueToFilter
 		}
 
