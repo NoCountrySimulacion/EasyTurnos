@@ -8,8 +8,8 @@ export default function LayoutApp(): JSX.Element {
 
 	return (
 		<div className=''>
-			<div className='flex'>
-				<aside className=' '>
+			<div className='flex '>
+				<aside className='relative'>
 					<Sidemenu />
 				</aside>
 				<div className='w-full flex flex-col gap-10'>

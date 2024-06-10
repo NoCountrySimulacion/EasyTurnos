@@ -1,14 +1,16 @@
 /* eslint-disable quotes */
 import { DateTime } from 'luxon'
-import { appointmentsMock } from '../mocks/appointments'
 import { AppointmentsList } from '../components/AppointmentsList'
 import { WithoutAppointments } from '../components/WithoutAppointments'
 import { useAuth } from '../../auth/hooks/useAuth'
+import { useAppointments } from '../hooks/useAppointments'
 
 function Home(): React.ReactElement {
 	const now = DateTime.now()
 	const formattedDate = now.setLocale('es').toFormat("cccc, dd 'de' LLLL")
 	const { user } = useAuth()
+	const { isThereAppointments } = useAppointments()
+
 	return (
 		<section className=' h-full flex flex-col font-montserrat px-10 gap-6 '>
 			<section className='flex flex-col items-start gap-[18px]'>
@@ -20,7 +22,7 @@ function Home(): React.ReactElement {
 					Hoy {formattedDate}.
 				</h2>
 			</section>
-			{appointmentsMock.length ? <AppointmentsList /> : <WithoutAppointments />}
+			{isThereAppointments ? <AppointmentsList /> : <WithoutAppointments />}
 		</section>
 	)
 }

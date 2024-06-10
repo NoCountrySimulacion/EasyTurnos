@@ -22,7 +22,6 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 		useState<ProfessionalData | null>(null)
 
 	const [isSignIn, setIsSignIn] = useState<boolean>(false)
-
 	const [decodedToken, setDecodedToken] = useState<DecodedToken | null>(null)
 	const [error, setError] = useState<string | null>(null)
 
