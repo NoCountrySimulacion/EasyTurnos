@@ -12,6 +12,7 @@ export interface NavButtonProps {
 
 export interface SearchValueProps {
 	query: FormDataEntryValue | null
+	setQuery: React.Dispatch<React.SetStateAction<FormDataEntryValue | null>>
 	handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void
 	filterClientsAppointmentsList: (
 		valueToFilter: ClientAppointmentList

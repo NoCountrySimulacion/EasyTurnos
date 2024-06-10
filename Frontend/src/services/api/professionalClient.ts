@@ -13,7 +13,6 @@ export async function getClientsByProfessional(
 		if (!decodedToken?.professionalId) {
 			throw new Error('Invalid professional ID')
 		}
-
 		const url = `${BASE_PROFESSIONAL_CLIENTS_URL}${decodedToken.professionalId}/clients`
 
 		const res = await fetch(url, {
@@ -80,7 +79,6 @@ export async function updateClientsByProfessional(
 		throw new Error('Error updating professional clients')
 	}
 }
-
 
 export async function createClientForProfessional(
 	decodedToken: DecodedToken,
