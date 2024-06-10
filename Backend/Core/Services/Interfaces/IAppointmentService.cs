@@ -13,7 +13,7 @@ namespace Core.Services.Interfaces
     {
         Task<ServiceResponse<AppointmentGetDto>> AddAppointment(Guid clientId, Guid professionalId, AppointmentAddDto addAppointment);
         Task<ServiceResponse<AppointmentGetDto>> DeleteAppointment(Guid appointmentId);
-        Task<ServiceResponse<AppointmentGetDto>> GetAppointment(Guid appointmentId, Guid professionalId);
+        Task<ServiceResponse<object>> GetAppointment(Guid appointmentId, Guid userId);
         Task<ServiceResponse<List<object>>> GetAppointments(Guid userId);
     }
 }

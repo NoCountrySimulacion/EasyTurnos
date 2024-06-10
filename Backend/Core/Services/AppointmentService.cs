@@ -91,15 +91,30 @@ namespace Core.Services
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<AppointmentGetDto>> GetAppointment(Guid appointmentId, Guid professionalId)
+        public async Task<ServiceResponse<object>> GetAppointment(Guid appointmentId, Guid userId)
         {
-            var serviceResponse = new ServiceResponse<AppointmentGetDto>();
+            var serviceResponse = new ServiceResponse<object>();
+            object appointment = null;
 
             try
             {
-                var dbAppointment = await _appointmentRepository.GetAppointmentByProfessional(appointmentId, professionalId);
+                var professional = await _professionalRepository.GetById(userId);
+                if (professional != null)
+                {
+                    appointment = await _appointmentRepository.GetAppointmentByProfessional(appointmentId, userId);
+                }
+                else
+                {
+                    var client = await _clientRepository.GetById(userId);
+                    if (client != null)
+                        appointment = (await _appointmentRepository.GetAppointmentByClient(appointmentId, userId));
+                    else
+                        throw new KeyNotFoundException("User not found.");
+                }
 
-                serviceResponse.Data = dbAppointment;
+
+                serviceResponse.Data = appointment;
+
             }
             catch (Exception ex)
             {

@@ -55,5 +55,17 @@ namespace Infrastructure.Repositories
                 _mapper.Map<AppointmentGetDto>(appointment);
         }
 
+        public async Task<AppointmentWithClientGetDto> GetAppointmentByClient(Guid appointmentId, Guid clientId)
+        {
+            var appointment = await Entities
+                .Include(a => a.Professional)
+                .ThenInclude(c => c.ApplicationUser)
+                .FirstOrDefaultAsync(a => a.Id.Equals(appointmentId) && a.ClientId.Equals(clientId));
+
+            return appointment == null ?
+                throw new KeyNotFoundException($"Appointment not found.") :
+                _mapper.Map<AppointmentWithClientGetDto>(appointment);
+        }
+
     }
 }

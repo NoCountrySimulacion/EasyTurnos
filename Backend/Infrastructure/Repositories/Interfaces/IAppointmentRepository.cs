@@ -13,6 +13,7 @@ namespace Infrastructure.Repositories.Interfaces
         Task<List<AppointmentGetDto>> GetAllAppointmentsByProfessional(Guid professionalId);
         Task<List<AppointmentWithClientGetDto>> GetAllAppointmentsByClient(Guid clientId);
         Task<AppointmentGetDto> GetAppointmentByProfessional(Guid appointmentId, Guid professionalId);
+        Task<AppointmentWithClientGetDto> GetAppointmentByClient(Guid appointmentId, Guid clientId);
 
     }
 }
