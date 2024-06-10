@@ -46,9 +46,11 @@ const CalendarProfesional: React.FC = () => {
 	}
 
 	// Filtrar los appointments por el día seleccionado
-	const filteredAppointments = appointments.filter(appointment =>
-		moment(appointment.startDate).isSame(selectedDate, 'day')
-	)
+	const filteredAppointments = appointments
+		? appointments.filter(appointment =>
+			moment(appointment.startDate).isSame(selectedDate, 'day')
+		)
+		: []
 
 	return (
 		<LocalizationProvider dateAdapter={AdapterMoment}>
@@ -154,9 +156,11 @@ const CalendarProfesional: React.FC = () => {
 														{moment(appointment.endDate).format('HH:mm')}
 													</p>
 												</div>
-												<button 
+												<button
 													className='p-2 bg-red-500 text-white rounded'
-													onClick={() => handleDeleteAppointment(appointment.id)}	
+													onClick={() =>
+														handleDeleteAppointment(appointment.id)
+													}
 												>
 													<FaTrash />
 												</button>

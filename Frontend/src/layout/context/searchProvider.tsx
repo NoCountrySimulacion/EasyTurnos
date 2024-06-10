@@ -1,4 +1,3 @@
-/* eslint-disable indent */
 import { createContext, useState } from 'react'
 import {
 	ClientAppointmentList,
@@ -24,10 +23,11 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
 	}
 
 	const filterClientsAppointmentsList = (
-		valueToFilter: ClientAppointmentList
+		valueToFilter: ClientAppointmentList | null
 	): ClientAppointmentList => {
-		if (!valueToFilter?.data.length) {
-			return valueToFilter
+		// Asegúrate de que valueToFilter y valueToFilter.data no sean null
+		if (!valueToFilter || !valueToFilter.data) {
+			return { data: [] }
 		}
 
 		const newValueToFilter = {
@@ -38,48 +38,48 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
 						? value.firstName + ' ' + value.lastName
 						: value.name
 				}
+				return false
 			})
 		}
+
 		return query === null
 			? newValueToFilter
 			: {
-					...newValueToFilter,
-					data: newValueToFilter.data.filter(value => {
-						if (typeof query === 'string') {
-							return value.name
-								.toLowerCase()
-								.includes(query.toLowerCase() || '')
-						}
-					})
-				}
+				...newValueToFilter,
+				data: newValueToFilter.data.filter(value => {
+					if (typeof query === 'string') {
+						return value.name.toLowerCase().includes(query.toLowerCase())
+					}
+					return false
+				})
+			}
 	}
 
 	const filterClients = (
-		valueToFilter: ClientsByProfessional
+		valueToFilter: ClientsByProfessional | null
 	): ClientsByProfessional => {
-		if (!valueToFilter?.data.length) {
-			return valueToFilter
+		if (!valueToFilter || !valueToFilter.data) {
+			return { data: [] }
 		}
 
 		return !query || query === '' || query === ' '
 			? valueToFilter
 			: {
-					...valueToFilter,
-					data: valueToFilter.data.filter(value => {
-						if (typeof query === 'string') {
-							return value.firstName
-								.toLowerCase()
-								.includes(query.toLowerCase() || '')
-						}
-					})
-				}
+				...valueToFilter,
+				data: valueToFilter.data.filter(value => {
+					if (typeof query === 'string') {
+						return value.firstName.toLowerCase().includes(query.toLowerCase())
+					}
+					return false
+				})
+			}
 	}
 
 	const filterProfessionalsAppointmentsList = (
-		valueToFilter: ProfessionalAppointmentList
+		valueToFilter: ProfessionalAppointmentList | null
 	): ProfessionalAppointmentList => {
-		if (!valueToFilter?.data.length) {
-			return valueToFilter
+		if (!valueToFilter || !valueToFilter.data) {
+			return { data: [] }
 		}
 
 		const newValueToFilter = {
@@ -88,42 +88,42 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
 				if (typeof query === 'string') {
 					return value.firstName + ' ' + value.lastName
 				}
+				return false
 			})
 		}
+
 		return query === null
 			? newValueToFilter
 			: {
-					...newValueToFilter,
-					data: newValueToFilter.data.filter(value => {
-						if (typeof query === 'string') {
-							return value.firstName
-								.toLowerCase()
-								.includes(query.toLowerCase() || '')
-						}
-					})
-				}
+				...newValueToFilter,
+				data: newValueToFilter.data.filter(value => {
+					if (typeof query === 'string') {
+						return value.firstName.toLowerCase().includes(query.toLowerCase())
+					}
+					return false
+				})
+			}
 	}
 
 	const filterProfessionals = (
-		valueToFilter: ProfessionalsByClient
+		valueToFilter: ProfessionalsByClient | null
 	): ProfessionalsByClient => {
-		if (!valueToFilter?.data.length) {
-			return valueToFilter
+		if (!valueToFilter || !valueToFilter.data) {
+			return { data: [] }
 		}
 
 		return !query || query === '' || query === ' '
 			? valueToFilter
 			: {
-					...valueToFilter,
-					data: valueToFilter.data.filter(value => {
-						if (typeof query === 'string') {
-							return value.firstName
-								.toLowerCase()
-								.includes(query.toLowerCase() || '')
-						}
-					})
-				}
-	}
+				...valueToFilter,
+				data: valueToFilter.data.filter(value => {
+					if (typeof query === 'string') {
+						return value.firstName.toLowerCase().includes(query.toLowerCase())
+					}
+					return false
+				})
+			}
+}
 
 	return (
 		<searchContext.Provider

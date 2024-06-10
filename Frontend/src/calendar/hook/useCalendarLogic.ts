@@ -110,7 +110,7 @@ const useCalendarLogic = () => {
 
 			try {
 				const data = await createAppointment(
-					professionalClients?.data[1].id, // O usa decodedToken.professionalId según corresponda
+					professionalClients?.data[2].id, // O usa decodedToken.professionalId según corresponda
 					decodedToken.professionalId, // Puedes ajustar según tu lógica de autenticación
 					appointmentData
 				)
