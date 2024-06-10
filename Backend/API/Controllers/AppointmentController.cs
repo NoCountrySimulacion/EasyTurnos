@@ -24,22 +24,22 @@ namespace API.Controllers
             return Ok(await _appointmentService.AddAppointment(clientId, professionalId, newAppointment));
         }
 
-        [HttpDelete("{appointmentId}/{professionalId}")]
-        public async Task<ActionResult<ServiceResponse<AppointmentGetDto>>> DeleteAppointment(Guid appointmentId, Guid professionalId)
+        [HttpDelete("{appointmentId}")]
+        public async Task<ActionResult<ServiceResponse<AppointmentGetDto>>> DeleteAppointment(Guid appointmentId)
         {
-            return Ok(await _appointmentService.DeleteAppointment(appointmentId, professionalId));
+            return Ok(await _appointmentService.DeleteAppointment(appointmentId));
         }
 
-        [HttpGet("{appointmentId}/{professionalId}")]
-        public async Task<ActionResult<ServiceResponse<AppointmentGetDto>>> GetAppointment(Guid appointmentId, Guid professionalId)
+        [HttpGet("{appointmentId}/user/{userId}")]
+        public async Task<ActionResult<ServiceResponse<object>>> GetAppointment(Guid appointmentId, Guid userId)
         {
-            return Ok(await _appointmentService.GetAppointment(appointmentId, professionalId));
+            return Ok(await _appointmentService.GetAppointment(appointmentId, userId));
         }
 
-        [HttpGet("{professionalId}")]
-        public async Task<ActionResult<ServiceResponse<List<AppointmentGetDto>>>> GetAppointments(Guid professionalId)
+        [HttpGet("user/{userId}")]
+        public async Task<ActionResult<ServiceResponse<List<object>>>> GetAppointments(Guid userId)
         {
-            return Ok(await _appointmentService.GetAppointments(professionalId));
+            return Ok(await _appointmentService.GetAppointments(userId));
         }
     }
 }

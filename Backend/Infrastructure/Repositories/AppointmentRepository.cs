@@ -35,6 +35,14 @@ namespace Infrastructure.Repositories
                 .ToListAsync();
         }
 
+        public async Task<List<AppointmentWithClientGetDto>> GetAllAppointmentsByClient(Guid clientId)
+        {
+            return await GetAll()
+                .Where(a => a.ClientId == clientId)
+                .ProjectTo<AppointmentWithClientGetDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+        }
+
         public async Task<AppointmentGetDto> GetAppointmentByProfessional(Guid appointmentId, Guid professionalId)
         {
             var appointment = await Entities
@@ -45,6 +53,18 @@ namespace Infrastructure.Repositories
             return appointment == null ?
                 throw new KeyNotFoundException($"Appointment not found.") :
                 _mapper.Map<AppointmentGetDto>(appointment);
+        }
+
+        public async Task<AppointmentWithClientGetDto> GetAppointmentByClient(Guid appointmentId, Guid clientId)
+        {
+            var appointment = await Entities
+                .Include(a => a.Professional)
+                .ThenInclude(c => c.ApplicationUser)
+                .FirstOrDefaultAsync(a => a.Id.Equals(appointmentId) && a.ClientId.Equals(clientId));
+
+            return appointment == null ?
+                throw new KeyNotFoundException($"Appointment not found.") :
+                _mapper.Map<AppointmentWithClientGetDto>(appointment);
         }
 
     }
