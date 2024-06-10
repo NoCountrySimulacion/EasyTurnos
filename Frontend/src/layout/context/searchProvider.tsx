@@ -129,6 +129,7 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
 		<searchContext.Provider
 			value={{
 				query,
+				setQuery,
 				handleSubmit,
 				filterClientsAppointmentsList,
 				filterClients,
