@@ -1,4 +1,5 @@
 import { ReactNode } from 'react'
+import { FormValuesEdit } from '../../professional/pages/EditProfile'
 
 export interface ModalProps {
   open: boolean
@@ -7,6 +8,7 @@ export interface ModalProps {
 
 export interface AuthContextType {
   user: UserLogged | null
+  professionalData: ProfessionalData | null;
   decodedToken: DecodedToken | null
   error: string | null
   isSignIn: boolean
@@ -21,6 +23,22 @@ export interface AuthContextType {
     confirmPassword: string
   ) => Promise<void>
   logout: () => void
+  updateProfessionalUser: ( data: FormValuesEdit) => Promise<void>
+}
+
+
+export interface ApiResponseProfesional {
+	data: Omit<ProfessionalData, 'slots'>
+	success: boolean
+	message: string
+}
+export interface ProfessionalData {
+  id: string;
+  speciality: string;
+  description: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
 }
 
 export interface UserLogged {

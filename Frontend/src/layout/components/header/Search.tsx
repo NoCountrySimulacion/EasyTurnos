@@ -30,6 +30,7 @@ export function Search(): React.ReactElement {
 		}
 	}
 
+
 	return (
 		<header className='flex gap-[22px] items-center pt-[20px] pb-[15px] px-[30px] w-full shadow-search rounded-b-2xl'>
 			<h1 className='text-[48px] font-semibold font-montserrat whitespace-nowrap'>

@@ -1,5 +1,6 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { Edit } from '../components/icons/Icons'
+import { Edit } from '../components/icons/Icons'
 import { Link } from 'react-router-dom'
 import { createClientForProfessional } from '../../services/api/professionalClient' // Adjust the import path as necessary
 import { DatePicker } from '@mui/x-date-pickers'
@@ -11,7 +12,7 @@ import { useAuth } from '../../auth/hooks/useAuth'
 interface FormValues {
 	nombre: string
 	apellido: string
-	birthDate: Date | null
+	birthDate: Date | null | string
 	mail: string
 	tel: string
 	observaciones: string
