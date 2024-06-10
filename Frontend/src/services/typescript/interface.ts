@@ -87,3 +87,30 @@ export interface ProfessionalAppointmentList {
 	success: boolean
 	message: string
 }
+
+export interface ClientData {
+	id: string
+	birthDate: string
+	email: string
+	phoneNumber: string
+	firstName: string
+	lastName: string
+}
+
+
+
+export interface ApiResponse {
+	data: ClientData
+	success: boolean
+	message: string
+}
+
+export interface ApiUpdateProfessionalData {
+	firstName: string;
+	lastName: string;
+	speciality: string;
+	description: string;
+	location: string;
+	phoneNumber: string;
+	newEmail: string;
+}

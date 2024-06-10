@@ -12,6 +12,7 @@ import { UnsubscribeButton } from '../components/UnsubscribeButton'
 import { styled } from '@mui/system'
 import { useProfessionalClients } from '../hooks/useProfessionalClients'
 import { useSearch } from '../../layout/hooks/useSearch'
+import { ClientButton } from '../components/ClientButton'
 function TableClient() {
 	const { professionalClients, isThereProfessionalClients } =
 		useProfessionalClients()
@@ -76,6 +77,7 @@ function TableClient() {
 										<CustomTableCell align='right'>
 											<div className='flex gap-[20.75px] justify-start'>
 												<ScheduleAppointmentButton />
+												<ClientButton clientId={row.id} />
 												<UnsubscribeButton />
 											</div>
 										</CustomTableCell>
