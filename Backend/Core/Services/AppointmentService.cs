@@ -68,7 +68,7 @@ namespace Core.Services
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<AppointmentGetDto>> DeleteAppointment(Guid appointmentId, Guid professionalId)
+        public async Task<ServiceResponse<AppointmentGetDto>> DeleteAppointment(Guid appointmentId)
         {
             var serviceResponse = new ServiceResponse<AppointmentGetDto>();
 
@@ -77,7 +77,7 @@ namespace Core.Services
                 if (await _appointmentRepository.Delete(appointmentId))
                     await _appointmentRepository.SaveChangesAsync();
                 else
-                    throw new KeyNotFoundException($"Appointment not found. Check both IDs.");
+                    throw new KeyNotFoundException($"Appointment not found.");
 
                 serviceResponse.Message = $"Appointment deleted.";
             }
@@ -127,13 +127,9 @@ namespace Core.Services
                 {
                     var client = await _clientRepository.GetById(userId);
                     if (client != null)
-                    {
                         appointments = (await _appointmentRepository.GetAllAppointmentsByClient(userId)).Cast<object>().ToList();
-                    }
                     else
-                    {
                         throw new KeyNotFoundException("User not found.");
-                    }
                 }
 
                 if (appointments.Count == 0)
