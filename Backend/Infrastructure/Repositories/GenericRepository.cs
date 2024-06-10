@@ -2,6 +2,7 @@
 using Infrastructure.Data;
 using Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Infrastructure.Repositories
 {
@@ -30,6 +31,18 @@ namespace Infrastructure.Repositories
 
         public virtual async Task<T?> GetById(TId id)
             => await Entities.FirstOrDefaultAsync(x => x.Id.Equals(id));
+
+        public async Task<T?> GetByIdAsync(TId id, params Expression<Func<T, object>>[] includes)
+        {
+            var query = Entities.AsQueryable();
+
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+
+            return await query.FirstOrDefaultAsync(e => EF.Property<TId>(e, "Id").Equals(id));
+        }
 
         public IQueryable<T> GetAll()
             => Entities;
