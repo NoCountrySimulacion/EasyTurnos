@@ -5,11 +5,13 @@ import {
 	ClientAppointmentList,
 	ProfessionalAppointmentList
 } from '../../services/typescript/interface'
+import { useSearch } from '../../layout/hooks/useSearch'
 
 type AppointmentList = ClientAppointmentList | ProfessionalAppointmentList
 
 export const useAppointments = () => {
 	const { decodedToken } = useAuth()
+	const { setQuery } = useSearch()
 
 	const [appointmentList, setAppointmentList] =
 		useState<AppointmentList | null>(null)
@@ -19,6 +21,7 @@ export const useAppointments = () => {
 		getProfessionalAppointments(decodedToken).then(data =>
 			setAppointmentList(data)
 		)
+		return setQuery(null)
 	}, [decodedToken])
 
 	const isThereAppointments = appointmentList?.data?.length ?? 0

@@ -18,9 +18,9 @@ function TableClient() {
 	const { filterClients } = useSearch()
 	console.log(professionalClients)
 
-	const filteredProfessionalClients = professionalClients
+	const filteredProfessionalClients = professionalClients?.data.length
 		? filterClients(professionalClients)
-		: { data: [], success: false, message: 'No data available' }
+		: professionalClients
 
 	const CustomTableCell = styled(TableCell)({
 		borderBottom: 'none',

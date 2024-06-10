@@ -17,9 +17,9 @@ export function Search(): React.ReactElement {
 		switch (location.pathname) {
 			case '/home':
 				return 'Inicio'
-			case '/calendar':
+			case '/professional/calendar':
 				return 'Agenda'
-			case '/clients':
+			case '/professional/clients':
 				return 'Clientes'
 			case '/professionals':
 				return 'Profesionales'

@@ -13,9 +13,7 @@ export const searchContext = createContext<SearchValueProps>(
 )
 
 export function SearchProvider({ children }: { children: React.ReactNode }) {
-	const [query, setQuery] = useState<FormDataEntryValue>(
-		{} as FormDataEntryValue
-	)
+	const [query, setQuery] = useState<FormDataEntryValue | null>(null)
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
@@ -28,8 +26,8 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
 	const filterClientsAppointmentsList = (
 		valueToFilter: ClientAppointmentList
 	): ClientAppointmentList => {
-		if (!valueToFilter?.data) {
-			return valueToFilter || { data: [] }
+		if (!valueToFilter?.data.length) {
+			return valueToFilter
 		}
 
 		const newValueToFilter = {
@@ -59,11 +57,11 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
 	const filterClients = (
 		valueToFilter: ClientsByProfessional
 	): ClientsByProfessional => {
-		if (!valueToFilter?.data) {
-			return valueToFilter || { data: [] }
+		if (!valueToFilter?.data.length) {
+			return valueToFilter
 		}
 
-		return query === null
+		return !query || query === '' || query === ' '
 			? valueToFilter
 			: {
 					...valueToFilter,
@@ -80,8 +78,8 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
 	const filterProfessionalsAppointmentsList = (
 		valueToFilter: ProfessionalAppointmentList
 	): ProfessionalAppointmentList => {
-		if (!valueToFilter?.data) {
-			return valueToFilter || { data: [] }
+		if (!valueToFilter?.data.length) {
+			return valueToFilter
 		}
 
 		const newValueToFilter = {
@@ -109,11 +107,11 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
 	const filterProfessionals = (
 		valueToFilter: ProfessionalsByClient
 	): ProfessionalsByClient => {
-		if (!valueToFilter?.data) {
-			return valueToFilter || { data: [] }
+		if (!valueToFilter?.data.length) {
+			return valueToFilter
 		}
 
-		return query === null
+		return !query || query === '' || query === ' '
 			? valueToFilter
 			: {
 					...valueToFilter,
@@ -131,6 +129,7 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
 		<searchContext.Provider
 			value={{
 				query,
+				setQuery,
 				handleSubmit,
 				filterClientsAppointmentsList,
 				filterClients,
