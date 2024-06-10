@@ -57,13 +57,6 @@ export function Profile(): React.ReactElement {
 						Historial del cliente
 					</div>
 				</div> */}
-				<Link to={'/professional/edit-profile-prof'}>
-					<div className='w-36 h-[38px] p-2.5 bg-violet-700 rounded-lg justify-center items-center gap-2.5 inline-flex cursor-pointer hover:bg-purple-600 transition duration-300 ease-in-out'>
-						<div className="text-white text-[13px] font-bold font-['Montserrat'] leading-[18.20px]">
-							Editar perfil
-						</div>
-					</div>
-				</Link>
 				{!professionalData ? (
 					<div>
 						<div className='w-1/2 h-0.5 bg-black'></div>
@@ -74,10 +67,19 @@ export function Profile(): React.ReactElement {
 						</div>
 					</div>
 				) : (
-					<div className='flex items-end justify-end'>
-						<div className='w-36 h-[38px] p-2.5 bg-rose-700 rounded-lg justify-center items-center gap-2.5 inline-flex cursor-pointer hover:bg-red-500 transition duration-300 ease-in-out'>
-							<div className="text-white text-[13px] font-bold font-['Montserrat'] leading-[18.20px]">
-								Dar de baja
+					<div>
+						<Link to={'/professional/edit-profile-prof'}>
+							<div className='w-36 h-[38px] p-2.5 bg-violet-700 rounded-lg justify-center items-center gap-2.5 inline-flex cursor-pointer hover:bg-purple-600 transition duration-300 ease-in-out'>
+								<div className="text-white text-[13px] font-bold font-['Montserrat'] leading-[18.20px]">
+									Editar perfil
+								</div>
+							</div>
+						</Link>
+						<div className='flex items-end justify-end'>
+							<div className='w-36 h-[38px] p-2.5 bg-rose-700 rounded-lg justify-center items-center gap-2.5 inline-flex cursor-pointer hover:bg-red-500 transition duration-300 ease-in-out'>
+								<div className="text-white text-[13px] font-bold font-['Montserrat'] leading-[18.20px]">
+									Dar de baja
+								</div>
 							</div>
 						</div>
 					</div>

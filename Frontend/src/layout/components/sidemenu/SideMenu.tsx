@@ -1,11 +1,5 @@
 import { useLocation, useNavigate } from 'react-router-dom'
-import {
-	Home as HomeIcon,
-	Agenda,
-	Clientes,
-	Logout,
-	Usuarios
-} from '../../Icons/Icons'
+import { Home as HomeIcon, Agenda, Clientes, Logout, Usuarios } from '../../Icons/Icons'
 import { useAuth } from '../../../auth/hooks/useAuth'
 import { Link } from 'react-router-dom'
 import { FaUserMd, FaClipboardCheck } from 'react-icons/fa'
@@ -24,14 +18,14 @@ export function Sidemenu(): JSX.Element {
 			return 'Agenda'
 		} else if (path.startsWith('/home')) {
 			return 'Inicio'
-		} else if (path.startsWith('/profesionales')) {
+		} else if (path.startsWith('/professionals')) {
 			return 'Profesionales'
-		} else if (path.startsWith('/misTurnos')) {
-			return 'MisTurnos'
-		} else if (path.startsWith('/profesionalprofile')) {
+		} else if (path.startsWith('/my-appointments')) {
+			return 'Mis turnos'
+		} else if (path.startsWith('/profile')) {
 			return 'Perfil'
 		} else {
-			return 'Home'
+			return 'Inicio'
 		}
 	}
 
@@ -44,40 +38,21 @@ export function Sidemenu(): JSX.Element {
 
 	const principalMenuProfessional = [
 		{ name: 'Inicio', icon: <HomeIcon width={24} height={24} />, to: '/home' },
-		{
-			name: 'Agenda',
-			icon: <Agenda width={24} height={24} />,
-			to: '/calendar'
-		},
-		{
-			name: 'Clientes',
-			icon: <Clientes width={24} height={24} />,
-			to: '/clients'
-		}
+		{ name: 'Agenda', icon: <Agenda width={24} height={24} />, to: '/calendar' },
+		{ name: 'Clientes', icon: <Clientes width={24} height={24} />, to: '/clients' }
 	]
 
 	const principalMenuClient = [
 		{ name: 'Inicio', icon: <HomeIcon width={24} height={24} />, to: '/home' },
-		{
-			name: 'Profesionales',
-			icon: <FaUserMd size={24} />,
-			to: '/professionals'
-		},
-		{
-			name: 'Mis turnos',
-			icon: <FaClipboardCheck size={24} />,
-			to: '/my-appointments'
-		}
+		{ name: 'Profesionales', icon: <FaUserMd size={24} />, to: '/professionals' },
+		{ name: 'Mis turnos', icon: <FaClipboardCheck size={24} />, to: '/my-appointments' }
 	]
 
-	const principalMenu =
-		decodedToken?.role === 'Professional'
-			? principalMenuProfessional
-			: principalMenuClient
+	const principalMenu = decodedToken?.role === 'Professional' ? principalMenuProfessional : principalMenuClient
 
 	return (
-		<aside className='h-screen sticky top-0 bg-[#fff] text-[#000] font-mono w-[325px] shadow-md shadow-black '>
-			<nav className=''>
+		<aside className='h-screen sticky top-0 bg-[#fff] text-[#000] font-mono w-[325px] shadow-md shadow-black'>
+			<nav>
 				<div id='logo' className='flex flex-col ml-2 pb-[0px]'>
 					<h4 className='text-[48px] font-bold'>EasyTurno</h4>
 				</div>
@@ -89,16 +64,11 @@ export function Sidemenu(): JSX.Element {
 					{principalMenu.map(item => (
 						<div
 							key={item.name}
-							className={`w-[80%] ml-3 rounded-[16px] ${selectedPage === 'Perfil' ? 'bg-[#D3CAFF] border border-solid border-[#7445C7] duration-500' : 'hover:bg-purple-100'}`}
+							className={`w-[80%] ml-3 rounded-[16px] ${selectedPage === item.name ? 'bg-[#D3CAFF] border border-solid border-[#7445C7]' : 'hover:bg-purple-100'}`}
 						>
-							<Link
-								to={item.to}
-								className='flex flex-row flex-wrap py-3  cursor-pointer'
-							>
+							<Link to={item.to} className='flex flex-row flex-wrap py-3 cursor-pointer'>
 								<span className='pl-[5px]'>{item.icon}</span>
-								<h4 className='ml-3 text-[18px] font-bold font-montserrat'>
-									{item.name}
-								</h4>
+								<h4 className='ml-3 text-[18px] font-bold font-montserrat'>{item.name}</h4>
 							</Link>
 						</div>
 					))}
@@ -109,18 +79,13 @@ export function Sidemenu(): JSX.Element {
 						Configuraciones
 					</p>
 					<div
-						className={`w-[80%] ml-3 rounded-[16px] ${selectedPage === 'Perfil' ? 'bg-[#D3CAFF] border border-solid border-[#7445C7] duration-500' : 'hover:bg-purple-100'}`}
+						className={`w-[80%] ml-3 rounded-[16px] ${selectedPage === 'Perfil' ? 'bg-[#D3CAFF] border border-solid border-[#7445C7]' : 'hover:bg-purple-100'}`}
 					>
-						<Link
-							className='flex items-center py-3  cursor-pointer'
-							to='/profile'
-						>
+						<Link className='flex items-center py-3 cursor-pointer' to='/profile'>
 							<span className='pl-[5px]'>
 								<Usuarios width={24} height={24} />
 							</span>
-							<h4 className='ml-3 text-[18px] font-bold font-montserrat'>
-								Perfil
-							</h4>
+							<h4 className='ml-3 text-[18px] font-bold font-montserrat'>Perfil</h4>
 						</Link>
 					</div>
 				</section>

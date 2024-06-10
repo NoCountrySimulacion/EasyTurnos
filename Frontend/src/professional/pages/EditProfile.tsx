@@ -2,7 +2,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { UserProfile, Edit } from '../components/icons/Icons'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../auth/hooks/useAuth'
-import { userInfo } from 'os'
+
 
 export interface FormValuesEdit {
 	nombre: string
