@@ -8,6 +8,7 @@ using DTOs.Professional;
 using Infrastructure.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Core.Services
 {
@@ -137,10 +138,17 @@ namespace Core.Services
             var serviceResponse = new ServiceResponse<ProfessionalGetDto>();
             try
             {
+                
                 // Check if new email alredy exist in DB
-                ApplicationUser userWithTheSameEmail = await _userManager.FindByEmailAsync(addProfessional.newEmail);
-                if (userWithTheSameEmail != null)
-                    throw new ArgumentException($"User's email: {addProfessional.newEmail} already exists");
+                ApplicationUser userWithTheSameEmail;
+
+                if (!addProfessional.newEmail.IsNullOrEmpty())
+                {
+                    userWithTheSameEmail = await _userManager.FindByEmailAsync(addProfessional.newEmail);
+
+                    if (userWithTheSameEmail != null)
+                        throw new ArgumentException($"User's email: {addProfessional.newEmail} already exists");
+                }
 
                 // Check if current email actually exists
                 ApplicationUser user = await _userManager.FindByEmailAsync(currentEmail);
@@ -155,9 +163,13 @@ namespace Core.Services
                 user.FirstName = addProfessional.FirstName;
                 user.LastName = addProfessional.LastName;
                 user.PhoneNumber = addProfessional.PhoneNumber;
-                user.Email = addProfessional.newEmail;
-                user.UserName = addProfessional.newEmail;
                 user.Professional = professional;
+
+                if (!addProfessional.newEmail.IsNullOrEmpty())
+                {
+                    user.Email = addProfessional.newEmail;
+                    user.UserName = addProfessional.newEmail;
+                }
 
                 var result = await _userManager.UpdateAsync(user);
 
@@ -172,8 +184,6 @@ namespace Core.Services
             }
             return serviceResponse;
         }
-
-
 
         public async Task<ServiceResponse<ProfessionalGetDto>> DeleteProfessional(Guid professionalId)
         {
