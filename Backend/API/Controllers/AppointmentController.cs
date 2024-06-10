@@ -30,13 +30,13 @@ namespace API.Controllers
             return Ok(await _appointmentService.DeleteAppointment(appointmentId));
         }
 
-        [HttpGet("{appointmentId}/{userId}")]
+        [HttpGet("{appointmentId}/user/{userId}")]
         public async Task<ActionResult<ServiceResponse<object>>> GetAppointment(Guid appointmentId, Guid userId)
         {
             return Ok(await _appointmentService.GetAppointment(appointmentId, userId));
         }
 
-        [HttpGet("byClientOrProfessional/{userId}")]
+        [HttpGet("user/{userId}")]
         public async Task<ActionResult<ServiceResponse<List<object>>>> GetAppointments(Guid userId)
         {
             return Ok(await _appointmentService.GetAppointments(userId));
