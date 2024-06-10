@@ -18,6 +18,10 @@ import LayoutApp from '../layout/pages/LayoutApp'
 import { HomeClient } from '../client/pages/Home'
 import Professionals from '../client/pages/Professionals'
 import { Appointments } from '../client/pages/Appointmets'
+import { Profile } from '../layout/pages/Profile'
+import { EditProfile } from '../professional/pages/EditProfile'
+import { EditProfileClient } from '../professional/pages/EditProfileClient'
+import { DataClient } from '../professional/components/DataClient'
 
 export default function AppRoutes() {
 	const { isUserSignedIn, decodedToken } = useAuth()
@@ -50,6 +54,13 @@ export default function AppRoutes() {
 									path='/professional/add-client'
 									element={<AddClientForm />}
 								/>
+								<Route
+									path='/professional/edit-profile-prof'
+									element={<EditProfile />}
+								/>
+								<Route path='/profile' element={<Profile />} />
+								<Route path='/professional/data-client/:clientId' element={<DataClient />} />
+								<Route path='/professional/edit-profile-client' element={<EditProfileClient />} />
 							</>
 						) : (
 							<>
@@ -57,6 +68,8 @@ export default function AppRoutes() {
 								<Route path='/professionals' element={<Professionals />} />
 								<Route path='/my-appointments' element={<Appointments />} />
 								<Route path='/calendar' element={<Calendar />} />
+								<Route path='/profile' element={<Profile />} />
+
 							</>
 						)}
 					</Route>

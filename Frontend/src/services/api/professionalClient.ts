@@ -45,7 +45,7 @@ export async function getClientsByProfessional(
 			console.error('JSON parse error:', jsonError)
 			throw new Error('Invalid JSON response')
 		}
-
+		
 		return data
 	} catch (error) {
 		console.error('Error getting professional clients:', error)
@@ -73,7 +73,7 @@ export async function updateClientsByProfessional(
 			throw new Error('Error updating professional clients')
 		}
 		const data: ClientsByProfessional = await response.json()
-		console.log(data)
+		console.log( 'Update pasa los datos:', data)
 		return data
 	} catch (error) {
 		throw new Error('Error updating professional clients')
