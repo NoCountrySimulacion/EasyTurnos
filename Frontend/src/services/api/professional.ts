@@ -1,4 +1,5 @@
 import { FormValuesEdit } from '../../professional/pages/EditProfile'
+import { ApiResponse, ClientData } from '../typescript/interface'
 
 interface ApiUpdateProfessionalData {
 	firstName: string
@@ -62,7 +63,7 @@ export async function updateProfessionalUserService(
 			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json',
-				Authorization: `Bearer ${token}` 
+				Authorization: `Bearer ${token}`
 			},
 			body: JSON.stringify(apiData)
 		})
@@ -76,5 +77,32 @@ export async function updateProfessionalUserService(
 	} catch (error) {
 		console.error('Error al actualizar los datos del profesional:', error)
 		throw error
+	}
+}
+
+export async function getClientData(
+	token: string | undefined,
+	clientId: string,
+	profesionalId: string | undefined,
+): Promise<ClientData | null> {
+	try {
+		const response = await fetch(
+			`https://easyturnos.somee.com/api/professionals/${profesionalId}/clients/${clientId}`,
+			{
+				method: 'GET',
+				headers: {
+					Authorization: `Bearer ${token}`,
+					'Content-Type': 'application/json'
+				}
+			}
+		)
+		const result: ApiResponse = await response.json()
+		if (response.ok && result.success) {
+			return result.data
+		} else {
+			throw new Error(result.message || 'Error fetching client data')
+		}
+	} catch (error) {
+		throw new Error((error as Error).message || 'Error fetching client data')
 	}
 }
