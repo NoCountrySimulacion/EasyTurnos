@@ -8,7 +8,6 @@ using Infrastructure.Repositories.Interfaces;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-using Azure.Core;
 
 namespace Core.Services;
 
@@ -19,19 +18,22 @@ public class ClientService : IClientService
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IMapper _mapper;
     private readonly ILogger<ClientService> _logger;
+    private readonly IProfessionalClientRepository _professionalClientRepository;
 
     public ClientService(
             IClientRepository clientRepository,
             IAuthenticationService authenticationService,
             IMapper mapper,
             ILogger<ClientService> logger,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            IProfessionalClientRepository professionalClientRepository)
     {
         _clientRepository = clientRepository;
         _authenticationService = authenticationService;
         _mapper = mapper;
         _logger = logger;
         _userManager = userManager;
+        _professionalClientRepository = professionalClientRepository;
     }
 
     public async Task<ServiceResponse<RegistrationResponse>> RegisterClientUser(Guid professionalId, ClientAddDto registerRequest)
@@ -74,13 +76,38 @@ public class ClientService : IClientService
 
     }
 
-    public async Task<ServiceResponse<ClientGetDto>> GetClientById(Guid id)
+    public async Task<ServiceResponse<ClientGetDto>> GetClientById(Guid professionalId, Guid clientId)
     {
         var serviceResponse = new ServiceResponse<ClientGetDto>();
         try
         {
-            serviceResponse.Data = await _clientRepository.GetById(id);
+            // Verify if the relationship exists between the professional and the client
+            var relationExists = await _professionalClientRepository
+                .AnyAsync(pc => pc.ProfessionalId == professionalId && pc.ClientId == clientId);
+
+            if (!relationExists)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "Professional-client relationship not found.";
+                return serviceResponse;
+            }
+
+            var client = await _clientRepository.GetByIdAsync(clientId, c => c.ApplicationUser);
+
+            if (client == null)
+            {
+                return new ServiceResponse<ClientGetDto>
+                {
+                    Success = false,
+                    Message = "Client not found."
+                };
+            }
+
+            var clientResponse = _mapper.Map<ClientGetDto>(client);
+
+
             serviceResponse.Message = "Client retrieved successfully.";
+            serviceResponse.Data = clientResponse;
         }
         catch (Exception ex)
         {
@@ -121,77 +148,138 @@ public class ClientService : IClientService
     {
         try
         {
-            var result = await _clientRepository.RemoveProfessionalClientRelation(professionalId, clientId);
-            if (result)
+            var professionalClient = await _professionalClientRepository
+                .GetProfessionalClient(professionalId, clientId);
+
+            if (professionalClient != null)
             {
-                return new ServiceResponse<bool> { Data = true, Success = true, Message = "Relation removed successfully." };
+                _professionalClientRepository.Delete(professionalClient);
+                await _professionalClientRepository.SaveChangesAsync();
+
+                return new ServiceResponse<bool>
+                {
+                    Data = true,
+                    Success = true,
+                    Message = "Relation removed successfully."
+                };
             }
             else
             {
-                return new ServiceResponse<bool> { Data = false, Success = false, Message = "Relation not found." };
+                return new ServiceResponse<bool>
+                {
+                    Data = false,
+                    Success = false,
+                    Message = "Relation not found."
+                };
             }
         }
         catch (Exception ex)
         {
-            return new ServiceResponse<bool> { Data = false, Success = false, Message = $"An error occurred: {ex.Message}" };
+            return new ServiceResponse<bool>
+            {
+                Data = false,
+                Success = false,
+                Message = $"An error occurred: {ex.Message}"
+            };
         }
     }
 
-    public async Task<ServiceResponse<ClientGetDto>> UpdateClientAsync(Guid clientId, ClientUpdateRequest clientRequest)
+    public async Task<ServiceResponse<ClientGetDto>> UpdateClientAsync(Guid professionalId, Guid clientId, ClientUpdateDto clientRequest)
     {
-        //var client = await _clientRepository.GetById(clientId);
-        var client = await _clientRepository.GetByIdToUpdate(clientId);
-
-        if (client == null)
+        var serviceResponse = new ServiceResponse<ClientGetDto>();
+        try
         {
-            return new ServiceResponse<ClientGetDto> { Success = false, Message = "Client not found." };
-        }
+            var relationExists = await _professionalClientRepository
+                .AnyAsync(pc => pc.ProfessionalId == professionalId && pc.ClientId == clientId);
 
-        var user = client.ApplicationUser;
-        if (user == null)
-        {
-            return new ServiceResponse<ClientGetDto> { Success = false, Message = "Associated user not found." };
-        }
-
-        //var client = await _authenticationService.UpdateUserAsync(user);
-
-        // Update Client and ApplicationUser properties
-        client.BirthDate = clientRequest.BirthDate;
-        user.FirstName = clientRequest.FirstName;
-        user.LastName = clientRequest.LastName;
-        user.Email = clientRequest.Email;
-        user.PhoneNumber = clientRequest.PhoneNumber;
-        user.UserName = clientRequest.Email;
-
-        var result = await _userManager.UpdateAsync(user);
-        if (!result.Succeeded)
-        {
-            return new ServiceResponse<ClientGetDto> { Success = false, Message = "Failed to update user." };
-        }
-
-        // Update password if provided
-        if (!string.IsNullOrWhiteSpace(clientRequest.Password))
-        {
-            var passwordResult = await _userManager.RemovePasswordAsync(user);
-            if (passwordResult.Succeeded)
+            if (!relationExists)
             {
-                passwordResult = await _userManager.AddPasswordAsync(user, clientRequest.Password);
-                if (!passwordResult.Succeeded)
+                serviceResponse.Success = false;
+                serviceResponse.Message = "Professional-client relationship not found.";
+                return serviceResponse;
+            }
+
+            var client = await _clientRepository.GetByIdAsync(clientId, c => c.ApplicationUser);
+
+            if (client == null)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "Client not found.";
+                return serviceResponse;
+            }
+
+            var user = client.ApplicationUser;
+            if (user == null)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "Associated user not found.";
+                return serviceResponse;
+            }
+
+            //var client = await _authenticationService.UpdateUserAsync(user);
+
+            // Update Client and ApplicationUser properties
+            client.BirthDate = clientRequest.BirthDate;
+            user.FirstName = clientRequest.FirstName;
+            user.LastName = clientRequest.LastName;
+            user.Email = clientRequest.Email;
+            user.PhoneNumber = clientRequest.PhoneNumber;
+            user.UserName = clientRequest.Email;
+
+            var existingUser = await _userManager.FindByEmailAsync(user.Email);
+            if (existingUser != null && existingUser.Id != user.Id)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "Email is already in use.";
+                return serviceResponse;
+            }
+
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "Failed to update user.";
+                return serviceResponse;
+            }
+
+            // Update password if provided
+            if (!string.IsNullOrWhiteSpace(clientRequest.Password))
+            {
+                var passwordResult = await _userManager.RemovePasswordAsync(user);
+                if (passwordResult.Succeeded)
                 {
-                    return new ServiceResponse<ClientGetDto> { Success = false, Message = "Failed to update password." };
+                    passwordResult = await _userManager.AddPasswordAsync(user, clientRequest.Password);
+                    if (!passwordResult.Succeeded)
+                    {
+                        serviceResponse.Success = false;
+                        serviceResponse.Message = "Failed to update password.";
+                        return serviceResponse;
+                    }
+                }
+                else
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Failed to remove old password.";
+                    return serviceResponse;
                 }
             }
-            else
-            {
-                return new ServiceResponse<ClientGetDto> { Success = false, Message = "Failed to remove old password." };
-            }
+
+            _clientRepository.Update(client);
+            await _clientRepository.SaveChangesAsync();
+
+            var clientGetDto = _mapper.Map<ClientGetDto>(client);
+
+            serviceResponse.Data = clientGetDto;
+            serviceResponse.Success = true;
+            serviceResponse.Message = "Client updated successfully.";
+            return serviceResponse;
         }
-
-        var clientToUpdate = _mapper.Map<Client>(client);
-        _clientRepository.Update(clientToUpdate);
-        await _clientRepository.SaveChangesAsync();
-
-        var clientGetDto = _mapper.Map<ClientGetDto>(client);
-        return new ServiceResponse<ClientGetDto> { Data = clientGetDto, Success = true, Message = "Client updated successfully." };
+        catch (Exception ex)
+        {
+            serviceResponse.Success = false;
+            serviceResponse.Message = $"An error occurred while updating the client: {ex.Message}";
+            return serviceResponse;
+        }
     }
+
 }
