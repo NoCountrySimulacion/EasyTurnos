@@ -1,7 +1,8 @@
 import {
-	AllProfessionals,
-	AppointmentList,
-	ProfessionalClients
+	ClientAppointmentList,
+	ClientsByProfessional,
+	ProfessionalAppointmentList,
+	ProfessionalsByClient
 } from '../../services/typescript/interface'
 
 export interface NavButtonProps {
@@ -12,10 +13,14 @@ export interface NavButtonProps {
 export interface SearchValueProps {
 	query: FormDataEntryValue | null
 	handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void
-	filterProfessionalAppointments: (
-		valueToFilter: AppointmentList
-	) => AppointmentList
-	filterClients: (valueToFilter: ProfessionalClients) => ProfessionalClients
-	filterClientAppointments: (valueToFiler: AppointmentList) => AppointmentList
-	filterProfessionals: (valueToFilter: AllProfessionals) => AllProfessionals
+	filterClientsAppointmentsList: (
+		valueToFilter: ClientAppointmentList
+	) => ClientAppointmentList
+	filterClients: (valueToFilter: ClientsByProfessional) => ClientsByProfessional
+	filterProfessionalsAppointmentsList: (
+		valueToFiler: ProfessionalAppointmentList
+	) => ProfessionalAppointmentList
+	filterProfessionals: (
+		valueToFilter: ProfessionalsByClient
+	) => ProfessionalsByClient
 }

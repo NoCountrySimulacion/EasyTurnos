@@ -1,16 +1,21 @@
 /* eslint-disable indent */
 import { createContext, useState } from 'react'
 import {
-	AllProfessionals,
-	AppointmentList,
-	ProfessionalClients
+	ClientAppointmentList,
+	ClientsByProfessional,
+	ProfessionalAppointmentList,
+	ProfessionalsByClient
 } from '../../services/typescript/interface'
 import { SearchValueProps } from '../typescript/interface'
 
-export const searchContext = createContext<SearchValueProps | null>(null)
+export const searchContext = createContext<SearchValueProps>(
+	{} as SearchValueProps
+)
 
 export function SearchProvider({ children }: { children: React.ReactNode }) {
-	const [query, setQuery] = useState<FormDataEntryValue | null>(null)
+	const [query, setQuery] = useState<FormDataEntryValue>(
+		{} as FormDataEntryValue
+	)
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
@@ -20,9 +25,13 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
 		setQuery(search)
 	}
 
-	const filterProfessionalAppointments = (
-		valueToFilter: AppointmentList
-	): AppointmentList => {
+	const filterClientsAppointmentsList = (
+		valueToFilter: ClientAppointmentList
+	): ClientAppointmentList => {
+		if (!valueToFilter?.data) {
+			return valueToFilter || { data: [] }
+		}
+
 		const newValueToFilter = {
 			...valueToFilter,
 			data: valueToFilter.data.filter(value => {
@@ -33,7 +42,6 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
 				}
 			})
 		}
-
 		return query === null
 			? newValueToFilter
 			: {
@@ -42,15 +50,19 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
 						if (typeof query === 'string') {
 							return value.name
 								.toLowerCase()
-								.includes(query?.toLowerCase() || '')
+								.includes(query.toLowerCase() || '')
 						}
 					})
 				}
 	}
 
 	const filterClients = (
-		valueToFilter: ProfessionalClients
-	): ProfessionalClients => {
+		valueToFilter: ClientsByProfessional
+	): ClientsByProfessional => {
+		if (!valueToFilter?.data) {
+			return valueToFilter || { data: [] }
+		}
+
 		return query === null
 			? valueToFilter
 			: {
@@ -59,13 +71,19 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
 						if (typeof query === 'string') {
 							return value.firstName
 								.toLowerCase()
-								.includes(query?.toLowerCase() || '')
+								.includes(query.toLowerCase() || '')
 						}
 					})
 				}
 	}
 
-	const filterClientAppointments = (valueToFilter: AllProfessionals) => {
+	const filterProfessionalsAppointmentsList = (
+		valueToFilter: ProfessionalAppointmentList
+	): ProfessionalAppointmentList => {
+		if (!valueToFilter?.data) {
+			return valueToFilter || { data: [] }
+		}
+
 		const newValueToFilter = {
 			...valueToFilter,
 			data: valueToFilter.data.filter(value => {
@@ -82,13 +100,19 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
 						if (typeof query === 'string') {
 							return value.firstName
 								.toLowerCase()
-								.includes(query?.toLowerCase() || '')
+								.includes(query.toLowerCase() || '')
 						}
 					})
 				}
 	}
 
-	const filterProfessionals = (valueToFilter: AllProfessionals) => {
+	const filterProfessionals = (
+		valueToFilter: ProfessionalsByClient
+	): ProfessionalsByClient => {
+		if (!valueToFilter?.data) {
+			return valueToFilter || { data: [] }
+		}
+
 		return query === null
 			? valueToFilter
 			: {
@@ -97,7 +121,7 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
 						if (typeof query === 'string') {
 							return value.firstName
 								.toLowerCase()
-								.includes(query?.toLowerCase() || '')
+								.includes(query.toLowerCase() || '')
 						}
 					})
 				}
@@ -108,9 +132,9 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
 			value={{
 				query,
 				handleSubmit,
-				filterProfessionalAppointments,
+				filterClientsAppointmentsList,
 				filterClients,
-				filterClientAppointments,
+				filterProfessionalsAppointmentsList,
 				filterProfessionals
 			}}
 		>

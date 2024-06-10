@@ -3,7 +3,7 @@ import { DateTime } from 'luxon'
 import { AppointmentsList } from '../components/AppointmentsList'
 import { WithoutAppointments } from '../components/WithoutAppointments'
 import { useAuth } from '../../auth/hooks/useAuth'
-import { useAppointments } from '../hooks/useAppointments'
+import { useAppointments } from '../../shared/hooks/useAppointments'
 
 function Home(): React.ReactElement {
 	const now = DateTime.now()

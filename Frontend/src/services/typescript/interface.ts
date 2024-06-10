@@ -32,7 +32,7 @@ interface ProfessionalClientData {
 	phoneNumber: string
 }
 
-export interface ProfessionalClients {
+export interface ClientsByProfessional {
 	data: ProfessionalClientData[]
 	success: boolean
 	message: string
@@ -46,7 +46,7 @@ interface ProfessionalData {
 	id: string
 	specialty: string
 	description: string
-	slots: availableSlot[]
+	slots?: availableSlot[]
 	firstName: string
 	lastName: string
 	phoneNumber: string
@@ -58,7 +58,13 @@ export interface Professional {
 	message: string
 }
 
-interface Appointment {
+export interface ProfessionalsByClient {
+	data: Omit<ProfessionalData[], 'slots'>
+	success: boolean
+	message: string
+}
+
+export interface Appointment {
 	id: string
 	name: string
 	startDate: string
@@ -66,16 +72,18 @@ interface Appointment {
 	professionalId: string
 	firstName: string
 	lastName: string
+	speciality: string
+	clientId: string
 }
 
-export interface AppointmentList {
-	data: Appointment[]
+export interface ClientAppointmentList {
+	data: Omit<Appointment[], 'clientId'>
 	success: boolean
 	message: string
 }
 
-export interface AllProfessionals {
-	data: Omit<ProfessionalData[], 'slots'>
+export interface ProfessionalAppointmentList {
+	data: Omit<Appointment[], 'speciality'>
 	success: boolean
 	message: string
 }

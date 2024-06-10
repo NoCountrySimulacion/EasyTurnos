@@ -9,12 +9,17 @@ import {
 } from '@mui/material'
 import { styled } from '@mui/system'
 
-import { Link } from 'react-router-dom'
 import { ScheduleAppointmentButton } from '../../professional/components/ScheduleAppointmentButton'
 import { UnsubscribeButton } from '../../professional/components/UnsubscribeButton'
 import { professionalsMock } from '../mocks/professionalsMock'
+import { useSearch } from '../../layout/hooks/useSearch'
+import { ProfessionalsByClient } from '../../services/typescript/interface'
 
 function TableClient() {
+	const { filterProfessionals } = useSearch()
+
+	const filteredProfessionals: ProfessionalsByClient =
+		filterProfessionals(professionalsMock)
 	const CustomTableCell = styled(TableCell)({
 		borderBottom: 'none',
 		fontFamily: 'Roboto, sans-serif',
@@ -52,22 +57,20 @@ function TableClient() {
 						</CustomTableRow>
 					</TableHead>
 					<TableBody>
-						{professionalsMock.map((row, index) => (
+						{filteredProfessionals.data.map((row, index) => (
 							<CustomTableRow
 								key={index}
 								className={index % 2 == 0 ? 'bg-[#F7F6FE]' : 'bg-white'}
 							>
 								<CustomTableCell className='w-[25%]'>
-									<Link to={row.to}>
-										{row.name} {row.lastName}
-									</Link>
+									{row.firstName} {row.lastName}
 								</CustomTableCell>
 
 								<CustomTableCell className='w-[20%]'>
-									<Link to={row.to}>{row.specialty}</Link>
+									{row.specialty}
 								</CustomTableCell>
 								<CustomTableCellTel className='w-[25%]'>
-									<Link to={row.to}>{row.tel}</Link>
+									{row.phoneNumber}
 								</CustomTableCellTel>
 								<CustomTableCell align='right'>
 									<div className='flex gap-[20.75px] justify-start'>

@@ -1,7 +1,7 @@
 import { useAuth } from '../../auth/hooks/useAuth'
+import { useAppointments } from '../../shared/hooks/useAppointments'
 import { AppointmentsList } from '../components/AppointmentsList'
 import { WithoutAppointments } from '../components/WhitoutAppointments'
-import { appointmentsClientMock } from '../mocks/appointmentsClientMock'
 
 interface NumberDotProps {
 	num: string
@@ -17,6 +17,8 @@ function NumberDot({ num }: NumberDotProps): React.ReactElement {
 
 export function HomeClient(): React.ReactElement {
 	const { user } = useAuth()
+	const { isThereAppointments } = useAppointments()
+
 	return (
 		<section className=' h-full flex flex-col px-10  gap-10'>
 			<section className='flex flex-col items-start gap-[18px]'>
@@ -50,11 +52,7 @@ export function HomeClient(): React.ReactElement {
 				<h2 className='font-montserrat text-[28px] leading-[42px] font-semibold'>
 					Tus turnos
 				</h2>
-				{appointmentsClientMock.length ? (
-					<AppointmentsList />
-				) : (
-					<WithoutAppointments />
-				)}
+				{isThereAppointments ? <AppointmentsList /> : <WithoutAppointments />}
 			</section>
 		</section>
 	)
