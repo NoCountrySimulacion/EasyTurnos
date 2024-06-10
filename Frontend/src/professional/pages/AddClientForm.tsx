@@ -1,19 +1,19 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik'
-import { UserProfile, Edit } from '../components/icons/Icons'
+import { Edit } from '../components/icons/Icons'
 import { Link } from 'react-router-dom'
 import { createClientForProfessional } from '../../services/api/professionalClient' // Adjust the import path as necessary
-import { DecodedToken } from '../../auth/typescript/interface'
+
 import { DatePicker } from '@mui/x-date-pickers'
 import { TextField } from '@mui/material'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import dayjs from 'dayjs'
+
 import { useAuth } from '../../auth/hooks/useAuth'
 
 interface FormValues {
 	nombre: string
 	apellido: string
-	birthDate: Date | null
+	birthDate: Date | null | string
 	mail: string
 	tel: string
 	observaciones: string
