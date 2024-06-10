@@ -1,11 +1,7 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using Domain.Entities;
-using DTOs.Client;
-using DTOs.Identity;
 using Infrastructure.Data;
 using Infrastructure.Repositories.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
 
@@ -19,36 +15,5 @@ public class ClientRepository : GenericRepository<Client, Guid>, IClientReposito
     {
         _context = context;
         _mapper = mapper;
-    }
-
-    public new async Task<ClientGetDto?> GetById(Guid id)
-    {
-        return await Entities
-            .Include(c => c.ApplicationUser)
-            .ProjectTo<ClientGetDto>(_mapper.ConfigurationProvider)
-            .FirstOrDefaultAsync(x => x.Id == id);
-    }
-    // Test
-    public async Task<ClientUpdateResponse?> GetByIdToUpdate(Guid id)
-    {
-        return await Entities
-            .Include(c => c.ApplicationUser)
-            .ProjectTo<ClientUpdateResponse>(_mapper.ConfigurationProvider)
-            .FirstOrDefaultAsync(c => c.Id == id);
-    }
-
-    public async Task<bool> RemoveProfessionalClientRelation(Guid professionalId, Guid clientId)
-    {
-        var professionalClient = await _context.ProfessionalClients
-           .FirstOrDefaultAsync(pc => pc.ProfessionalId == professionalId && pc.ClientId == clientId);
-
-        if (professionalClient != null)
-        {
-            _context.ProfessionalClients.Remove(professionalClient);
-            await _context.SaveChangesAsync();
-            return true;
-        }
-
-        return false;
     }
 }
