@@ -23,30 +23,32 @@ const CustomDay: React.FC<CustomDayProps> = props => {
 
 	useEffect(() => {
 		const fetchAppointments = async () => {
-		  try {
-			if (decodedToken && !isDataLoaded) {
-			  const appointmentsData = await getProfessionalAppointments(decodedToken);
-			  setAppointments(appointmentsData.data);
-			  setIsDataLoaded(true);
+			try {
+				if (decodedToken && !isDataLoaded) {
+					const appointmentsData =
+						await getProfessionalAppointments(decodedToken)
+					setAppointments(appointmentsData.data)
+					setIsDataLoaded(true)
+				}
+			} catch (error) {
+				console.error('Error getting appointments:', error)
 			}
-		  } catch (error) {
-			console.error('Error getting appointments:', error);
-		  }
-		};
-	  
-		fetchAppointments(); // Siempre se ejecuta al inicio
-	  
+		}
+
+		fetchAppointments() // Siempre se ejecuta al inicio
+
 		// Dependencia isDataLoaded agregada para que el efecto se ejecute nuevamente cuando cambie su valor
-	  }, [decodedToken, isDataLoaded]);
-	  // Dependencias actualizadas
+	}, [decodedToken, isDataLoaded])
+	// Dependencias actualizadas
 
-	const isDayWithSlot = slots.some(slot =>
-		moment(slot.startDate).isSame(day, 'day')
-	)
+	const isDayWithSlot =
+		slots && slots.some(slot => moment(slot.startDate).isSame(day, 'day'))
 
-	const isDayWithAppointment = appointments.some(appointment =>
-		moment(appointment.startDate).isSame(day, 'day')
-	)
+	const isDayWithAppointment =
+		appointments &&
+		appointments.some(appointment =>
+			moment(appointment.startDate).isSame(day, 'day')
+		)
 
 	return (
 		<PickersDay
