@@ -21,13 +21,19 @@ public class ClientProfile : Profile
           .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.ApplicationUser.LastName))
           .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.ApplicationUser.PhoneNumber));
 
-        CreateMap<Client, ClientUpdateResponse>().ReverseMap();
+        //CreateMap<Client, ClientUpdateResponse>().ReverseMap();
 
-        CreateMap<ClientUpdateResponse, ClientGetDto>()
-          .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.ApplicationUser.FirstName))
-          .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.ApplicationUser.LastName))
-          .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.ApplicationUser.Email))
-          .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.ApplicationUser.PhoneNumber));
+        //CreateMap<ClientUpdateResponse, ClientGetDto>()
+        //  .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.ApplicationUser.FirstName))
+        //  .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.ApplicationUser.LastName))
+        //  .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.ApplicationUser.Email))
+        //  .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.ApplicationUser.PhoneNumber));
+
+        //CreateMap<Client, ClientGetDto>()
+        // .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.ApplicationUser.FirstName))
+        // .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.ApplicationUser.LastName))
+        // .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.ApplicationUser.Email))
+        // .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.ApplicationUser.PhoneNumber));
 
     }
 }
