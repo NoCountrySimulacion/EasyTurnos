@@ -23,10 +23,8 @@ interface FormValues {
 }
 
 export function AddClientForm(): JSX.Element {
-	
-	const {decodedToken} = useAuth()
+	const { decodedToken } = useAuth()
 	console.log(decodedToken)
-	
 
 	return (
 		<section className='flex flex-col mt-10'>
@@ -112,28 +110,34 @@ export function AddClientForm(): JSX.Element {
 						}
 						return errors
 					}}
-					
 					onSubmit={async (values, { setSubmitting, resetForm }) => {
-						try {
-							const newClientData = {
-								birthDate: values.birthDate!.toISOString(), // Ensure birthDate is not null
-								registrationRequest: {
-									firstName: values.nombre,
-									lastName: values.apellido,
-									email: values.mail,
-									phoneNumber: values.tel,
-									password: values.contraseñaCliente,
-									confirmPassword: values.confirmarContraseñaCliente
+						if (decodedToken) {
+							// Add this check
+							try {
+								const newClientData = {
+									birthDate: values.birthDate!.toISOString(), // Ensure birthDate is not null
+									registrationRequest: {
+										firstName: values.nombre,
+										lastName: values.apellido,
+										email: values.mail,
+										phoneNumber: values.tel,
+										password: values.contraseñaCliente,
+										confirmPassword: values.confirmarContraseñaCliente
+									}
 								}
-							}
 
-							await createClientForProfessional(decodedToken, newClientData)
-							alert('Cliente creado con éxito')
-							resetForm()
-						} catch (error) {
-							console.error('Error creating client:', error)
-							alert('Error al crear el cliente')
-						} finally {
+								await createClientForProfessional(decodedToken, newClientData)
+								alert('Cliente creado con éxito')
+								resetForm()
+							} catch (error) {
+								console.error('Error creating client:', error)
+								alert('Error al crear el cliente')
+							} finally {
+								setSubmitting(false)
+							}
+						} else {
+							console.error('No token found')
+							alert('No se pudo encontrar el token')
 							setSubmitting(false)
 						}
 					}}
