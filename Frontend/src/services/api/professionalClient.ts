@@ -1,13 +1,14 @@
-import { ProfessionalClients } from '../typescript/interface'
 import { DecodedToken } from '../../auth/typescript/interface'
+import { ClientsByProfessional } from '../typescript/interface'
 
 const BASE_PROFESSIONAL_CLIENTS_URL =
 	'https://easyturnos.somee.com/api/professionals/'
 
-export async function getProfessionalClients(
+export async function getClientsByProfessional(
 	decodedToken: DecodedToken
-): Promise<ProfessionalClients | null> {
+): Promise<ClientsByProfessional | null> {
 	try {
+		const token = localStorage.getItem('token')
 		if (!decodedToken?.professionalId) {
 			throw new Error('Invalid professional ID')
 		}
@@ -15,7 +16,11 @@ export async function getProfessionalClients(
 		const url = `${BASE_PROFESSIONAL_CLIENTS_URL}${decodedToken.professionalId}/clients`
 
 		const res = await fetch(url, {
-			method: 'GET'
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: ` ${token}`
+			}
 		})
 
 		if (res.status === 204) {
@@ -28,20 +33,19 @@ export async function getProfessionalClients(
 		}
 
 		const text = await res.text()
-		console.log('Response body:', text)
 
 		if (!text) {
 			throw new Error('Empty response body')
 		}
 
-		let data: ProfessionalClients
+		let data: ClientsByProfessional
 		try {
 			data = JSON.parse(text)
 		} catch (jsonError) {
 			console.error('JSON parse error:', jsonError)
 			throw new Error('Invalid JSON response')
 		}
-
+		
 		return data
 	} catch (error) {
 		console.error('Error getting professional clients:', error)
@@ -49,11 +53,11 @@ export async function getProfessionalClients(
 	}
 }
 
-export async function updateProfessionalClients(
+export async function updateClientsByProfessional(
 	decodedToken: DecodedToken,
 	idClient: string,
-	newProfessionalClients: ProfessionalClients
-): Promise<ProfessionalClients> {
+	newClientsByProfessional: ClientsByProfessional
+): Promise<ClientsByProfessional> {
 	try {
 		const response = await fetch(
 			`${BASE_PROFESSIONAL_CLIENTS_URL}${decodedToken?.professionalId}/clients/${idClient}`,
@@ -62,14 +66,14 @@ export async function updateProfessionalClients(
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify(newProfessionalClients)
+				body: JSON.stringify(newClientsByProfessional)
 			}
 		)
 		if (!response.ok) {
 			throw new Error('Error updating professional clients')
 		}
-		const data: ProfessionalClients = await response.json()
-		console.log(data)
+		const data: ClientsByProfessional = await response.json()
+		console.log( 'Update pasa los datos:', data)
 		return data
 	} catch (error) {
 		throw new Error('Error updating professional clients')

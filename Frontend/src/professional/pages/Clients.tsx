@@ -11,11 +11,16 @@ import { ScheduleAppointmentButton } from '../components/ScheduleAppointmentButt
 import { UnsubscribeButton } from '../components/UnsubscribeButton'
 import { styled } from '@mui/system'
 import { useProfessionalClients } from '../hooks/useProfessionalClients'
+import { useSearch } from '../../layout/hooks/useSearch'
 import { ClientButton } from '../components/ClientButton'
 function TableClient() {
 	const { professionalClients, isThereProfessionalClients } =
 		useProfessionalClients()
-	console.log(professionalClients)
+	const { filterClients } = useSearch()
+
+	const filteredProfessionalClients = professionalClients
+		? filterClients(professionalClients)
+		: { data: [], success: false, message: 'No data available' }
 
 	const CustomTableCell = styled(TableCell)({
 		borderBottom: 'none',
@@ -54,7 +59,7 @@ function TableClient() {
 								</CustomTableRow>
 							</TableHead>
 							<TableBody>
-								{professionalClients?.data.map((row, index) => (
+								{filteredProfessionalClients?.data.map((row, index) => (
 									<CustomTableRow
 										key={index}
 										className={index % 2 == 0 ? 'bg-[#F7F6FE]' : 'bg-white'}

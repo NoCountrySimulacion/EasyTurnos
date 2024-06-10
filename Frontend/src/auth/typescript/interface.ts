@@ -26,9 +26,19 @@ export interface AuthContextType {
   updateProfessionalUser: ( data: FormValuesEdit) => Promise<void>
 }
 
+
+export interface ApiResponseProfesional {
+	data: Omit<ProfessionalData, 'slots'>
+	success: boolean
+	message: string
+}
 export interface ProfessionalData {
-  description: string;
+  id: string;
   speciality: string;
+  description: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
 }
 
 export interface UserLogged {

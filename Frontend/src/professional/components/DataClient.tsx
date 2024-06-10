@@ -4,6 +4,7 @@ import { IconProfile } from '../../layout/Icons/IconsProfile'
 import { useClientData } from '../hooks/useClientData'
 import { useAuth } from '../../auth/hooks/useAuth'
 import { ScheduleAppointmentButton } from './ScheduleAppointmentButton'
+import { Link } from 'react-router-dom'
 
 export function DataClient(): React.ReactElement {
 	const params = useParams<{ clientId?: string }>()
@@ -70,6 +71,13 @@ export function DataClient(): React.ReactElement {
 					</span>
 				</div>
 				<div>
+					<Link to={'/professional/edit-profile-client'}>
+						<div className='w-36 h-[38px] mb-4 p-2.5 bg-violet-700 rounded-lg justify-center items-center gap-2.5 inline-flex cursor-pointer hover:bg-purple-600 transition duration-300 ease-in-out'>
+							<div className="text-white text-[13px] font-bold font-['Montserrat'] leading-[18.20px]">
+								Editar cliente
+							</div>
+						</div>
+					</Link>
 					<div className='w-1/2 h-0.5 bg-black'></div>
 					<div className='w-[257px] h-[39px] p-2.5 my-2 bg-green-200 rounded justify-start items-center gap-2.5 inline-flex'>
 						<div className="text-black text-base font-normal font-['Roboto']">

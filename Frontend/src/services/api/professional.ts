@@ -1,40 +1,41 @@
+import { ApiResponseProfesional, DecodedToken } from '../../auth/typescript/interface'
 import { FormValuesEdit } from '../../professional/pages/EditProfile'
-import { ApiResponse, ClientData } from '../typescript/interface'
+import {
+	ApiResponse,
+	ApiUpdateProfessionalData,
+	ClientData,
+	ProfessionalsByClient
+} from '../typescript/interface'
 
-interface ApiUpdateProfessionalData {
-	firstName: string
-	lastName: string
-	speciality: string
-	description: string
-	location: string
-	phoneNumber: string
-	newEmail: string
-}
+const BASE_UPDATE_PROFESSIONAL =
+	'https://easyturnos.somee.com/api/professional/updateprofessionaluser/'
+const BASE_PROFESSIONAL_CLIENTS_URL =
+	'https://easyturnos.somee.com/GetAllByClientId/'
+const BASE_GET_PROFESIONAL =
+	'https://easyturnos.somee.com/api/Professional/GetById/'
 
-const BASE_URL = 'https://easyturnos.somee.com/api/Professional/'
-
-export async function getProfessionalData(
-	professionalId: string,
-	token: string
-) {
+export async function getProfessionalByClient(
+	decodedToken: DecodedToken
+): Promise<ProfessionalsByClient> {
 	try {
-		const response = await fetch(`${BASE_URL}GetById/${professionalId}`, {
-			method: 'GET',
-			headers: {
-				Authorization: `Bearer ${token}`,
-				'Content-Type': 'application/json'
+		const token = localStorage.getItem('token')
+		const res = await fetch(
+			`${BASE_PROFESSIONAL_CLIENTS_URL}${decodedToken?.professionalId}`,
+			{
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: ` ${token}`
+				}
 			}
-		})
+		)
+		if (!res.ok)
+			throw new Error(`Error getting appointments: ${res.statusText}`)
 
-		if (!response.ok) {
-			throw new Error('Error fetching professional data')
-		}
-
-		const data = await response.json()
-		console.log(data)
+		const data: ProfessionalsByClient = await res.json()
 		return data
 	} catch (error) {
-		console.error('Error fetching professional data:', error)
+		console.error('Error getting appointments:', error)
 		throw error
 	}
 }
@@ -44,7 +45,7 @@ export async function updateProfessionalUserService(
 	currentEmail: string | undefined,
 	data: FormValuesEdit
 ) {
-	const url = `${BASE_URL}updateprofessionaluser/${currentEmail}`
+	const url = `${BASE_UPDATE_PROFESSIONAL}${currentEmail}`
 	// Mapeamos los datos a la estructura esperada por la API
 	const apiData: ApiUpdateProfessionalData = {
 		firstName: data.nombre,
@@ -83,7 +84,7 @@ export async function updateProfessionalUserService(
 export async function getClientData(
 	token: string | undefined,
 	clientId: string,
-	profesionalId: string | undefined,
+	profesionalId: string | undefined
 ): Promise<ClientData | null> {
 	try {
 		const response = await fetch(
@@ -104,5 +105,37 @@ export async function getClientData(
 		}
 	} catch (error) {
 		throw new Error((error as Error).message || 'Error fetching client data')
+	}
+}
+
+export async function getProfessionalData(
+	decodedToken: DecodedToken
+): Promise<ApiResponseProfesional> {
+	try {
+		const token = localStorage.getItem('token')
+		if (!token) throw new Error('Token not found')
+
+		const res = await fetch(
+			`${BASE_GET_PROFESIONAL}${decodedToken.professionalId}`,
+			{
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}` 
+				}
+			}
+		)
+
+		if (!res.ok)
+			throw new Error(`Error getting professional data: ${res.statusText}`)
+
+		const apiResponse: ApiResponseProfesional = await res.json()
+		if (!apiResponse.success)
+			throw new Error(apiResponse.message || 'Unknown error')
+
+		return apiResponse
+	} catch (error) {
+		console.error('Error getting professional data:', error)
+		throw error
 	}
 }

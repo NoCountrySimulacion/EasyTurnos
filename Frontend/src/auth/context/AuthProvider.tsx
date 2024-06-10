@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
+	
 	getProfessionalData,
 	updateProfessionalUserService
 } from '../../services/api/professional'
@@ -45,10 +46,9 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 				try {
 					decodedToken.role = 'Professional'
 					const response = await getProfessionalData(
-						decodedToken.professionalId,
-						user?.token ?? ''
+						decodedToken
 					)
-					setProfessionalData(response.data)
+					setProfessionalData(response)
 					console.log('mis datos guardados:', professionalData)
 				} catch (error) {
 					console.error('Error fetching professional data:', error)

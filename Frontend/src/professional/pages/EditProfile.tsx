@@ -2,7 +2,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { UserProfile, Edit } from '../components/icons/Icons'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../auth/hooks/useAuth'
-
+import { useProfessionalData } from '../hooks/useProfessionalData'
 
 export interface FormValuesEdit {
 	nombre: string
@@ -15,14 +15,23 @@ export interface FormValuesEdit {
 }
 
 export function EditProfile(): JSX.Element {
-	const {
-		user,
-		updateProfessionalUser,
-		logout,
-		professionalData,
-		decodedToken
-	} = useAuth()
+	const { user, updateProfessionalUser, logout, decodedToken } = useAuth()
 	const navigate = useNavigate()
+
+	if (!decodedToken) {
+		return <p>Error: Invalid token.</p>
+	}
+
+	const { professionalData, loading, error } = useProfessionalData(decodedToken)
+	if (loading)
+		return (
+			<div className='flex items-center justify-center h-full min-h-screen'>
+				<div className='w-10 h-10 border-4 border-dashed rounded-full animate-spin border-gray-800'></div>
+				<p className='ml-4'>Loading...</p>
+			</div>
+		)
+
+	if (error) return <p>Error: {error}</p>
 
 	return (
 		<section className='flex flex-col mt-10'>
@@ -59,9 +68,9 @@ export function EditProfile(): JSX.Element {
 						apellido: user?.lastName || '',
 						especialidad: professionalData?.speciality || '',
 						ubicacion: '',
-						tel: '',
+						tel: professionalData?.phoneNumber || '',
 						descripcion: professionalData?.description || '',
-						mail: decodedToken?.email || ''
+						mail: ''
 					}}
 					validate={values => {
 						const errors: Partial<FormValuesEdit> = {}

@@ -13,7 +13,7 @@ export default function LayoutApp(): JSX.Element {
 					<Sidemenu />
 				</aside>
 				<div className='w-full flex flex-col gap-10'>
-					{location.pathname !== '/profile' && (
+					{(location.pathname !== '/profile') && (
 						<section className=' px-[30px]'>
 							<Search />
 						</section>

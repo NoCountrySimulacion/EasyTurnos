@@ -32,7 +32,7 @@ export default function Landing(): JSX.Element {
 					<TestimonialCarousel />
 				</section>
 				<section>
-					<address id='planos'>
+					<address id='planes'>
 						<Planos />
 					</address>
 				</section>

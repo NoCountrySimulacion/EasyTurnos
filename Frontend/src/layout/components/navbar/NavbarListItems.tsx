@@ -10,13 +10,19 @@ export default function NavbarListItems(): JSX.Element {
 		<div className='w-full'>
 			<ul className='font-montserrat flex justify-between items-center text-right text-gray-700 text-base ml-[100px] list-none font-semibold'>
 				<li className='cursor-pointer hover:text-orange-400'>
-					<NavHashLink smooth to='/#comoFunciona'>Como Funciona?</NavHashLink>
+					<NavHashLink smooth to='/#comoFunciona'>
+						Como Funciona?
+					</NavHashLink>
 				</li>
 				<li className='cursor-pointer hover:text-orange-400'>
-					<NavHashLink smooth to='/#planos'>Planos</NavHashLink>
+					<NavHashLink smooth to='/#planes'>
+						Planes
+					</NavHashLink>
 				</li>
 				<li className='cursor-pointer hover:text-orange-400'>
-					<NavHashLink smooth to='/#clientes'>Clientes</NavHashLink>
+					<NavHashLink smooth to='/#clientes'>
+						Clientes
+					</NavHashLink>
 				</li>
 				<li className='cursor-pointer hover:text-orange-400'>
 					<NavHashLink smooth to='/#contacto'>

@@ -25,15 +25,15 @@ export interface RegisterCredentials {
 	confirmPassword: string
 }
 
-interface ProfessionalClient {
+interface ProfessionalClientData {
 	id: string
 	firstName: string
 	lastName: string
 	phoneNumber: string
 }
 
-export interface ProfessionalClients {
-	data: ProfessionalClient[]
+export interface ClientsByProfessional {
+	data: ProfessionalClientData[]
 	success: boolean
 	message: string
 }
@@ -46,16 +46,25 @@ interface ProfessionalData {
 	id: string
 	specialty: string
 	description: string
-	slots: availableSlot[]
+	slots?: availableSlot[]
+	firstName: string
+	lastName: string
+	phoneNumber: string
 }
 
 export interface Professional {
-	data: ProfessionalData[]
+	data: Omit<ProfessionalData[], 'firstName' | 'lastName' | 'phoneNumber'>
 	success: boolean
 	message: string
 }
 
-interface Appointment {
+export interface ProfessionalsByClient {
+	data: Omit<ProfessionalData[], 'slots'>
+	success: boolean
+	message: string
+}
+
+export interface Appointment {
 	id: string
 	name: string
 	startDate: string
@@ -63,10 +72,18 @@ interface Appointment {
 	professionalId: string
 	firstName: string
 	lastName: string
+	speciality: string
+	clientId: string
 }
 
-export interface AppointmentList {
-	data: Appointment[]
+export interface ClientAppointmentList {
+	data: Omit<Appointment[], 'clientId'>
+	success: boolean
+	message: string
+}
+
+export interface ProfessionalAppointmentList {
+	data: Omit<Appointment[], 'speciality'>
 	success: boolean
 	message: string
 }
@@ -86,4 +103,14 @@ export interface ApiResponse {
 	data: ClientData
 	success: boolean
 	message: string
+}
+
+export interface ApiUpdateProfessionalData {
+	firstName: string;
+	lastName: string;
+	speciality: string;
+	description: string;
+	location: string;
+	phoneNumber: string;
+	newEmail: string;
 }

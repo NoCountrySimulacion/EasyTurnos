@@ -3,7 +3,7 @@ import { AppointmentCardProps } from '../typescript/interfaces'
 
 export function AppointmentCard({
 	name,
-	profession,
+	speciality,
 	startDate,
 	endDate
 }: AppointmentCardProps): React.ReactElement {
@@ -20,7 +20,7 @@ export function AppointmentCard({
 					{name}
 				</span>
 				<span className='text-[#828282] font-normal font-roboto text-base'>
-					{profession}
+					{speciality}
 				</span>
 			</div>
 		</li>
