@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { PickersDay } from '@mui/x-date-pickers'
 import moment from 'moment'
 import 'moment/locale/es'
-import { CustomDayProps } from '../typescript/interface'
-import { getProfessionalAppointments } from '../../services/api/appointment'
-import { useAuth } from '../../auth/hooks/useAuth'
+import { CustomDayProps, PointerEnterHandler } from '../typescript/interface'
 
 const CustomDay: React.FC<CustomDayProps> = props => {
 	const {
@@ -14,48 +12,28 @@ const CustomDay: React.FC<CustomDayProps> = props => {
 		onPointerEnter,
 		onPointerLeave,
 		slots,
+		appointments,
 		...other
 	} = props
 
-	const [appointments, setAppointments] = useState([]) // Estado para almacenar las citas
-	const [isDataLoaded, setIsDataLoaded] = useState(false) // Estado para controlar si los datos ya se cargaron
-	const { decodedToken } = useAuth()
+	const isDayWithSlot = slots.some(slot =>
+		moment(slot.startDate).isSame(day, 'day')
+	)
 
-	useEffect(() => {
-		const fetchAppointments = async () => {
-			try {
-				if (decodedToken && !isDataLoaded) {
-					const appointmentsData =
-						await getProfessionalAppointments(decodedToken)
-					setAppointments(appointmentsData.data)
-					setIsDataLoaded(true)
-				}
-			} catch (error) {
-				console.error('Error getting appointments:', error)
-			}
-		}
+	const isDayWithAppointment = appointments.some(appointment =>
+		moment(appointment.startDate).isSame(day, 'day')
+	)
 
-		fetchAppointments() // Siempre se ejecuta al inicio
-
-		// Dependencia isDataLoaded agregada para que el efecto se ejecute nuevamente cuando cambie su valor
-	}, [decodedToken, isDataLoaded])
-	// Dependencias actualizadas
-
-	const isDayWithSlot =
-		slots && slots.some(slot => moment(slot.startDate).isSame(day, 'day'))
-
-	const isDayWithAppointment =
-		appointments &&
-		appointments.some(appointment =>
-			moment(appointment.startDate).isSame(day, 'day')
-		)
+	const handlePointerEnter: PointerEnterHandler = (event, day) => {
+		onPointerEnter(event, day)
+	}
 
 	return (
 		<PickersDay
 			{...other}
 			day={day}
 			selected={selectedDay ? selectedDay.isSame(day, 'day') : false}
-			onMouseEnter={() => onPointerEnter({ day })}
+			onMouseEnter={event => handlePointerEnter(event, day)}
 			onMouseLeave={onPointerLeave}
 			style={{
 				...(isDayWithSlot && {

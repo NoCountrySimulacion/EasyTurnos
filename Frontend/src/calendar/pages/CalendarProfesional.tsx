@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
 import { DateCalendar } from '@mui/x-date-pickers'
-import moment from 'moment'
+import moment, { Moment } from 'moment'
 import 'moment/locale/es'
 import { FaTrash } from 'react-icons/fa'
 import { Tabs, Tab } from '@mui/material'
@@ -12,16 +11,12 @@ import CustomDay from '../components/CustomDay'
 import useCalendarLogic from '../hook/useCalendarLogic' // Importar el hook personalizado
 import CalendarConfig from '../components/CalendarConfig'
 import clsx from 'clsx'
-import { getProfessionalAppointments } from '../../services/api/appointment'
-import { useAuth } from '../../auth/hooks/useAuth'
-
-
 
 const CalendarProfesional: React.FC = () => {
 	const {
 		selectedDate,
 		hoveredDay,
-		setHoveredDay, // Importa setHoveredDay desde el hook
+		setHoveredDay,
 		slots,
 		selectedSlots,
 		selectedSlot,
@@ -30,10 +25,30 @@ const CalendarProfesional: React.FC = () => {
 		handleDateChange,
 		handleConfigChange,
 		handleSlotClick,
-		handleDeleteSlot // Usar la función de eliminación
-	} = useCalendarLogic() // Usar el hook personalizado
+		handleCreateAppointment,
+		handleDeleteSlot,
+		setShowConfirmButton,
+		appointments,
+		...otherFunctions
+	} = useCalendarLogic()
 
 	const [tabIndex, setTabIndex] = useState(0)
+
+	const handleConfirmAppointment = async () => {
+		if (showConfirmButton) {
+			await handleCreateAppointment()
+			setShowConfirmButton(false)
+		}
+	}
+
+	const handleDeleteAppointment = async (id: string) => {
+		await otherFunctions.handleDeleteAppointment(id)
+	}
+
+	// Filtrar los appointments por el día seleccionado
+	const filteredAppointments = appointments.filter(appointment =>
+		moment(appointment.startDate).isSame(selectedDate, 'day')
+	)
 
 	return (
 		<LocalizationProvider dateAdapter={AdapterMoment}>
@@ -71,7 +86,8 @@ const CalendarProfesional: React.FC = () => {
 											hoveredDay,
 											onPointerEnter: (day: Moment) => setHoveredDay(day),
 											onPointerLeave: () => setHoveredDay(null),
-											slots: slots
+											slots,
+											appointments: filteredAppointments // Usar appointments filtrados
 										})
 									}}
 								/>
@@ -100,7 +116,7 @@ const CalendarProfesional: React.FC = () => {
 													className='absolute top-2 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center'
 													onClick={e => {
 														e.stopPropagation()
-														handleDeleteSlot(slot.id) // Llama a la función de eliminación
+														handleDeleteSlot(slot.id)
 													}}
 												>
 													<FaTrash />
@@ -112,7 +128,10 @@ const CalendarProfesional: React.FC = () => {
 									)}
 									<div>
 										{showConfirmButton && selectedSlot && (
-											<button className='p-2 mt-3 bg-purple-700 text-white rounded'>
+											<button
+												className='p-2 mt-3 bg-purple-700 text-white rounded'
+												onClick={handleConfirmAppointment}
+											>
 												Confirmar
 											</button>
 										)}
@@ -120,20 +139,25 @@ const CalendarProfesional: React.FC = () => {
 								</div>
 								<div className='mt-4'>
 									<h3 className='text-lg font-bold'>Turnos del día</h3>
-									{appointmentsForSelectedDate.length > 0 ? (
-										appointmentsForSelectedDate.map((appointment, index) => (
+									{filteredAppointments.length > 0 ? (
+										filteredAppointments.map((appointment, index) => (
 											<div
 												key={index}
 												className='p-2 border border-gray-300 rounded my-2 flex justify-between items-center'
 											>
 												<div>
-													<p className='font-bold'>{appointment.name}</p>
+													<p className='font-bold'>
+														{appointment.name || appointment.firstName}
+													</p>
 													<p>
 														{moment(appointment.startDate).format('HH:mm')} -{' '}
 														{moment(appointment.endDate).format('HH:mm')}
 													</p>
 												</div>
-												<button className='p-2 bg-red-500 text-white rounded'>
+												<button 
+													className='p-2 bg-red-500 text-white rounded'
+													onClick={() => handleDeleteAppointment(appointment.id)}	
+												>
 													<FaTrash />
 												</button>
 											</div>

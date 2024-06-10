@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { DecodedToken } from '../../auth/typescript/interface'
 import { ClientsByProfessional } from '../typescript/interface'
 

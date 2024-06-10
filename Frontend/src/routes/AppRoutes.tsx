@@ -56,7 +56,7 @@ export default function AppRoutes() {
 								<Route path='/home' element={<HomeClient />} />
 								<Route path='/professionals' element={<Professionals />} />
 								<Route path='/my-appointments' element={<Appointments />} />
-								<Route path='/calendar' element={<Calendar />} />
+								<Route path='/client/calendar' element={<Calendar />} />
 							</>
 						)}
 					</Route>
