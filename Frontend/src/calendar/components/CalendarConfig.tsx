@@ -6,7 +6,7 @@ import { DateRange } from 'react-date-range'
 import 'react-date-range/dist/styles.css' // Main style file
 import 'react-date-range/dist/theme/default.css' // Theme CSS file
 import { generateSlots } from '../utils/utils'
-import { createSlot } from '../../services/api/slots' // Agregamos deleteAllSlots
+import { createSlot, deleteAllSlots } from '../../services/api/slots' // Agregar deleteAllSlots
 
 interface CalendarConfigProps {
 	onConfigChange: (slots: any[]) => void
@@ -72,6 +72,16 @@ const CalendarConfig: React.FC<CalendarConfigProps> = ({ onConfigChange }) => {
 					console.error('Mensaje de error detallado:', errorMessage)
 				}
 			}
+		}
+	}
+
+	const handleDeleteAllSlots = async () => {
+		try {
+			await deleteAllSlots()
+			console.log('Todos los slots han sido eliminados correctamente')
+			onConfigChange([]) // Limpiar los slots en el componente padre
+		} catch (error) {
+			console.error('Error al eliminar todos los slots:', error)
 		}
 	}
 
@@ -161,7 +171,7 @@ const CalendarConfig: React.FC<CalendarConfigProps> = ({ onConfigChange }) => {
 					</button>
 					<button
 						className='px-4 py-2 ml-4 bg-red-500 text-white rounded hover:bg-red-600'
-						/* 	onClick={handleDeleteAllSlots} */
+						onClick={handleDeleteAllSlots}
 					>
 						Eliminar Todos los Slots
 					</button>

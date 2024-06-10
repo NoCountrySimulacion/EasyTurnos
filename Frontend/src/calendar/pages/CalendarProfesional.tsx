@@ -12,11 +12,16 @@ import CustomDay from '../components/CustomDay'
 import useCalendarLogic from '../hook/useCalendarLogic' // Importar el hook personalizado
 import CalendarConfig from '../components/CalendarConfig'
 import clsx from 'clsx'
+import { getProfessionalAppointments } from '../../services/api/appointment'
+import { useAuth } from '../../auth/hooks/useAuth'
+
+
 
 const CalendarProfesional: React.FC = () => {
 	const {
 		selectedDate,
 		hoveredDay,
+		setHoveredDay, // Importa setHoveredDay desde el hook
 		slots,
 		selectedSlots,
 		selectedSlot,
@@ -24,10 +29,8 @@ const CalendarProfesional: React.FC = () => {
 		appointmentsForSelectedDate,
 		handleDateChange,
 		handleConfigChange,
-		handleSlotClick
-		/* 	handleConfirmClick,
-		handleDeleteAppointment,
-		handleDeleteSlot */
+		handleSlotClick,
+		handleDeleteSlot // Usar la función de eliminación
 	} = useCalendarLogic() // Usar el hook personalizado
 
 	const [tabIndex, setTabIndex] = useState(0)
@@ -66,8 +69,8 @@ const CalendarProfesional: React.FC = () => {
 										day: _ownerState => ({
 											selectedDay: selectedDate,
 											hoveredDay,
-											onPointerEnter: (day: Moment) => hoveredDay(day),
-											onPointerLeave: () => hoveredDay(null),
+											onPointerEnter: (day: Moment) => setHoveredDay(day),
+											onPointerLeave: () => setHoveredDay(null),
 											slots: slots
 										})
 									}}
@@ -97,11 +100,7 @@ const CalendarProfesional: React.FC = () => {
 													className='absolute top-2 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center'
 													onClick={e => {
 														e.stopPropagation()
-														/* 						handleDeleteSlot(
-															moment(slot.startDate).format('YYYY-MM-DD'),
-															moment(slot.startDate).format('HH:mm'),
-															moment(slot.endDate).format('HH:mm')
-														) */
+														handleDeleteSlot(slot.id) // Llama a la función de eliminación
 													}}
 												>
 													<FaTrash />
@@ -113,10 +112,7 @@ const CalendarProfesional: React.FC = () => {
 									)}
 									<div>
 										{showConfirmButton && selectedSlot && (
-											<button
-												className='p-2 mt-3 bg-purple-700 text-white rounded'
-												/* 		onClick={handleConfirmClick} */
-											>
+											<button className='p-2 mt-3 bg-purple-700 text-white rounded'>
 												Confirmar
 											</button>
 										)}
@@ -137,12 +133,7 @@ const CalendarProfesional: React.FC = () => {
 														{moment(appointment.endDate).format('HH:mm')}
 													</p>
 												</div>
-												<button
-													className='p-2 bg-red-500 text-white rounded'
-												/* 	onClick={() =>
-														handleDeleteAppointment(appointment.id)
-													} */
-												>
+												<button className='p-2 bg-red-500 text-white rounded'>
 													<FaTrash />
 												</button>
 											</div>

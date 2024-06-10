@@ -21,6 +21,7 @@ export interface ConfigSlot {
   end: string;
   startDate: string; // Modificado para incluir startDate y endDate
   endDate: string;
+  id:string;
 }
 
 export interface CustomDayProps extends PickersDayProps<Moment> {
@@ -29,4 +30,14 @@ export interface CustomDayProps extends PickersDayProps<Moment> {
   onPointerEnter: (event: React.PointerEvent<HTMLButtonElement>) => void ; // Cambiado el tipo de parámetro
   onPointerLeave: () => void;
   slots: ConfigSlot[];
+  appointments: Appointment[];
+  
 }
+
+export interface Appointment {
+  id: string;
+  name: string;
+  startDate: string;
+  endDate: string;
+}
+

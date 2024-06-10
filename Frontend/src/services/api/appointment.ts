@@ -18,7 +18,6 @@ export async function getProfessionalAppointments(
 			throw new Error(`Error getting appointments: ${res.statusText}`)
 
 		const data: AppointmentList = await res.json()
-		console.log(data)
 		return data
 	} catch (error) {
 		console.error('Error getting appointments:', error)

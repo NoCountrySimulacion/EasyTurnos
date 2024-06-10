@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { PickersDay } from '@mui/x-date-pickers'
-import moment from 'moment' // Agrega Moment desde moment
+import moment from 'moment'
 import 'moment/locale/es'
-import mockAppointments from '../mocks/appoinmet'
 import { CustomDayProps } from '../typescript/interface'
+import { getProfessionalAppointments } from '../../services/api/appointment'
+import { useAuth } from '../../auth/hooks/useAuth'
 
 const CustomDay: React.FC<CustomDayProps> = props => {
 	const {
@@ -16,10 +17,34 @@ const CustomDay: React.FC<CustomDayProps> = props => {
 		...other
 	} = props
 
+	const [appointments, setAppointments] = useState([]) // Estado para almacenar las citas
+	const [isDataLoaded, setIsDataLoaded] = useState(false) // Estado para controlar si los datos ya se cargaron
+	const { decodedToken } = useAuth()
+
+	useEffect(() => {
+		const fetchAppointments = async () => {
+		  try {
+			if (decodedToken && !isDataLoaded) {
+			  const appointmentsData = await getProfessionalAppointments(decodedToken);
+			  setAppointments(appointmentsData.data);
+			  setIsDataLoaded(true);
+			}
+		  } catch (error) {
+			console.error('Error getting appointments:', error);
+		  }
+		};
+	  
+		fetchAppointments(); // Siempre se ejecuta al inicio
+	  
+		// Dependencia isDataLoaded agregada para que el efecto se ejecute nuevamente cuando cambie su valor
+	  }, [decodedToken, isDataLoaded]);
+	  // Dependencias actualizadas
+
 	const isDayWithSlot = slots.some(slot =>
 		moment(slot.startDate).isSame(day, 'day')
 	)
-	const isDayWithAppointment = mockAppointments.data.some(appointment =>
+
+	const isDayWithAppointment = appointments.some(appointment =>
 		moment(appointment.startDate).isSame(day, 'day')
 	)
 
@@ -28,7 +53,7 @@ const CustomDay: React.FC<CustomDayProps> = props => {
 			{...other}
 			day={day}
 			selected={selectedDay ? selectedDay.isSame(day, 'day') : false}
-			onMouseEnter={() => onPointerEnter(day)} // Cambia aquí
+			onMouseEnter={() => onPointerEnter({ day })}
 			onMouseLeave={onPointerLeave}
 			style={{
 				...(isDayWithSlot && {
@@ -41,10 +66,11 @@ const CustomDay: React.FC<CustomDayProps> = props => {
 					borderRadius: '50%',
 					color: '#7445C7'
 				}),
-				...(selectedDay && day.isSame(selectedDay, 'day') && { // Añade selectedDay && para evitar errores
-					backgroundColor: 'rgba(116, 69, 199, 0.12)',
-					color: '#FD8847'
-				}),
+				...(selectedDay &&
+					day.isSame(selectedDay, 'day') && {
+						backgroundColor: 'rgba(116, 69, 199, 0.12)',
+						color: '#FD8847'
+					}),
 				...(day.isSame(hoveredDay, 'day') && {
 					backgroundColor: 'rgba(116, 69, 199, 0.04)'
 				})

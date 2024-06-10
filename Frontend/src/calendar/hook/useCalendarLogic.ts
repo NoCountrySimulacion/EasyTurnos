@@ -1,13 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, useEffect } from 'react'
 import moment, { Moment } from 'moment'
-import { getAllSlots } from '../../services/api/slots'
+import { getAllSlots, deleteSlotById } from '../../services/api/slots'
 import { ConfigSlot } from '../typescript/interface'
-import mockAppointments, { Appointment } from '../mocks/appoinmet'
 
 const useCalendarLogic = () => {
 	const [selectedDate, setSelectedDate] = useState<Moment | null>(moment())
-	const [hoveredDay] = useState<Moment | null>(null)
+	const [hoveredDay, setHoveredDay] = useState<Moment | null>(null)
 	const [slots, setSlots] = useState<ConfigSlot[]>([])
 	const [selectedSlots, setSelectedSlots] = useState<ConfigSlot[]>([])
 	const [selectedSlot, setSelectedSlot] = useState<ConfigSlot | null>(null)
@@ -41,10 +39,8 @@ const useCalendarLogic = () => {
 			setSelectedSlot(null)
 			setShowConfirmButton(false)
 
-			const appointments = mockAppointments.data.filter(appointment =>
-				moment(appointment.startDate).isSame(selectedDate, 'day')
-			)
-			setAppointmentsForSelectedDate(appointments)
+			// En este punto, no establecemos appointmentsForSelectedDate a partir de ningún mock
+			setAppointmentsForSelectedDate([]) // Inicialmente vacío
 		}
 	}, [selectedDate, slots])
 
@@ -67,20 +63,29 @@ const useCalendarLogic = () => {
 		}
 	}
 
-	// Otras funciones relacionadas con la lógica del calendario
+	const handleDeleteSlot = async (id: string) => {
+		try {
+			await deleteSlotById(id)
+			setSlots(slots.filter(slot => slot.id !== id))
+			console.log(`Slot con ID ${id} eliminado exitosamente`)
+		} catch (error) {
+			console.error(`Error al eliminar el slot con ID ${id}:`, error)
+		}
+	}
 
 	return {
 		selectedDate,
 		hoveredDay,
+		setHoveredDay, // Asegúrate de exportar setHoveredDay
 		slots,
 		selectedSlots,
 		selectedSlot,
 		showConfirmButton,
-		appointmentsForSelectedDate,
+		appointmentsForSelectedDate, // Asegúrate de exportar esto
 		handleDateChange,
 		handleConfigChange,
-		handleSlotClick
-		// Otras funciones que quieras exponer
+		handleSlotClick,
+		handleDeleteSlot // Exportar la función de eliminación
 	}
 }
 

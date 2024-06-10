@@ -23,15 +23,7 @@ export const getAllSlots = async (): Promise<any[]> => {
 			throw new Error('Error al obtener los slots')
 		}
 		const slotsResponse: SlotResponse = await response.json()
-		console.log('Slots:', slotsResponse.data)
-		// Asignar un ID hardcodeado al primer slot si la respuesta está vacía
-		if (!slotsResponse.data.length) {
-			slotsResponse.data.push({
-				id: '3fa85f64-5717-4562-b3fc-2c963f66afa6' // ID hardcodeado para simular un slot
-				// Otras propiedades del slot según la estructura de tus slots
-			})
-		}
-
+		console.log('Slots obtenidos exitosamente:', slotsResponse.data)
 		return slotsResponse.data // Retorna solo los datos de los slots
 	} catch (error) {
 		console.error('Error en getAllSlots:', error)
@@ -60,24 +52,42 @@ export const createSlot = async (newSlot: any): Promise<void> => {
 	}
 }
 
-export const deleteSlot = async (): Promise<void> => {
+export const deleteAllSlots = async (): Promise<void> => {
 	try {
 		const token = localStorage.getItem('token')
-		const idToDelete = '3fa85f64-5717-4562-b3fc-2c963f66afa6' // ID hardcodeado para eliminar
+		const response = await fetch(`${BASE_SLOT_URL}/DeleteAllByProfessionalId`, {
+			method: 'DELETE',
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		})
+		if (!response.ok) {
+			throw new Error('Error al eliminar el slot')
+		}
+		console.log('Slot eliminado exitosamente')
+	} catch (error) {
+		console.error('Error en deleteSlot:', error)
+		throw error
+	}
+}
+
+export const deleteSlotById = async (id: string): Promise<void> => {
+	try {
+		const token = localStorage.getItem('token')
 		const response = await fetch(BASE_SLOT_URL, {
 			method: 'DELETE',
 			headers: {
-				Authorization: `Bearer ${token}`,
-				'Content-Type': 'application/json' // Agrega el encabezado Content-Type
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`
 			},
-			body: JSON.stringify([idToDelete]) // Agrega un cuerpo con el ID a eliminar
+			body: JSON.stringify([id]) // Enviar un array de IDs en el cuerpo de la solicitud
 		})
 		if (!response.ok) {
-			throw new Error('Error al eliminar los slots')
+			throw new Error('Error al eliminar el slot')
 		}
-		console.log('Slots eliminados exitosamente')
+		console.log(`Slot con ID ${id} eliminado exitosamente`)
 	} catch (error) {
-		console.error('Error en deleteSlot:', error)
+		console.error('Error en deleteSlotById:', error)
 		throw error
 	}
 }
