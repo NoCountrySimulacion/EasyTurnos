@@ -35,6 +35,14 @@ namespace Infrastructure.Repositories
                 .ToListAsync();
         }
 
+        public async Task<List<AppointmentWithClientGetDto>> GetAllAppointmentsByClient(Guid clientId)
+        {
+            return await GetAll()
+                .Where(a => a.ClientId == clientId)
+                .ProjectTo<AppointmentWithClientGetDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+        }
+
         public async Task<AppointmentGetDto> GetAppointmentByProfessional(Guid appointmentId, Guid professionalId)
         {
             var appointment = await Entities

@@ -17,6 +17,10 @@ namespace Mappings.Profiles
             CreateMap<Appointment, AppointmentGetDto>()
                 .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.Client.ApplicationUser.FirstName))
                 .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.Client.ApplicationUser.LastName));
+            CreateMap<Appointment, AppointmentWithClientGetDto>()
+                .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.Professional.ApplicationUser.FirstName))
+                .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.Professional.ApplicationUser.LastName))
+                .ForMember(dest => dest.Speciality, opt => opt.MapFrom(src => src.Professional.Speciality));
         }
     }
 }

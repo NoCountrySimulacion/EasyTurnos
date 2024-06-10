@@ -36,10 +36,10 @@ namespace API.Controllers
             return Ok(await _appointmentService.GetAppointment(appointmentId, professionalId));
         }
 
-        [HttpGet("{professionalId}")]
-        public async Task<ActionResult<ServiceResponse<List<AppointmentGetDto>>>> GetAppointments(Guid professionalId)
+        [HttpGet("byClientOrProfessional/{userId}")]
+        public async Task<ActionResult<ServiceResponse<List<object>>>> GetAppointments(Guid userId)
         {
-            return Ok(await _appointmentService.GetAppointments(professionalId));
+            return Ok(await _appointmentService.GetAppointments(userId));
         }
     }
 }
