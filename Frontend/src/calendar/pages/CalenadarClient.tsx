@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
 import { DateCalendar } from '@mui/x-date-pickers'
-import moment, { Moment } from 'moment'
+import moment from 'moment'
 import 'moment/locale/es'
+import { FaTrash } from 'react-icons/fa'
 import { Tabs, Tab } from '@mui/material'
 import '../styles/calendar.css'
 import CustomDay from '../components/CustomDay'
-import useCalendarLogic from '../hook/useCalendarLogic'
-import CalendarConfig from '../components/CalendarConfig'
-import clsx from 'clsx'
+import SlotModal from '../components/SlotModal'
+import { useCalendar } from '../hook/useCalendar'
 
-const CalendarProfesional: React.FC = () => {
+const CalendarClient: React.FC = () => {
 	const {
 		selectedDate,
 		hoveredDay,
@@ -19,24 +19,37 @@ const CalendarProfesional: React.FC = () => {
 		slots,
 		selectedSlots,
 		selectedSlot,
-		showConfirmButton,
-		appointmentsForSelectedDate,
 		handleDateChange,
-		handleConfigChange,
 		handleSlotClick,
 		handleCreateAppointment,
+		handleDeleteSlot,
 		appointments,
-		...otherFunctions
-	} = useCalendarLogic()
-
+		professionalClients
+	} = useCalendar()
 	const [tabIndex, setTabIndex] = useState(0)
+	const [isModalOpen, setModalOpen] = useState(false)
 
-	const handleConfirmAppointment = async () => {
-		if (showConfirmButton) {
-			await handleCreateAppointment()
-			setShowConfirmButton(false)
+	const handleModalClose = () => {
+		setModalOpen(false)
+	}
+
+	const handleSlotClickWrapper = (slot: any) => {
+		handleSlotClick(slot)
+		setModalOpen(true)
+	}
+
+	const handleConfirmAppointment = (title: string, client: string) => {
+		if (selectedSlot) {
+			handleCreateAppointment(title, client)
+			setModalOpen(false)
 		}
 	}
+
+	const filteredAppointments = appointments
+		? appointments.filter(appointment =>
+			moment(appointment.startDate).isSame(selectedDate, 'day')
+		)
+		: []
 
 	return (
 		<LocalizationProvider dateAdapter={AdapterMoment}>
@@ -46,7 +59,6 @@ const CalendarProfesional: React.FC = () => {
 					onChange={(_e, newValue) => setTabIndex(newValue)}
 				>
 					<Tab label='Calendario' />
-					<Tab label='Configuración' />
 				</Tabs>
 				{tabIndex === 0 && (
 					<div className=''>
@@ -72,15 +84,11 @@ const CalendarProfesional: React.FC = () => {
 										day: _ownerState => ({
 											selectedDay: selectedDate,
 											hoveredDay,
-											onPointerEnter: (day: Moment) => setHoveredDay(day),
+											onPointerEnter: (day: moment.Moment) =>
+												setHoveredDay(day),
 											onPointerLeave: () => setHoveredDay(null),
 											slots,
-											appointments: appointments.filter(appointment =>
-												moment(appointment.startDate).isSame(
-													selectedDate,
-													'day'
-												)
-											)
+											appointments
 										})
 									}}
 								/>
@@ -99,38 +107,74 @@ const CalendarProfesional: React.FC = () => {
 														'bg-white text-black': selectedSlot !== slot
 													}
 												)}
-												onClick={() => handleSlotClick(slot)}
+												onClick={() => handleSlotClickWrapper(slot)}
 											>
 												<div>
 													{moment(slot.startDate).format('HH:mm')} -{' '}
 													{moment(slot.endDate).format('HH:mm')}
 												</div>
+												<button
+													className='absolute top-2 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center'
+													onClick={e => {
+														e.stopPropagation()
+														handleDeleteSlot(slot.id)
+													}}
+												>
+													<FaTrash />
+												</button>
 											</div>
 										))
 									) : (
 										<p>No hay horarios disponibles para este día.</p>
 									)}
-									<div>
-										{showConfirmButton && selectedSlot && (
-											<button
-												className='p-2 mt-3 bg-purple-700 text-white rounded'
-												onClick={handleConfirmAppointment}
+								</div>
+								<div className='mt-4'>
+									<h3 className='text-lg font-bold'>Turnos del día</h3>
+									{filteredAppointments.length > 0 ? (
+										filteredAppointments.map((appointment, index) => (
+											<div
+												key={index}
+												className='p-2 border border-gray-300 rounded my-2 flex justify-between items-center'
 											>
-												Confirmar
-											</button>
-										)}
-									</div>
+												<div>
+													<p className='font-bold'>
+														{appointment.name || appointment.firstName}
+													</p>
+													<p>
+														{moment(appointment.startDate).format('HH:mm')} -{' '}
+														{moment(appointment.endDate).format('HH:mm')}
+													</p>
+												</div>
+												<button
+													className='p-2 bg-red-500 text-white rounded'
+													onClick={() =>
+														handleDeleteAppointment(appointment.id)
+													}
+												>
+													<FaTrash />
+												</button>
+											</div>
+										))
+									) : (
+										<p>No hay turnos para este día.</p>
+									)}
 								</div>
 							</div>
 						</div>
 					</div>
 				)}
-				{tabIndex === 1 && (
-					<CalendarConfig onConfigChange={handleConfigChange} />
-				)}
 			</div>
+			{selectedSlot && (
+				<SlotModal
+					open={isModalOpen}
+					onClose={handleModalClose}
+					slot={selectedSlot}
+					clients={professionalClients?.data || []}
+					onConfirm={handleConfirmAppointment}
+				/>
+			)}
 		</LocalizationProvider>
 	)
 }
 
-export default CalendarProfesional
+export default CalendarClient

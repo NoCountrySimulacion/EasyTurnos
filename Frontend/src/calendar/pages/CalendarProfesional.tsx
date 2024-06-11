@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
 import { DateCalendar } from '@mui/x-date-pickers'
-import moment, { Moment } from 'moment'
+import moment from 'moment'
 import 'moment/locale/es'
 import { FaTrash } from 'react-icons/fa'
 import { Tabs, Tab } from '@mui/material'
 import '../styles/calendar.css'
 import CustomDay from '../components/CustomDay'
-import useCalendarLogic from '../hook/useCalendarLogic' // Importar el hook personalizado
 import CalendarConfig from '../components/CalendarConfig'
 import clsx from 'clsx'
+import SlotModal from '../components/SlotModal'
+import { useCalendar } from '../hook/useCalendar' // Importamos el hook useCalendar
 
 const CalendarProfesional: React.FC = () => {
 	const {
@@ -20,7 +21,6 @@ const CalendarProfesional: React.FC = () => {
 		slots,
 		selectedSlots,
 		selectedSlot,
-		showConfirmButton,
 		appointmentsForSelectedDate,
 		handleDateChange,
 		handleConfigChange,
@@ -29,20 +29,28 @@ const CalendarProfesional: React.FC = () => {
 		handleDeleteSlot,
 		setShowConfirmButton,
 		appointments,
-		...otherFunctions
-	} = useCalendarLogic()
+		professionalClients,
+		handleDeleteAppointment
+	} = useCalendar() // Usamos el hook useCalendar para acceder al contexto del calendario
 
 	const [tabIndex, setTabIndex] = useState(0)
+	const [isModalOpen, setModalOpen] = useState(false)
 
-	const handleConfirmAppointment = async () => {
-		if (showConfirmButton) {
-			await handleCreateAppointment()
-			setShowConfirmButton(false)
-		}
+	const handleModalClose = () => {
+		setModalOpen(false)
+		setShowConfirmButton(false)
 	}
 
-	const handleDeleteAppointment = async (id: string) => {
-		await otherFunctions.handleDeleteAppointment(id)
+	const handleSlotClickWrapper = (slot: any) => {
+		handleSlotClick(slot)
+		setModalOpen(true)
+	}
+
+	const handleConfirmAppointment = (title: string, selectedClientID: string) => {
+		if (selectedSlot) {
+			handleCreateAppointment(selectedClientID, title)
+			setModalOpen(false)
+		}
 	}
 
 	// Filtrar los appointments por el día seleccionado
@@ -86,10 +94,11 @@ const CalendarProfesional: React.FC = () => {
 										day: _ownerState => ({
 											selectedDay: selectedDate,
 											hoveredDay,
-											onPointerEnter: (day: Moment) => setHoveredDay(day),
+											onPointerEnter: (day: moment.Moment) =>
+												setHoveredDay(day),
 											onPointerLeave: () => setHoveredDay(null),
 											slots,
-											appointments: filteredAppointments // Usar appointments filtrados
+											appointments // Pasamos todos los appointments al componente CustomDay
 										})
 									}}
 								/>
@@ -108,7 +117,7 @@ const CalendarProfesional: React.FC = () => {
 														'bg-white text-black': selectedSlot !== slot
 													}
 												)}
-												onClick={() => handleSlotClick(slot)}
+												onClick={() => handleSlotClickWrapper(slot)}
 											>
 												<div>
 													{moment(slot.startDate).format('HH:mm')} -{' '}
@@ -128,16 +137,6 @@ const CalendarProfesional: React.FC = () => {
 									) : (
 										<p>No hay horarios disponibles para este día.</p>
 									)}
-									<div>
-										{showConfirmButton && selectedSlot && (
-											<button
-												className='p-2 mt-3 bg-purple-700 text-white rounded'
-												onClick={handleConfirmAppointment}
-											>
-												Confirmar
-											</button>
-										)}
-									</div>
 								</div>
 								<div className='mt-4'>
 									<h3 className='text-lg font-bold'>Turnos del día</h3>
@@ -178,6 +177,15 @@ const CalendarProfesional: React.FC = () => {
 					<CalendarConfig onConfigChange={handleConfigChange} />
 				)}
 			</div>
+			{selectedSlot && (
+				<SlotModal
+					open={isModalOpen}
+					onClose={handleModalClose}
+					slot={selectedSlot}
+					clients={professionalClients?.data || []}
+					onConfirm={handleConfirmAppointment}
+				/>
+			)}
 		</LocalizationProvider>
 	)
 }

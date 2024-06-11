@@ -6,11 +6,15 @@ import { DateRange } from 'react-date-range'
 import 'react-date-range/dist/styles.css' // Main style file
 import 'react-date-range/dist/theme/default.css' // Theme CSS file
 import { generateSlots } from '../utils/utils'
-import { createSlot, deleteAllSlots } from '../../services/api/slots' // Agregar deleteAllSlots
+import { createSlot, deleteAllSlots } from '../../services/api/slots'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 interface CalendarConfigProps {
 	onConfigChange: (slots: any[]) => void
 }
+
+const MySwal = withReactContent(Swal)
 
 const CalendarConfig: React.FC<CalendarConfigProps> = ({ onConfigChange }) => {
 	const defaultStartHour = 1
@@ -21,8 +25,8 @@ const CalendarConfig: React.FC<CalendarConfigProps> = ({ onConfigChange }) => {
 	])
 	const [interval, setInterval] = useState<number>(60)
 	const [selectedRange, setSelectedRange] = useState<{
-		startDate: Date | undefined // Cambiado de Date | null a Date | undefined
-		endDate: Date | undefined // Cambiado de Date | null a Date | undefined
+		startDate: Date | undefined
+		endDate: Date | undefined
 	}>({
 		startDate: undefined,
 		endDate: undefined
@@ -59,14 +63,12 @@ const CalendarConfig: React.FC<CalendarConfigProps> = ({ onConfigChange }) => {
 			)
 
 			try {
-				// Enviar los slots generados como un array
 				await createSlot(slotsToCreate)
 				console.log('Slots creados correctamente:', slotsToCreate)
 				onConfigChange(slotsToCreate)
 			} catch (error: any) {
 				console.error('Error al crear los slots:', error)
 
-				// Si el error es un error 400, intenta obtener el mensaje de error detallado
 				if (error.response && error.response.status === 400) {
 					const errorMessage = await error.response.json()
 					console.error('Mensaje de error detallado:', errorMessage)
@@ -79,9 +81,19 @@ const CalendarConfig: React.FC<CalendarConfigProps> = ({ onConfigChange }) => {
 		try {
 			await deleteAllSlots()
 			console.log('Todos los slots han sido eliminados correctamente')
-			onConfigChange([]) // Limpiar los slots en el componente padre
+			onConfigChange([])
+			MySwal.fire({
+				icon: 'success',
+				title: '¡Configuración eliminada!',
+				text: 'Se han eliminado todos los slots correctamente.',
+			})
 		} catch (error) {
 			console.error('Error al eliminar todos los slots:', error)
+			MySwal.fire({
+				icon: 'error',
+				title: 'Error al eliminar slots',
+				text: 'Hubo un error al intentar eliminar todos los slots.',
+			})
 		}
 	}
 

@@ -16,13 +16,15 @@ const CustomDay: React.FC<CustomDayProps> = props => {
 		...other
 	} = props
 
-	const isDayWithSlot = slots.some(slot =>
-		moment(slot.startDate).isSame(day, 'day')
-	)
+	const isDayWithSlot = slots
+		? slots.some(slot => moment(slot.startDate).isSame(day, 'day'))
+		: false
 
-	const isDayWithAppointment = appointments.some(appointment =>
-		moment(appointment.startDate).isSame(day, 'day')
-	)
+	const isDayWithAppointment = appointments
+		? appointments.some(appointment =>
+			moment(appointment.startDate).isSame(day, 'day')
+		)
+		: false
 
 	const handlePointerEnter: PointerEnterHandler = (event, day) => {
 		onPointerEnter(event, day)
@@ -36,21 +38,18 @@ const CustomDay: React.FC<CustomDayProps> = props => {
 			onMouseEnter={event => handlePointerEnter(event, day)}
 			onMouseLeave={onPointerLeave}
 			style={{
-				...(isDayWithSlot && {
-					border: '2px solid #7445C7',
-					borderRadius: '50%',
-					color: '#7445C7'
-				}),
-				...(isDayWithAppointment && {
-					border: '2px solid #7445C7',
-					borderRadius: '50%',
-					color: '#7445C7'
-				}),
+				...(isDayWithSlot || isDayWithAppointment
+					? {
+						border: '2px solid #7445C7',
+						borderRadius: '50%',
+						color: '#7445C7'
+					}
+					: {}),
 				...(selectedDay &&
 					day.isSame(selectedDay, 'day') && {
-						backgroundColor: 'rgba(116, 69, 199, 0.12)',
-						color: '#FD8847'
-					}),
+					backgroundColor: 'rgba(116, 69, 199, 0.12)',
+					color: '#FD8847'
+				}),
 				...(day.isSame(hoveredDay, 'day') && {
 					backgroundColor: 'rgba(116, 69, 199, 0.04)'
 				})
