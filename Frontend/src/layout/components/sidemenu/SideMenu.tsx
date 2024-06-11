@@ -12,7 +12,7 @@ export function Sidemenu(): JSX.Element {
 
 	const getSelectedPage = () => {
 		const path = location.pathname
-		if (path.startsWith('/clients')) {
+		if (path.startsWith('/professional/clients') || path.startsWith('/professional/data-client/')) {
 			return 'Clientes'
 		} else if (path.startsWith('/calendar')) {
 			return 'Agenda'
@@ -22,9 +22,9 @@ export function Sidemenu(): JSX.Element {
 			return 'Profesionales'
 		} else if (path.startsWith('/my-appointments')) {
 			return 'Mis turnos'
-		} else if (path.startsWith('/profile')) {
+		} else if (path.startsWith('/profile') || path.startsWith('/professional/edit-profile-prof')) {
 			return 'Perfil'
-		} else {
+		}else {
 			return 'Inicio'
 		}
 	}

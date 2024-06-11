@@ -179,19 +179,13 @@ export function AddClientForm(): JSX.Element {
 									</div>
 								</div>
 
-								<div className='flex flex-col gap-1'>
+								<div className='flex flex-col gap-1 w-1/6'>
 									<div className='flex flex-col gap-[8px]'>
 										<label htmlFor='birthDate'>Fecha de Nacimiento</label>
 										<LocalizationProvider dateAdapter={AdapterDayjs}>
 											<DatePicker
 												value={values.birthDate}
 												onChange={date => setFieldValue('birthDate', date)}
-												renderInput={params => (
-													<TextField
-														{...params}
-														className='border border-solid border-[#828282] w-[318px] p-[5px] rounded-md'
-													/>
-												)}
 											/>
 										</LocalizationProvider>
 									</div>

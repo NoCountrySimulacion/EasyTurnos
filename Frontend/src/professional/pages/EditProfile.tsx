@@ -90,7 +90,7 @@ export function EditProfile(): JSX.Element {
 						console.log('Valores pasados a func en contexto:', values)
 						updateProfessionalUser(values)
 						setSubmitting(false)
-						if (values.mail !== decodedToken?.email) {
+						if (values.mail !== '') {
 							setTimeout(() => {
 								logout()
 								navigate('/')

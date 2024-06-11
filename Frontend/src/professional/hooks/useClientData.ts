@@ -13,6 +13,7 @@ export const useClientData = (clientId: string, token: string) => {
 		const fetchClientData = async () => {
 			try {
 				const data = await getClientData(user?.token,clientId, decodedToken?.professionalId)
+				console.log('LOs datos que me trae useClientData: ', data)
 				setClientData(data)
 			} catch (error) {
 				setError((error as Error).message)
