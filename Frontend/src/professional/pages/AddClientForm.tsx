@@ -1,10 +1,8 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { Edit } from '../components/icons/Icons'
-import { Edit } from '../components/icons/Icons'
 import { Link } from 'react-router-dom'
 import { createClientForProfessional } from '../../services/api/professionalClient' // Adjust the import path as necessary
 import { DatePicker } from '@mui/x-date-pickers'
-import { TextField } from '@mui/material'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { useAuth } from '../../auth/hooks/useAuth'
@@ -112,7 +110,9 @@ export function AddClientForm(): JSX.Element {
 					onSubmit={async (values, { setSubmitting, resetForm }) => {
 						try {
 							const newClientData = {
-								birthDate: values.birthDate!.toISOString(), // Ensure birthDate is not null
+								birthDate: values.birthDate
+									? new Date(values.birthDate).toISOString()
+									: null,
 								registrationRequest: {
 									firstName: values.nombre,
 									lastName: values.apellido,
@@ -123,9 +123,14 @@ export function AddClientForm(): JSX.Element {
 								}
 							}
 
-							await createClientForProfessional(decodedToken, newClientData)
-							alert('Cliente creado con éxito')
-							resetForm()
+							if (decodedToken) {
+								await createClientForProfessional(decodedToken, newClientData)
+								alert('Cliente creado con éxito')
+								resetForm()
+							} else {
+								console.error('Decoded token is null')
+								alert('Error al crear el cliente')
+							}
 						} catch (error) {
 							console.error('Error creating client:', error)
 							alert('Error al crear el cliente')
