@@ -1,9 +1,11 @@
 ﻿using Core.Services.Interfaces;
+using Domain.Entities;
 using DTOs;
 using DTOs.Client;
 using DTOs.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Runtime.Intrinsics.X86;
 
 namespace API.Controllers;
 
@@ -26,9 +28,9 @@ public class ProfessionalClientController : ControllerBase
     }
 
     [HttpGet("{clientId}")]
-    public async Task<ActionResult> GetClientById(Guid clientId)
+    public async Task<ActionResult> GetClientById(Guid professionalId, Guid clientId)
     {
-        var result = await _clientService.GetClientById(clientId);
+        var result = await _clientService.GetClientById(professionalId, clientId);
         if (result == null)
         {
             return StatusCode(500, new { message = "Internal server error occurred." });
@@ -40,11 +42,14 @@ public class ProfessionalClientController : ControllerBase
             {
                 return NotFound(new { message = $"Client with ID {clientId} not found." });
             }
-
             return Ok(result);
         }
         else
         {
+            if (result.Message == "Professional-client relationship not found." || result.Message == "Client not found.")
+            {
+                return NotFound(result);
+            }
             return BadRequest(new { message = result.Message });
         }
     }
@@ -88,18 +93,26 @@ public class ProfessionalClientController : ControllerBase
         }
         else
         {
-            return BadRequest(new { message = result.Message });
+            return BadRequest(result);
         }
     }
 
     [HttpPut("{clientId}")]
-    public async Task<IActionResult> UpdateClientAsync(Guid clientId, ClientUpdateRequest clientRequest)
+    public async Task<IActionResult> UpdateClientAsync(Guid professionalId, Guid clientId, ClientUpdateDto clientRequest)
     {
-        var result = await _clientService.UpdateClientAsync(clientId, clientRequest);
+        var result = await _clientService.UpdateClientAsync(professionalId, clientId, clientRequest);
 
         if (result.Success)
         {
             return Ok(result);
+        }
+        else if (result.Message == "Professional - client relationship not found.")
+        {
+            return NotFound(result);
+        }
+        else if (result.Message == "Email is already in use.")
+        {
+            return Conflict(result);
         }
         else if (result.Message == "Client not found.")
         {
@@ -107,7 +120,7 @@ public class ProfessionalClientController : ControllerBase
         }
         else
         {
-            return BadRequest(new { message = result.Message });
+            return BadRequest(result);
         }
     }
 }

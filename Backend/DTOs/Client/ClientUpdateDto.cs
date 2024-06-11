@@ -1,7 +1,7 @@
 ﻿
 namespace DTOs.Client;
 
-public class ClientUpdateRequest
+public class ClientUpdateDto
 {
     //public Guid Id { get; set; }
     public DateTime BirthDate { get; set; }

@@ -11,6 +11,8 @@ public class ProfessionalClientConfig : IEntityTypeConfiguration<ProfessionalCli
     {
         builder.HasKey(pc => new { pc.ProfessionalId, pc.ClientId });
 
+        builder.Ignore(pc => pc.Id);
+
         builder
             .HasOne(pc => pc.Professional)
             .WithMany(p => p.ProfessionalClients)
