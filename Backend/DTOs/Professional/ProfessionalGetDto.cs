@@ -1,4 +1,6 @@
-﻿namespace DTOs.Professional
+﻿using DTOs.Slot;
+
+namespace DTOs.Professional
 {
     public class ProfessionalGetDto
     {
@@ -8,5 +10,7 @@
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public string PhoneNumber { get; set; } = string.Empty;
+
+        public ICollection<SlotGetDto> Slots { get; set; }
     }
 }
