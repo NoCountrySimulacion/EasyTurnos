@@ -1,17 +1,27 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import {
+	
+	getProfessionalData,
+	updateProfessionalUserService
+} from '../../services/api/professional'
 import { logIn, register } from '../../services/api/userServices'
 import {
 	AuthContextType,
 	AuthProviderProps,
 	UserLogged,
-	DecodedToken
+	DecodedToken,
+	ProfessionalData
 } from '../typescript/interface'
 import { createContext, useEffect, useState } from 'react'
+import { FormValuesEdit } from '../../professional/pages/EditProfile'
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export default function AuthProvider({ children }: AuthProviderProps) {
 	const [user, setUser] = useState<UserLogged | null>(null)
+	const [professionalData, setProfessionalData] =
+		useState<ProfessionalData | null>(null)
+
 	const [isSignIn, setIsSignIn] = useState<boolean>(false)
 	const [decodedToken, setDecodedToken] = useState<DecodedToken | null>(null)
 	const [error, setError] = useState<string | null>(null)
@@ -30,6 +40,23 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 			setIsSignIn(true)
 		}
 	}, [])
+
+	useEffect(() => {
+		if (decodedToken?.professionalId) {
+			;(async () => {
+				try {
+					decodedToken.role = 'Professional'
+					const response = await getProfessionalData(
+						decodedToken
+					)
+					setProfessionalData(response)
+					console.log('mis datos guardados:', professionalData)
+				} catch (error) {
+					console.error('Error fetching professional data:', error)
+				}
+			})()
+		}
+	}, [decodedToken, user])
 
 	const loginUser = async (email: string, password: string) => {
 		const credentials = { email, password }
@@ -63,6 +90,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 		setUser(null)
 		setIsSignIn(false)
 		setDecodedToken(null)
+		setProfessionalData(null)
 		localStorage.removeItem('token')
 		localStorage.removeItem('firstName')
 		localStorage.removeItem('lastName')
@@ -107,6 +135,24 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 		}
 	}
 
+	const updateProfessionalUser = async (data: FormValuesEdit) => {
+
+		try {
+			console.log('Token viejo: ', decodedToken)
+			console.log('Actualizando datos...')
+			const response = await updateProfessionalUserService(
+				user?.token,
+				decodedToken?.email,
+				data
+			)
+			console.log('Respuesta del servicio en json:', response)
+			alert('Se actualizo con exito')
+		} catch (error) {
+			setError('Error updating professional data')
+			console.error('Error updating professional data:', error)
+		}
+	}
+
 	const decodeAndSetToken = (token: string) => {
 		try {
 			const decoded: DecodedToken & { [key: string]: any } = JSON.parse(
@@ -128,6 +174,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 
 	const authContextValue: AuthContextType = {
 		user,
+		professionalData,
 		isSignIn,
 		isUserSignedIn,
 		decodedToken,
@@ -135,6 +182,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 		loginUser,
 		registerUser,
 		logout,
+		updateProfessionalUser
 	}
 
 	return (

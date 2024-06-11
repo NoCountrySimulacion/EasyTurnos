@@ -2,6 +2,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { Edit } from '../components/icons/Icons'
 import { Link } from 'react-router-dom'
 import { createClientForProfessional } from '../../services/api/professionalClient' // Adjust the import path as necessary
+
 import { DatePicker } from '@mui/x-date-pickers'
 import { TextField } from '@mui/material'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
@@ -12,7 +13,7 @@ import { useAuth } from '../../auth/hooks/useAuth'
 interface FormValues {
 	nombre: string
 	apellido: string
-	birthDate: Date | null
+	birthDate: Date | null | string
 	mail: string
 	tel: string
 	observaciones: string
@@ -178,19 +179,13 @@ export function AddClientForm(): JSX.Element {
 									</div>
 								</div>
 
-								<div className='flex flex-col gap-1'>
+								<div className='flex flex-col gap-1 w-1/6'>
 									<div className='flex flex-col gap-[8px]'>
 										<label htmlFor='birthDate'>Fecha de Nacimiento</label>
 										<LocalizationProvider dateAdapter={AdapterDayjs}>
 											<DatePicker
 												value={values.birthDate}
 												onChange={date => setFieldValue('birthDate', date)}
-												renderInput={params => (
-													<TextField
-														{...params}
-														className='border border-solid border-[#828282] w-[318px] p-[5px] rounded-md'
-													/>
-												)}
 											/>
 										</LocalizationProvider>
 									</div>
