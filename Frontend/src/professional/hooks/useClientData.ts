@@ -45,5 +45,7 @@ export const useClientData = (clientId: string, token: string) => {
 		user?.token
 	])
 
+	
+
 	return { clientData, loading, error }
 }
