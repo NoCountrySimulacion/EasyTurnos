@@ -3,6 +3,8 @@ import { PickersDay } from '@mui/x-date-pickers'
 import moment from 'moment'
 import 'moment/locale/es'
 import { CustomDayProps, PointerEnterHandler } from '../typescript/interface'
+import { useCalendar } from '../hook/useCalendar'
+import { useAuth } from '../../auth/hooks/useAuth'
 
 const CustomDay: React.FC<CustomDayProps> = props => {
 	const {
@@ -16,8 +18,18 @@ const CustomDay: React.FC<CustomDayProps> = props => {
 		...other
 	} = props
 
-	const isDayWithSlot = slots
-		? slots.some(slot => moment(slot.startDate).isSame(day, 'day'))
+	const { decodedToken } = useAuth()
+	console.log(decodedToken)
+	const { clientProfessional } = useCalendar()
+	const isProfessional = decodedToken?.role === 'Professional'
+
+
+	// Determinar los slots a usar dependiendo del rol
+	const slotsToUse = isProfessional ? slots : clientProfessional?.data[0]?.slots
+
+
+	const isDayWithSlot = slotsToUse
+		? slotsToUse.some(slot => moment(slot.startDate).isSame(day, 'day'))
 		: false
 
 	const isDayWithAppointment = appointments
