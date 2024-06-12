@@ -25,7 +25,8 @@ export function Sidemenu(): JSX.Element {
 			return 'Clientes'
 		} else if (
 			path.startsWith('/calendar') ||
-			path.startsWith('/professional/calendar')
+			path.startsWith('/professional/calendar') ||
+			path.startsWith('/client/calendar')
 		) {
 			return 'Agenda'
 		} else if (path.startsWith('/home')) {

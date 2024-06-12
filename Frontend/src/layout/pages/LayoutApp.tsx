@@ -15,7 +15,8 @@ export default function LayoutApp(): JSX.Element {
 				</aside>
 				<div className='w-full flex flex-col gap-10'>
 					{location.pathname !== '/profile' &&
-						location.pathname !== '/professional/edit-profile-prof' && (
+						location.pathname !== '/professional/edit-profile-prof' &&
+						location.pathname !== '/professional/add-client' && (
 							<section className='px-[30px]'>
 								<Search />
 							</section>
