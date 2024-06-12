@@ -114,3 +114,12 @@ export interface ApiUpdateProfessionalData {
 	phoneNumber: string;
 	newEmail: string;
 }
+
+export interface ApiUpdateClientData {
+	firstName: string;
+	lastName: string;
+	phoneNumber: string;
+	email: string;
+	password: string;
+	birthDate: Date | null | string
+}

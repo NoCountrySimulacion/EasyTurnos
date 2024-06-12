@@ -29,7 +29,9 @@ export function Profile(): React.ReactElement {
 		? useClientData(decodedToken.clientId || '', user?.token || '')
 		: { clientData: null, loading: false, error: null }
 
-	const loading = isProfessional ? loadingProfessional : loadingClient
+	const loading = isProfessional
+		? loadingProfessional
+		: loadingClient || loadingProfessional
 	const error = isProfessional ? errorProfessional : errorClient
 
 	if (loading) {
