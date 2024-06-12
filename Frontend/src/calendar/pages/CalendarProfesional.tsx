@@ -12,6 +12,7 @@ import CalendarConfig from '../components/CalendarConfig'
 import clsx from 'clsx'
 import SlotModal from '../components/SlotModal'
 import { useCalendar } from '../hook/useCalendar' // Importamos el hook useCalendar
+/* import { useProfessionalClients } from '../../professional/hooks/useProfessionalClients' */
 
 const CalendarProfesional: React.FC = () => {
 	const {
@@ -35,7 +36,7 @@ const CalendarProfesional: React.FC = () => {
 
 	const [tabIndex, setTabIndex] = useState(0)
 	const [isModalOpen, setModalOpen] = useState(false)
-
+	console.log('profesionalClients', professionalClients)
 	const handleModalClose = () => {
 		setModalOpen(false)
 		setShowConfirmButton(false)
@@ -45,6 +46,7 @@ const CalendarProfesional: React.FC = () => {
 		handleSlotClick(slot)
 		setModalOpen(true)
 	}
+	
 
 	const handleConfirmAppointment = (title: string, selectedClientID: string) => {
 		if (selectedSlot) {

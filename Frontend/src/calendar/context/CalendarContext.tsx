@@ -17,6 +17,7 @@ import {
 	getProfessionalAppointments,
 	deleteAppointment
 } from '../../services/api/appointment'
+import { useClientProfessional } from '../../client/hooks/useClientProfessional'
 
 // Definimos la forma de los valores del contexto
 
@@ -66,7 +67,9 @@ export const CalendarProvider = ({ children }: CalendarProviderProps) => {
 	const [appointments, setAppointments] = useState<any[]>([])
 	const { decodedToken } = useAuth()
 	const { professionalClients } = useProfessionalClients()
+	const { clientProfessional } = useClientProfessional()
 
+	
 	useEffect(() => {
 		const fetchSlots = async () => {
 			try {
@@ -247,7 +250,8 @@ export const CalendarProvider = ({ children }: CalendarProviderProps) => {
 		appointments,
 		handleDeleteAppointment,
 		professionalClients,
-		setClientForAppointment
+		setClientForAppointment,
+		clientProfessional
 	}
 
 	return (

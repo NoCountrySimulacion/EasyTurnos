@@ -4,52 +4,51 @@ import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
 import { DateCalendar } from '@mui/x-date-pickers'
 import moment from 'moment'
 import 'moment/locale/es'
-import { FaTrash } from 'react-icons/fa'
 import { Tabs, Tab } from '@mui/material'
 import '../styles/calendar.css'
 import CustomDay from '../components/CustomDay'
-import SlotModal from '../components/SlotModal'
 import { useCalendar } from '../hook/useCalendar'
+import clsx from 'clsx'
 
 const CalendarClient: React.FC = () => {
 	const {
 		selectedDate,
 		hoveredDay,
 		setHoveredDay,
-		slots,
-		selectedSlots,
 		selectedSlot,
 		handleDateChange,
 		handleSlotClick,
 		handleCreateAppointment,
-		handleDeleteSlot,
 		appointments,
-		professionalClients
+		clientProfessional
 	} = useCalendar()
 	const [tabIndex, setTabIndex] = useState(0)
-	const [isModalOpen, setModalOpen] = useState(false)
-
-	const handleModalClose = () => {
-		setModalOpen(false)
-	}
+	const [selectedSlotForConfirmation, setSelectedSlotForConfirmation] =
+		useState<any | null>(null)
 
 	const handleSlotClickWrapper = (slot: any) => {
 		handleSlotClick(slot)
-		setModalOpen(true)
+		setSelectedSlotForConfirmation(slot)
 	}
 
-	const handleConfirmAppointment = (title: string, client: string) => {
-		if (selectedSlot) {
-			handleCreateAppointment(title, client)
-			setModalOpen(false)
+	const handleConfirmAppointment = () => {
+		if (selectedSlotForConfirmation) {
+			handleCreateAppointment('Client', 'Title')
+			setSelectedSlotForConfirmation(null)
 		}
 	}
 
 	const filteredAppointments = appointments
 		? appointments.filter(appointment =>
-			moment(appointment.startDate).isSame(selectedDate, 'day')
-		)
+				moment(appointment.startDate).isSame(selectedDate, 'day')
+			)
 		: []
+
+	// Filtrar slots según la fecha seleccionada
+	const availableSlots =
+		clientProfessional?.data[0]?.slots.filter(slot =>
+			moment(slot.startDate).isSame(selectedDate, 'day')
+		) || []
 
 	return (
 		<LocalizationProvider dateAdapter={AdapterMoment}>
@@ -87,7 +86,7 @@ const CalendarClient: React.FC = () => {
 											onPointerEnter: (day: moment.Moment) =>
 												setHoveredDay(day),
 											onPointerLeave: () => setHoveredDay(null),
-											slots,
+											slots: availableSlots,
 											appointments
 										})
 									}}
@@ -96,8 +95,8 @@ const CalendarClient: React.FC = () => {
 							<div className='p-4 flex flex-col gap-2'>
 								<div className='flex flex-col gap-2'>
 									<h3 className='text-lg font-bold'>Horarios Disponibles</h3>
-									{selectedSlots.length > 0 ? (
-										selectedSlots.map((slot, index) => (
+									{availableSlots.length > 0 ? (
+										availableSlots.map((slot, index) => (
 											<div
 												key={index}
 												className={clsx(
@@ -113,20 +112,23 @@ const CalendarClient: React.FC = () => {
 													{moment(slot.startDate).format('HH:mm')} -{' '}
 													{moment(slot.endDate).format('HH:mm')}
 												</div>
-												<button
-													className='absolute top-2 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center'
-													onClick={e => {
-														e.stopPropagation()
-														handleDeleteSlot(slot.id)
-													}}
-												>
-													<FaTrash />
-												</button>
 											</div>
 										))
 									) : (
 										<p>No hay horarios disponibles para este día.</p>
 									)}
+									<div>
+										{selectedSlotForConfirmation && (
+											<div className='flex justify-center mt-4'>
+												<button
+													className='bg-purple-500 text-white p-2 rounded'
+													onClick={handleConfirmAppointment}
+												>
+													Confirmar
+												</button>
+											</div>
+										)}
+									</div>
 								</div>
 								<div className='mt-4'>
 									<h3 className='text-lg font-bold'>Turnos del día</h3>
@@ -151,7 +153,7 @@ const CalendarClient: React.FC = () => {
 														handleDeleteAppointment(appointment.id)
 													}
 												>
-													<FaTrash />
+													Delete
 												</button>
 											</div>
 										))
@@ -164,15 +166,6 @@ const CalendarClient: React.FC = () => {
 					</div>
 				)}
 			</div>
-			{selectedSlot && (
-				<SlotModal
-					open={isModalOpen}
-					onClose={handleModalClose}
-					slot={selectedSlot}
-					clients={professionalClients?.data || []}
-					onConfirm={handleConfirmAppointment}
-				/>
-			)}
 		</LocalizationProvider>
 	)
 }

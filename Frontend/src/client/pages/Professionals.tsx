@@ -19,10 +19,10 @@ function TableClient() {
 	const { clientProfessional, isThereClientProfessional } =
 		useClientProfessional()
 
-	// console.log(
-	// 	'Estos son los profesionales que llegan del fetch: ',
-	// 	clientProfessional
-	// )
+	console.log(
+		'Estos son los profesionales que llegan del fetch: ',
+		clientProfessional
+	)
 	const filteredProfessionals = clientProfessional?.data.length
 		? filterProfessionals(clientProfessional)
 		: clientProfessional
