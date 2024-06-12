@@ -13,7 +13,7 @@ export function Search(): React.ReactElement {
 	const { decodedToken } = useAuth()
 	const location = useLocation()
 	const { handleSubmit, query } = useSearch()
-	const [searchValue, setSearchValue] = useState('')
+	const [searchValue, setSearchValue] = useState<string>('')
 
 	const getTitle = () => {
 		switch (location.pathname) {
@@ -33,10 +33,10 @@ export function Search(): React.ReactElement {
 	}
 
 	useEffect(() => {
-		setSearchValue(query)
+		setSearchValue(query as string)
 	}, [location, query])
 
-	const handleInputChange = event => {
+	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setSearchValue(event.target.value)
 	}
 

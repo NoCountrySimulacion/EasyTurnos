@@ -5,23 +5,15 @@ import {
 	ClientsByProfessional,
 	ProfessionalAppointmentList,
 	ProfessionalsByClient
-	ClientAppointmentList,
-	ClientsByProfessional,
-	ProfessionalAppointmentList,
-	ProfessionalsByClient
 } from '../../services/typescript/interface'
 import { SearchValueProps } from '../typescript/interface'
 
 export const searchContext = createContext<SearchValueProps>(
 	{} as SearchValueProps
 )
-export const searchContext = createContext<SearchValueProps>(
-	{} as SearchValueProps
-)
 
 export function SearchProvider({ children }: { children: React.ReactNode }) {
 	const [query, setQuery] = useState<FormDataEntryValue | null>(null)
-	const [query, setQuery] = useState<FormDataEntryValue | null>(null)
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
@@ -30,20 +22,7 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
 		)
 		setQuery(search)
 	}
-	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault()
-		const { search } = Object.fromEntries(
-			new FormData(e.target as HTMLFormElement)
-		)
-		setQuery(search)
-	}
 
-	const filterClientsAppointmentsList = (
-		valueToFilter: ClientAppointmentList
-	): ClientAppointmentList => {
-		if (!valueToFilter?.data) {
-			return valueToFilter
-		}
 	const filterClientsAppointmentsList = (
 		valueToFilter: ClientAppointmentList
 	): ClientAppointmentList => {
@@ -102,12 +81,6 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
 		if (!valueToFilter?.data) {
 			return valueToFilter
 		}
-	const filterProfessionalsAppointmentsList = (
-		valueToFilter: ProfessionalAppointmentList
-	): ProfessionalAppointmentList => {
-		if (!valueToFilter?.data) {
-			return valueToFilter
-		}
 
 		const newValueToFilter = {
 			...valueToFilter,
@@ -152,21 +125,6 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
 				}
 	}
 
-	return (
-		<searchContext.Provider
-			value={{
-				query,
-				setQuery,
-				handleSubmit,
-				filterClientsAppointmentsList,
-				filterClients,
-				filterProfessionalsAppointmentsList,
-				filterProfessionals
-			}}
-		>
-			{children}
-		</searchContext.Provider>
-	)
 	return (
 		<searchContext.Provider
 			value={{
