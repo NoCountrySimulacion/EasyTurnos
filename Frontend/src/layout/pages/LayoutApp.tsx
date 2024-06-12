@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 // src/layout/pages/Layout.tsx
 import { Outlet, useLocation } from 'react-router-dom'
 import { Sidemenu } from '../components/sidemenu/SideMenu'
@@ -13,11 +14,12 @@ export default function LayoutApp(): JSX.Element {
 					<Sidemenu />
 				</aside>
 				<div className='w-full flex flex-col gap-10'>
-					{location.pathname !== '/profile' && (
-						<section className='px-[30px]'>
-							<Search />
-						</section>
-					)}
+					{location.pathname !== '/profile' &&
+						location.pathname !== '/professional/edit-profile-prof' && (
+							<section className='px-[30px]'>
+								<Search />
+							</section>
+						)}
 					<main className='w-full'>
 						<Outlet />
 					</main>
