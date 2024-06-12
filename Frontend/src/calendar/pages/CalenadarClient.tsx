@@ -20,7 +20,8 @@ const CalendarClient: React.FC = () => {
 		handleSlotClick,
 		handleCreateClientAppointment,
 		appointments,
-		clientProfessional
+		clientProfessional,
+		handleClientDeleteAppointment,
 	} = useCalendar()
 	const [tabIndex, setTabIndex] = useState(0)
 	const [selectedSlotForConfirmation, setSelectedSlotForConfirmation] =
@@ -150,7 +151,7 @@ const CalendarClient: React.FC = () => {
 												<button
 													className='p-2 bg-red-500 text-white rounded'
 													onClick={() =>
-														handleDeleteAppointment(appointment.id)
+														handleClientDeleteAppointment(appointment.id)
 													}
 												>
 													Delete

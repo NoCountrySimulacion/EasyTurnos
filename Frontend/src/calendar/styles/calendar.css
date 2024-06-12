@@ -27,7 +27,9 @@
 	height: 800px !important;
 }
 
-.MuiTypography-body1 {
+
+
+.MuiDayCalendar-weekNumber{
 	display: none !important;
 }
 

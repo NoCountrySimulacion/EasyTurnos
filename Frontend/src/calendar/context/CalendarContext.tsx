@@ -1,15 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-	createContext,
-	useState,
-	useEffect,
-	ReactNode
-} from 'react'
+import { createContext, useState, useEffect, ReactNode } from 'react'
 import moment, { Moment } from 'moment'
 import Swal from 'sweetalert2'
 import { getAllSlots, deleteSlotById } from '../../services/api/slots'
-import { ConfigSlot,ClientsByProfessional } from '../typescript/interface'
+import { ConfigSlot, CalendarContextProps } from '../typescript/interface'
+import { ClientsByProfessional } from '../../services/typescript/interface'
 import { useAuth } from '../../auth/hooks/useAuth'
 import { useProfessionalClients } from '../../professional/hooks/useProfessionalClients'
 import {
@@ -19,36 +15,10 @@ import {
 } from '../../services/api/appointment'
 import { useClientProfessional } from '../../client/hooks/useClientProfessional'
 
-// Definimos la forma de los valores del contexto
-
-
-export interface CalendarContextProps {
-    selectedDate: Moment | null;
-    hoveredDay: Moment | null;
-    setHoveredDay: (day: Moment | null) => void;
-    slots: ConfigSlot[];
-    selectedSlots: ConfigSlot[];
-    selectedSlot: ConfigSlot | null;
-    showConfirmButton: boolean;
-    appointmentsForSelectedDate: any[]; // Define el tipo correcto de appointmentsForSelectedDate
-    handleDateChange: (date: Moment | null) => void;
-    handleConfigChange: (newSlots: ConfigSlot[]) => void;
-    handleSlotClick: (slot: ConfigSlot) => void;
-    handleDeleteSlot: (id: string) => void;
-    handleCreateAppointment: (clientId: string, title: string) => void;
-    appointments: any[]; // Define el tipo correcto de appointments
-    handleDeleteAppointment: (id: string) => void;
-    professionalClients: ClientsByProfessional | null; // Ajusta el tipo a ClientsByProfessional | null
-    setClientForAppointment: (clientId: string) => void;
-}
-
-
 // Creamos el contexto con un valor inicial vacío
 export const CalendarContext = createContext<CalendarContextProps | undefined>(
 	undefined
 )
-
-
 
 // Proveedor del contexto que envuelve la aplicación
 interface CalendarProviderProps {
@@ -69,7 +39,6 @@ export const CalendarProvider = ({ children }: CalendarProviderProps) => {
 	const { professionalClients } = useProfessionalClients()
 	const { clientProfessional } = useClientProfessional()
 
-	
 	useEffect(() => {
 		const fetchSlots = async () => {
 			try {
@@ -179,7 +148,7 @@ export const CalendarProvider = ({ children }: CalendarProviderProps) => {
 				)
 
 				// Actualiza el estado de appointments al crear un nuevo turno
-				  setAppointments(prevAppointments => [...prevAppointments, data])
+				setAppointments(prevAppointments => [...prevAppointments, data])
 
 				await handleDeleteSlot(selectedSlot.id)
 
@@ -215,7 +184,7 @@ export const CalendarProvider = ({ children }: CalendarProviderProps) => {
 				)
 
 				// Actualiza el estado de appointments al crear un nuevo turno
-				  setAppointments(prevAppointments => [...prevAppointments, data])
+				setAppointments(prevAppointments => [...prevAppointments, data])
 
 				await handleDeleteSlot(selectedSlot.id)
 
@@ -269,6 +238,36 @@ export const CalendarProvider = ({ children }: CalendarProviderProps) => {
 		setSelectedClient(clientId)
 	}
 
+	const handleClientDeleteAppointment = async (id: string) => {
+		try {
+			await deleteAppointment(id)
+			setAppointments(appointments.filter(appointment => appointment.id !== id))
+			Swal.fire({
+				icon: 'success',
+				title: 'Turno eliminado',
+				text: 'El turno se ha eliminado correctamente.'
+			})
+			const deletedAppointment = appointments.find(
+				appointment => appointment.id === id
+			)
+			if (deletedAppointment) {
+				const newSlot = {
+					id: deletedAppointment.slotId,
+					startDate: deletedAppointment.startDate,
+					endDate: deletedAppointment.endDate
+				}
+				setSlots(prevSlots => [...prevSlots, newSlot])
+			}
+		} catch (error) {
+			console.error(`Error deleting appointment with ID ${id}:`, error)
+			Swal.fire({
+				icon: 'error',
+				title: 'Error',
+				text: 'Hubo un error al eliminar el turno. Por favor, inténtalo de nuevo más tarde.'
+			})
+		}
+	}
+
 	const contextValue: CalendarContextProps = {
 		selectedDate,
 		hoveredDay,
@@ -288,7 +287,8 @@ export const CalendarProvider = ({ children }: CalendarProviderProps) => {
 		handleDeleteAppointment,
 		professionalClients,
 		setClientForAppointment,
-		clientProfessional
+		clientProfessional,
+		handleClientDeleteAppointment
 	}
 
 	return (

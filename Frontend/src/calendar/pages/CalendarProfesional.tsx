@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
@@ -22,7 +23,6 @@ const CalendarProfesional: React.FC = () => {
 		slots,
 		selectedSlots,
 		selectedSlot,
-		appointmentsForSelectedDate,
 		handleDateChange,
 		handleConfigChange,
 		handleSlotClick,

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { PickersDayProps } from '@mui/x-date-pickers/PickersDay'
 import { Moment } from 'moment'
 
@@ -14,7 +15,6 @@ export interface CustomDayProps extends PickersDayProps<Moment> {
 }
 
 export interface ConfigSlot {
-	initial: string
 	end: string
 	startDate: string
 	endDate: string
@@ -42,9 +42,29 @@ export interface CustomDayProps extends PickersDayProps<Moment> {
 	appointments: Appointment[]
 }
 
-
 export interface ClientsByProfessional {
-	id: string;
-	name: string;
+	id: string
+	name: string
 	// Otros campos necesarios
-  }
+}
+
+export interface CalendarContextProps {
+	selectedDate: Moment | null
+	hoveredDay: Moment | null
+	setHoveredDay: (day: Moment | null) => void
+	slots: ConfigSlot[]
+	selectedSlots: ConfigSlot[]
+	selectedSlot: ConfigSlot | null
+	showConfirmButton: boolean
+	appointmentsForSelectedDate: any[] // Define el tipo correcto de appointmentsForSelectedDate
+	handleDateChange: (date: Moment | null) => void
+	handleConfigChange: (newSlots: ConfigSlot[]) => void
+	handleSlotClick: (slot: ConfigSlot) => void
+	handleDeleteSlot: (id: string) => void
+	handleCreateAppointment: (clientId: string, title: string) => void
+	appointments: any[] // Define el tipo correcto de appointments
+	handleDeleteAppointment: (id: string) => void
+	setClientForAppointment: (clientId: string) => void
+	handleCreateClientAppointment: (title: string) => void
+	professionalClients: ClientsByProfessional | null;
+}
