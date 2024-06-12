@@ -27,7 +27,7 @@ function Home(): React.ReactElement {
 				<div className='w-full flex justify-center'>
 					<LoadingIcon />
 				</div>
-			) : !isThereAppointments ? (
+			) : isThereAppointments ? (
 				<AppointmentsList />
 			) : (
 				<WithoutAppointments />

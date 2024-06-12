@@ -13,7 +13,7 @@ export async function getProfessionalAppointments(
 ): Promise<ClientAppointmentList | ProfessionalAppointmentList> {
 	try {
 		const token = localStorage.getItem('token')
-		const isProfessional = decodedToken?.professionalId
+		const isProfessional = decodedToken?.role === 'Professional'
 
 		const res = await fetch(
 			`${BASE_APPOINTMENT_URL}${isProfessional ? decodedToken?.professionalId : decodedToken?.clientId}`,
@@ -30,6 +30,7 @@ export async function getProfessionalAppointments(
 
 		const data: ClientAppointmentList | ProfessionalAppointmentList =
 			await res.json()
+		console.log('Esta es la data', data)
 		return data
 	} catch (error) {
 		console.error('Error getting appointments:', error)
