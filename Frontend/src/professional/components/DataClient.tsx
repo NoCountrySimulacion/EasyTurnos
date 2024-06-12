@@ -1,15 +1,15 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
 import { IconProfile } from '../../layout/Icons/IconsProfile'
-import { useClientData } from '../hooks/useClientData'
 import { useAuth } from '../../auth/hooks/useAuth'
 import { ScheduleAppointmentButton } from './ScheduleAppointmentButton'
 import { Link } from 'react-router-dom'
+import { useClientDataProfessional } from '../hooks/useClientDataProfessional'
 
 export function DataClient(): React.ReactElement {
 	const params = useParams<{ clientId?: string }>()
 	const { user } = useAuth()
-	const { clientData, loading, error } = useClientData(
+	const { clientData, loading, error } = useClientDataProfessional(
 		params.clientId || '',
 		user?.token || ''
 	)
