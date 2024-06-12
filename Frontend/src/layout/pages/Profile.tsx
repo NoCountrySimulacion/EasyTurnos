@@ -44,6 +44,19 @@ export function Profile(): React.ReactElement {
 	if (error) {
 		return <p>Error: {error}</p>
 	}
+	const calculateAge = (birthdate: string): number => {
+		const today = new Date()
+		const birthDate = new Date(birthdate)
+		let age = today.getFullYear() - birthDate.getFullYear()
+		const monthDiff = today.getMonth() - birthDate.getMonth()
+		if (
+			monthDiff < 0 ||
+			(monthDiff === 0 && today.getDate() < birthDate.getDate())
+		) {
+			age--
+		}
+		return age
+	}
 
 	return (
 		<div>
@@ -108,10 +121,10 @@ export function Profile(): React.ReactElement {
 					<>
 						<div>
 							<p className='text-black font-roboto text-base font-bold leading-normal'>
-								Edad
+								Teléfono
 							</p>
 							<span className='text-gray-600 font-roboto text-base font-normal leading-normal'>
-								{clientData?.birthDate}
+								{clientData?.phoneNumber}
 							</span>
 						</div>
 						<div>
@@ -120,6 +133,14 @@ export function Profile(): React.ReactElement {
 							</p>
 							<span className='text-gray-600 font-roboto text-base font-normal leading-normal'>
 								{decodedToken.email}
+							</span>
+						</div>
+						<div>
+							<p className='text-black font-roboto text-base font-bold leading-normal'>
+								Edad
+							</p>
+							<span className='text-gray-600 font-roboto text-base font-normal leading-normal'>
+								{clientData ? calculateAge(clientData.birthDate) : ''}
 							</span>
 						</div>
 						<div>
