@@ -1,4 +1,5 @@
 /* eslint-disable indent */
+import { Link } from 'react-router-dom'
 import { useSearch } from '../../layout/hooks/useSearch'
 import { ProfessionalAppointmentList } from '../../services/typescript/interface'
 import { AppointmentCard } from '../../shared/components/AppointmentCard'
@@ -13,16 +14,21 @@ export function AppointmentsList(): React.ReactElement {
 		? filterClientsAppointmentsList(appointmentList)
 		: { data: [], success: false, message: 'No data available' }
 
+	console.log(filterAppointmentsList)
+
 	return (
 		<section className='w-full flex flex-col gap-[52px] mb-[56px]'>
 			<header className='flex justify-between items-center h-[76px]'>
-				<button className='w-full shadow-search text-[33px] font-bold leading-[56px] rounded-[15px] py-[15px] hover:bg-[#D3CAFF] transition duration-300 hover:border hover:border-[#7445C7]'>
+				<Link
+					to='/professional/calendar'
+					className='w-full text-center shadow-search text-[33px] font-bold leading-[56px] rounded-[15px] py-[15px] hover:bg-[#D3CAFF] transition duration-300 hover:border hover:border-[#7445C7]'
+				>
 					Para el día de hoy tienes{' '}
 					{appointmentList && appointmentList.data
 						? appointmentList.data.length
 						: 0}{' '}
 					citas.
-				</button>
+				</Link>
 			</header>
 			<section>
 				{filterAppointmentsList &&
@@ -46,7 +52,7 @@ export function AppointmentsList(): React.ReactElement {
 			</section>
 
 			<footer>
-				<button className='bg-[#7445C7] text-[#F8F9FA] flex items-center justify-center gap-[10px] h-[38px] w-full rounded-lg text-[13px] font-bold leading-[18.2px]'>
+				<button className='bg-[#7445C7] text-[#F8F9FA] flex items-center justify-center gap-[10px] h-[38px] w-full rounded-lg text-[13px] font-bold leading-[18.2px] hover:bg-purple-600 transition duration-300 ease-in-out'>
 					<CalendarIcon height={18} width={18} />
 					<span>Agendar Turno</span>
 				</button>
