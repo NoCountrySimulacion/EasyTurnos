@@ -179,9 +179,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 		}
 	}
 
-	const isUserSignedIn = (): boolean => {
-		return !!localStorage.getItem('token')
-	}
+
 
 	const authContextValue: AuthContextType = {
 		user,
