@@ -45,7 +45,7 @@ export async function getClientsByProfessional(
 			console.error('JSON parse error:', jsonError)
 			throw new Error('Invalid JSON response')
 		}
-		
+
 		return data
 	} catch (error) {
 		console.error('Error getting professional clients:', error)
@@ -73,7 +73,7 @@ export async function updateClientsByProfessional(
 			throw new Error('Error updating professional clients')
 		}
 		const data: ClientsByProfessional = await response.json()
-		console.log( 'Update pasa los datos:', data)
+		console.log('Update pasa los datos:', data)
 		return data
 	} catch (error) {
 		throw new Error('Error updating professional clients')
@@ -86,6 +86,8 @@ export async function createClientForProfessional(
 ): Promise<ClientsByProfessional> {
 	try {
 		const token = localStorage.getItem('token')
+
+		console.log('Informacion del Token', token)
 		if (!decodedToken?.professionalId) {
 			throw new Error('Invalid professional ID')
 		}
@@ -100,7 +102,8 @@ export async function createClientForProfessional(
 			},
 			body: JSON.stringify(newClientData)
 		})
-
+		console.log('Informacion 2:', token)
+		console.log(newClientData)
 		if (!res.ok) {
 			throw new Error(`Error creating new client: ${res.statusText}`)
 		}
