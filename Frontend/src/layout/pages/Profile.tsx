@@ -1,10 +1,12 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../auth/hooks/useAuth'
 import { IconProfile } from '../Icons/IconsProfile'
 import { useProfessionalData } from '../../professional/hooks/useProfessionalData'
 import { useClientData } from '../../professional/hooks/useClientData'
+import { deleteProfessional } from '../../services/api/professional'
 
 export function Profile(): React.ReactElement {
+	const navigate = useNavigate()
 	const { user, decodedToken } = useAuth()
 
 	if (!decodedToken) {
@@ -60,6 +62,26 @@ export function Profile(): React.ReactElement {
 		return age
 	}
 
+	const handleDeleteProfessional = () => {
+		if (
+			window.confirm(
+				'¿Estás seguro de que quieres dar de baja a este cliente?'
+			) &&
+			decodedToken?.professionalId
+		) {
+			const result = deleteProfessional(user?.token, decodedToken?.professionalId)
+				.then(() => {
+					alert('Su cuenta ha sido eliminada correctamente.')
+					// Redirigir o realizar cualquier otra acción necesaria después de eliminar al cliente
+					navigate('/')
+				})
+				.catch(error => {
+					alert('Error al eliminar el cliente: ' + error.message)
+				})
+			console.log(result)
+		}
+	}
+
 	return (
 		<div>
 			<div className='flex flex-row items-center justify-around h-full min-h-10 shadow-md gap-8 p-5'>
@@ -113,7 +135,8 @@ export function Profile(): React.ReactElement {
 						</Link>
 						<div className='flex items-end justify-end'>
 							<div className='w-36 h-[38px] p-2.5 bg-rose-700 rounded-lg justify-center items-center gap-2.5 inline-flex cursor-pointer hover:bg-red-500 transition duration-300 ease-in-out'>
-								<div className="text-white text-[13px] font-bold font-['Montserrat'] leading-[18.20px]">
+								<div className="text-white text-[13px] font-bold font-['Montserrat'] leading-[18.20px]"
+								onClick={handleDeleteProfessional}>
 									Dar de baja
 								</div>
 							</div>
