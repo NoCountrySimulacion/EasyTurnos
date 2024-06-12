@@ -199,6 +199,42 @@ export const CalendarProvider = ({ children }: CalendarProviderProps) => {
 		}
 	}
 
+	const handleCreateClientAppointment = async (title: string) => {
+		if (selectedSlot && decodedToken && clientProfessional) {
+			const appointmentData = {
+				name: title,
+				startDate: selectedSlot.startDate,
+				endDate: selectedSlot.endDate
+			}
+
+			try {
+				const data = await createAppointment(
+					decodedToken.clientId,
+					clientProfessional.data[0].id, // Asumiendo que clientProfessional.data es una lista y tomamos el primer profesional
+					appointmentData
+				)
+
+				// Actualiza el estado de appointments al crear un nuevo turno
+				  setAppointments(prevAppointments => [...prevAppointments, data])
+
+				await handleDeleteSlot(selectedSlot.id)
+
+				Swal.fire({
+					icon: 'success',
+					title: 'Turno creado',
+					text: 'El turno se ha creado correctamente.'
+				})
+			} catch (error) {
+				console.error('Error creating appointment:', error)
+				Swal.fire({
+					icon: 'error',
+					title: 'Error',
+					text: 'Hubo un error al crear el turno. Por favor, inténtalo de nuevo más tarde.'
+				})
+			}
+		}
+	}
+
 	const handleDeleteAppointment = async (id: string) => {
 		try {
 			await deleteAppointment(id)
@@ -247,6 +283,7 @@ export const CalendarProvider = ({ children }: CalendarProviderProps) => {
 		handleSlotClick,
 		handleDeleteSlot,
 		handleCreateAppointment,
+		handleCreateClientAppointment,
 		appointments,
 		handleDeleteAppointment,
 		professionalClients,

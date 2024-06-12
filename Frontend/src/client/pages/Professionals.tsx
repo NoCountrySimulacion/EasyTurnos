@@ -13,6 +13,7 @@ import { ScheduleAppointmentButton } from '../../professional/components/Schedul
 import { UnsubscribeButton } from '../../professional/components/UnsubscribeButton'
 import { useSearch } from '../../layout/hooks/useSearch'
 import { useClientProfessional } from '../hooks/useClientProfessional'
+import { NavLink } from 'react-router-dom'
 
 function TableClient() {
 	const { filterProfessionals } = useSearch()
@@ -83,7 +84,10 @@ function TableClient() {
 										</CustomTableCellTel>
 										<CustomTableCell align='right'>
 											<div className='flex gap-[20.75px] justify-start'>
-												<ScheduleAppointmentButton />
+												<NavLink to='/client/calendar'>
+													<ScheduleAppointmentButton />
+												</NavLink>
+
 												<UnsubscribeButton />
 											</div>
 										</CustomTableCell>

@@ -18,7 +18,7 @@ const CalendarClient: React.FC = () => {
 		selectedSlot,
 		handleDateChange,
 		handleSlotClick,
-		handleCreateAppointment,
+		handleCreateClientAppointment,
 		appointments,
 		clientProfessional
 	} = useCalendar()
@@ -33,15 +33,15 @@ const CalendarClient: React.FC = () => {
 
 	const handleConfirmAppointment = () => {
 		if (selectedSlotForConfirmation) {
-			handleCreateAppointment('Client', 'Title')
+			handleCreateClientAppointment()
 			setSelectedSlotForConfirmation(null)
 		}
 	}
 
 	const filteredAppointments = appointments
 		? appointments.filter(appointment =>
-				moment(appointment.startDate).isSame(selectedDate, 'day')
-			)
+			moment(appointment.startDate).isSame(selectedDate, 'day')
+		)
 		: []
 
 	// Filtrar slots según la fecha seleccionada

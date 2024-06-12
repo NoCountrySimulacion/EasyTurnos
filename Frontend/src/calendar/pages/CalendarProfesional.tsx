@@ -51,6 +51,7 @@ const CalendarProfesional: React.FC = () => {
 	const handleConfirmAppointment = (title: string, selectedClientID: string) => {
 		if (selectedSlot) {
 			handleCreateAppointment(selectedClientID, title)
+			
 			setModalOpen(false)
 		}
 	}
