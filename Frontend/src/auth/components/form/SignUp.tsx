@@ -4,8 +4,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import '@material/web/textfield/outlined-text-field.js'
 import {
 	CloseEyePassword,
-	FacebookLogo,
-	GoogleLogo,
+	/* FacebookLogo,
+	GoogleLogo, */
 	OpenEyePassword
 } from '../icons/Icons'
 import { ErrorMessage, Formik, FormikHelpers } from 'formik'
@@ -310,7 +310,7 @@ function SignUp({ onRegisterSuccess }: SignUpProps): React.ReactElement {
 						</small>
 						<hr className='w-[100px]' />
 					</div>
-					<div className='flex w-full gap-4'>
+					{/* 					<div className='flex w-full gap-4'>
 						<button className='w-1/2 border border-[#FD8847] rounded-[4px] flex justify-center items-center py-2 px-4'>
 							<div className='h-[24px]'>
 								<FacebookLogo width={25} height={25} />
@@ -321,7 +321,7 @@ function SignUp({ onRegisterSuccess }: SignUpProps): React.ReactElement {
 								<GoogleLogo width={25} height={25} />
 							</div>
 						</button>
-					</div>
+					</div> */}
 				</footer>
 			</section>
 		</section>

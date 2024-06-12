@@ -23,7 +23,10 @@ export function Sidemenu(): JSX.Element {
 			path.startsWith('/professional/data-client/')
 		) {
 			return 'Clientes'
-		} else if (path.startsWith('/calendar')) {
+		} else if (
+			path.startsWith('/calendar') ||
+			path.startsWith('/professional/calendar')
+		) {
 			return 'Agenda'
 		} else if (path.startsWith('/home')) {
 			return 'Inicio'

@@ -5,7 +5,6 @@ import moment, { Moment } from 'moment'
 import Swal from 'sweetalert2'
 import { getAllSlots, deleteSlotById } from '../../services/api/slots'
 import { ConfigSlot, CalendarContextProps } from '../typescript/interface'
-import { ClientsByProfessional } from '../../services/typescript/interface'
 import { useAuth } from '../../auth/hooks/useAuth'
 import { useProfessionalClients } from '../../professional/hooks/useProfessionalClients'
 import {
@@ -156,6 +155,9 @@ export const CalendarProvider = ({ children }: CalendarProviderProps) => {
 					icon: 'success',
 					title: 'Turno creado',
 					text: 'El turno se ha creado correctamente.'
+				}).then(() => {
+					// Recarga la página
+					window.location.reload()
 				})
 			} catch (error) {
 				console.error('Error creating appointment:', error)
@@ -192,6 +194,9 @@ export const CalendarProvider = ({ children }: CalendarProviderProps) => {
 					icon: 'success',
 					title: 'Turno creado',
 					text: 'El turno se ha creado correctamente.'
+				}).then(() => {
+					// Recarga la página
+					window.location.reload()
 				})
 			} catch (error) {
 				console.error('Error creating appointment:', error)
