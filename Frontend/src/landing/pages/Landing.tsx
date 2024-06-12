@@ -23,12 +23,10 @@ export default function Landing(): JSX.Element {
 					</main>
 				</section>
 				<section className='mb-12'>
-					<header>
-						<h1 className='text-montserrat text-3xl mb-0 '>Heading</h1>
-						<p className='text-gray-500 text-roboto mt-0'>
-							Subheading to introduce testimonials
-						</p>
-					</header>
+					<div className=''>
+						<h1 className='text-montserrat text-3xl mb-0 font-semibold font-montserrat'></h1>
+						<p className='text-gray-500 text-roboto mt-0'></p>
+					</div>
 					<TestimonialCarousel />
 				</section>
 				<section>
