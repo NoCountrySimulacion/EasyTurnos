@@ -22,6 +22,7 @@ import { Profile } from '../layout/pages/Profile'
 import { EditProfile } from '../professional/pages/EditProfile'
 import { EditProfileClient } from '../professional/pages/EditProfileClient'
 import { DataClient } from '../professional/components/DataClient'
+import Calendar from '../calendar/pages/Calendar'
 
 export default function AppRoutes() {
 	const { isUserSignedIn, decodedToken } = useAuth()
@@ -47,7 +48,7 @@ export default function AppRoutes() {
 						{decodedToken?.role === 'Professional' ? (
 							<>
 								<Route path='/home' element={<Home />} />
-
+								<Route path='/professional/calendar' element={<Calendar />} />
 								<Route path='/professional/clients' element={<Clients />} />
 								<Route path='/professional/clients-views' element={<UserViewInd />} />
 								<Route
@@ -67,7 +68,7 @@ export default function AppRoutes() {
 								<Route path='/home' element={<HomeClient />} />
 								<Route path='/professionals' element={<Professionals />} />
 								<Route path='/my-appointments' element={<Appointments />} />
-
+								<Route path='/client/calendar' element={<Calendar />} />
 								<Route path='/profile' element={<Profile />} />
 
 							</>

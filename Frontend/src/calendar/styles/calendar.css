@@ -1,0 +1,51 @@
+/* .MuiPickersCalendarHeader-root {
+    display: flex;
+    justify-content: space-evenly;
+} */
+.css-1aqny2q-MuiPickersCalendarHeader-root {
+	background-color: rgba(116, 69, 199, 0.12);
+	justify-content: center;
+	border-radius: 10px;
+}
+
+.MuiPickersDay-root {
+	width: 36px;
+	height: 36px;
+	font-size: 12px;
+	display: flex;
+	gap: 5px;
+	margin: 12px;
+}
+/* Estilos de */
+.css-i5q14k-MuiDayCalendar-header {
+	display: flex;
+	gap: 30px;
+	margin: auto;
+}
+
+.css-1t0788u-MuiPickersSlideTransition-root-MuiDayCalendar-slideTransition {
+	height: 800px !important;
+}
+
+
+
+.MuiDayCalendar-weekNumber{
+	display: none !important;
+}
+
+.MuiTypography-root {
+	font-size: 18px !important;
+}
+
+.css-bj1x9h-MuiTypography-root-MuiDayCalendar-weekNumberLabel {
+	display: none !important;
+}
+
+.MuiDateCalendar-root {
+	width: 100% !important;
+	height: 500px;
+}
+
+.css-1hs8ns0-MuiDateCalendar-root {
+	overflow: visible !important;
+}

@@ -15,6 +15,7 @@ import { useSearch } from '../../layout/hooks/useSearch'
 import { useClientProfessional } from '../hooks/useClientProfessional'
 import { LoadingIcon } from '../../shared/components/Icons'
 import { ProfessionalsByClient } from '../../services/typescript/interface'
+import { NavLink } from 'react-router-dom'
 
 function TableClient({
 	clientProfessional
@@ -88,7 +89,10 @@ function TableClient({
 										</CustomTableCellTel>
 										<CustomTableCell align='right'>
 											<div className='flex gap-[20.75px] justify-start'>
-												<ScheduleAppointmentButton />
+												<NavLink to='/client/calendar'>
+													<ScheduleAppointmentButton />
+												</NavLink>
+
 												<UnsubscribeButton />
 											</div>
 										</CustomTableCell>

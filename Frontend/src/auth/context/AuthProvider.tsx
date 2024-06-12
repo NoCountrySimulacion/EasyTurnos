@@ -34,6 +34,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 				lastName: storedLastName ?? ''
 			})
 			decodeAndSetToken(storedToken)
+			setIsSignIn(true)
 		}
 	}, [])
 
@@ -121,6 +122,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 			})
 			loginUser(email, password)
 			decodeAndSetToken(response.token)
+			setIsSignIn(true)
 		} catch (err: unknown) {
 			if (err instanceof Error) {
 				setError(err.message)
@@ -156,7 +158,6 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 					lastName: data.apellido
 				})
 			}
-
 		} catch (error) {
 			setError('Error updating professional data')
 			console.error('Error updating professional data:', error)
@@ -177,6 +178,8 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 			console.error('Error decoding token:', error)
 		}
 	}
+
+
 
 	const authContextValue: AuthContextType = {
 		user,
