@@ -1,14 +1,16 @@
 import React from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { IconProfile } from '../../layout/Icons/IconsProfile'
 import { useAuth } from '../../auth/hooks/useAuth'
 import { ScheduleAppointmentButton } from './ScheduleAppointmentButton'
 import { Link } from 'react-router-dom'
 import { useClientDataProfessional } from '../hooks/useClientDataProfessional'
+import { deleteClient } from '../../services/api/clientServices'
 
 export function DataClient(): React.ReactElement {
+	const navigate = useNavigate()
 	const params = useParams<{ clientId?: string }>()
-	const { user } = useAuth()
+	const { user, decodedToken } = useAuth()
 	const { clientData, loading, error } = useClientDataProfessional(
 		params.clientId || '',
 		user?.token || ''
@@ -24,7 +26,6 @@ export function DataClient(): React.ReactElement {
 
 	if (error) return <p>Error: {error}</p>
 
-
 	// Función para calcular la edad del cliente
 	const calculateAge = (birthdate: string): number => {
 		const today = new Date()
@@ -37,6 +38,25 @@ export function DataClient(): React.ReactElement {
 		}
 
 		return age
+	}
+
+	const handleDeleteClient = () => {
+		if (
+			window.confirm(
+				'¿Estás seguro de que quieres dar de baja a este cliente?'
+			) &&
+			clientData?.id
+		) {
+			deleteClient(user?.token, decodedToken?.professionalId, clientData?.id)
+				.then(() => {
+					alert('El cliente ha sido eliminado correctamente.')
+					// Redirigir o realizar cualquier otra acción necesaria después de eliminar al cliente
+					navigate('/professional/clients')
+				})
+				.catch(error => {
+					alert('Error al eliminar el cliente: ' + error.message)
+				})
+		}
 	}
 
 	return (
@@ -101,7 +121,10 @@ export function DataClient(): React.ReactElement {
 						<ScheduleAppointmentButton />
 					</div>
 					<div className='w-36 h-[38px] p-2.5 bg-rose-700 rounded-lg justify-center items-center gap-2.5 inline-flex cursor-pointer hover:bg-red-500 transition duration-300 ease-in-out'>
-						<div className="text-white text-[13px] font-bold font-['Montserrat'] leading-[18.20px]">
+						<div
+							className="text-white text-[13px] font-bold font-['Montserrat'] leading-[18.20px]"
+							onClick={handleDeleteClient}
+						>
 							Dar de baja
 						</div>
 					</div>

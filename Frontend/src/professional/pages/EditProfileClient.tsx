@@ -2,21 +2,24 @@ import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { UserProfile, Edit } from '../components/icons/Icons'
 import { Link, useParams } from 'react-router-dom'
 import { useAuth } from '../../auth/hooks/useAuth'
-import { useClientData } from '../hooks/useClientData'
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { useEffect, useState } from 'react'
 import dayjs, { Dayjs } from 'dayjs'
+import { updateClient } from '../../services/api/clientServices'
+import { useClientDataProfessional } from '../hooks/useClientDataProfessional'
 
-export interface FormValuesEdit {
+export interface FormValuesEditClient {
 	nombre: string
 	apellido: string
 	birthDate: Date | null | string
 	tel: string
 	mail: string
+	contraseñaCliente: string
 }
 
 export function EditProfileClient(): JSX.Element {
+	const { decodedToken } = useAuth()
 	const [fecha, setFecha] = useState<Dayjs | null>(null) // Estado para almacenar la fecha parseada
 	useEffect(() => {
 		// Parsear la fecha del backend a un objeto Dayjs
@@ -32,7 +35,7 @@ export function EditProfileClient(): JSX.Element {
 		// professionalData,
 		// decodedToken
 	} = useAuth()
-	const { clientData, loading, error } = useClientData(
+	const { clientData, loading, error } = useClientDataProfessional(
 		params.clientId || '',
 		user?.token || ''
 	)
@@ -78,10 +81,11 @@ export function EditProfileClient(): JSX.Element {
 						apellido: clientData?.lastName || '',
 						birthDate: clientData?.birthDate || null,
 						tel: clientData?.phoneNumber || '',
-						mail: clientData?.email || ''
+						mail: clientData?.email || '',
+						contraseñaCliente: ''
 					}}
 					validate={values => {
-						const errors: Partial<FormValuesEdit> = {}
+						const errors: Partial<FormValuesEditClient> = {}
 						if (!values.nombre) {
 							errors.nombre = 'El nombre es requerido'
 						}
@@ -101,13 +105,27 @@ export function EditProfileClient(): JSX.Element {
 						} else if (!/^\d{10}$/.test(values.tel)) {
 							errors.tel = 'El teléfono debe tener 10 números'
 						}
+						if (!values.contraseñaCliente) {
+							errors.contraseñaCliente =
+								'La contraseña del cliente es requerida'
+						}
+
 
 						return errors
 					}}
 					onSubmit={(values, { setSubmitting }) => {
 						console.log('Valores pasados a func en contexto:', values)
-						alert('Simulacion: Se actualizaron los datos del cliente')
-						//updateProfessionalUser(values)
+						alert('Se actualizaron los datos del cliente')
+						if (params.clientId && values) {
+							updateClient(
+								user?.token,
+								params.clientId,
+								decodedToken?.professionalId,
+								values
+							)
+						}
+						alert('Se actualizaron los datos del cliente')
+
 						setSubmitting(false)
 					}}
 				>
@@ -194,8 +212,9 @@ export function EditProfileClient(): JSX.Element {
 								<div className='flex flex-row'>
 									<UserProfile width={44} height={44} />
 									<p className='ml-[16px] w-[465px]'>
-										Aquí puedes editar tu mail. Ten en cuenta que al cambiar el
-										mail cerrarás sesión y deberás volver a iniciarla.
+										Aquí puedes editar el usuario de tu cliente: usuario y
+										contraseña. Ten en cuenta que tu cliente reservará el turno
+										con este usuario.
 									</p>
 								</div>
 								<span className='flex mt-4 mb-4 border border-solid border-[#000] w-[551.5px]'></span>
@@ -218,6 +237,36 @@ export function EditProfileClient(): JSX.Element {
 													component='small'
 													className='text-[#FF8682] text-[14px]'
 												/>
+											</div>
+										</div>
+									</div>
+									<div className='w-[466px]'>
+										<h4 className='font-bold '>Contraseña del cliente.</h4>
+										<div className='mt-[7px]'>
+											<div className='flex flex-col gap-1'>
+												<div className='flex flex-col gap-[8px]'>
+													<label
+														htmlFor='contraseñaCliente'
+														className='text-[#828282]'
+													>
+														Introduce el documento del cliente, este será la
+														contraseña con la cual el usuario entrará a la
+														página para reservar el turno.
+													</label>
+													<Field
+														type='text'
+														name='contraseñaCliente'
+														className='border border-solid border-[#828282] w-[318px] p-[5px] rounded-md'
+														placeholder='DNI del cliente'
+													/>
+												</div>
+												<div className='flex h-[7px]'>
+													<ErrorMessage
+														name='contraseñaCliente'
+														component='small'
+														className='text-[#FF8682] text-[14px]'
+													/>
+												</div>
 											</div>
 										</div>
 									</div>

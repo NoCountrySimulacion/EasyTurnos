@@ -88,11 +88,11 @@ export function Sidemenu(): JSX.Element {
 	return (
 		<aside className='h-screen sticky top-0 bg-[#fff] text-[#000] font-mono w-[325px] shadow-md shadow-black'>
 			<nav>
-				<div id='logo' className='flex flex-col ml-2 pb-[0px] mb-2'>
+				<div id='logo' className='flex flex-col ml-2 pb-[0px] mb-2 '>
 					<img
 						src='../../../../public/svgs/Logo_2.svg'
 						alt=''
-						className='mt-2 mb-2 w-[90%]'
+						className='mt-5 mb-2 w-[90%]'
 					/>
 				</div>
 

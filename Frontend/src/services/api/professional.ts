@@ -16,6 +16,8 @@ const BASE_PROFESSIONAL_CLIENTS_URL =
 	'https://easyturnos.somee.com/GetAllByClientId/'
 const BASE_GET_PROFESIONAL =
 	'https://easyturnos.somee.com/api/Professional/GetById/'
+const BASE_DELETE_PROFESIONAL =
+	'https://easyturnos.somee.com/api/Professional/'
 
 export async function getProfessionalsByClient(
 	decodedToken: DecodedToken
@@ -141,4 +143,32 @@ export async function getProfessionalData(
 		console.error('Error getting professional data:', error)
 		throw error
 	}
+}
+
+export const deleteProfessional = async (
+	token: string | undefined,
+	professionalId: string | undefined,
+) => {
+	try {
+		const response = await fetch(
+			`${BASE_DELETE_PROFESIONAL}`,
+			{
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`
+				},
+				body: JSON.stringify({ professionalId }) 
+			}
+		)
+
+		if (!response.ok) {
+			const errorData = await response.json()
+			throw new Error(errorData.message || 'Error al eliminar el cliente')
+		}
+
+		return true // Retorna verdadero si la solicitud fue exitosa
+	} catch (error) {
+		console.error('Error al actualizar los datos del cliente:', error)
+		throw error	}
 }

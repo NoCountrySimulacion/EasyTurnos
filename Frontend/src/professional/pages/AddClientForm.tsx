@@ -13,7 +13,6 @@ interface FormValues {
 	birthDate: Date | null | string
 	mail: string
 	tel: string
-	observaciones: string
 	usuarioCliente: string
 	contraseñaCliente: string
 	confirmarContraseñaCliente: string
@@ -22,6 +21,28 @@ interface FormValues {
 export function AddClientForm(): JSX.Element {
 	const { decodedToken } = useAuth()
 	console.log(decodedToken)
+
+	const validatePassword = (password: string): string[] => {
+		const errors = []
+
+		if (!/(?=.*[A-Z])/.test(password)) {
+			errors.push('Debe tener al menos una letra mayúscula')
+		}
+		if (!/(?=.*\d)/.test(password)) {
+			errors.push('Debe tener al menos un número')
+		}
+		if (!/(?=.*[!@#$%^&*(),.?":{}|<>])/.test(password)) {
+			errors.push('Debe tener al menos un carácter especial')
+		}
+		if (/\s/.test(password)) {
+			errors.push('No debe contener espacios')
+		}
+		if (password.length < 8) {
+			errors.push('Debe tener al menos 8 caracteres')
+		}
+
+		return errors
+	}
 
 	return (
 		<section className='flex flex-col mt-10'>
@@ -60,7 +81,6 @@ export function AddClientForm(): JSX.Element {
 						birthDate: null,
 						mail: '',
 						tel: '',
-						observaciones: '',
 						usuarioCliente: '',
 						contraseñaCliente: '',
 						confirmarContraseñaCliente: ''
@@ -96,6 +116,11 @@ export function AddClientForm(): JSX.Element {
 						if (!values.contraseñaCliente) {
 							errors.contraseñaCliente =
 								'La contraseña del cliente es requerida'
+						} else {
+							const passwordErrors = validatePassword(values.contraseñaCliente)
+							if (passwordErrors.length > 0) {
+								errors.contraseñaCliente = passwordErrors.join('. ')
+							}
 						}
 						if (!values.confirmarContraseñaCliente) {
 							errors.confirmarContraseñaCliente =
@@ -236,33 +261,16 @@ export function AddClientForm(): JSX.Element {
 										/>
 									</div>
 								</div>
-
-								<div className='flex flex-col gap-1'>
-									<div className='flex flex-col gap-[8px]'>
-										<label htmlFor='observaciones'>Observaciones</label>
-										<Field
-											as='textarea'
-											name='observaciones'
-											className='border border-solid border-[#828282] w-[318px] p-[5px] rounded-md'
-											placeholder='Observaciones'
-										/>
-									</div>
-									<div className='flex h-[7px]'>
-										<ErrorMessage
-											name='observaciones'
-											component='small'
-											className='text-[#FF8682] text-[14px]'
-										/>
-									</div>
-								</div>
 							</section>
 
-							<section className='flex flex-col mb-[52px] ml-[74px]'>
-								<h3 className='font-bold text-[18px]'>Accesos del Cliente</h3>
+							<section className='flex flex-col mb-[52px] ml-[74px] '>
+								<h3 className='font-bold text-[18px] mb-4'>
+									Accesos del Cliente
+								</h3>
 								<span className='border border-solid border-[#000] w-[551.5px]'></span>
 								<section className='flex flex-col gap-[26px]'>
 									<div className='w-[466px]'>
-										<h4 className='font-bold'>Usuario del cliente</h4>
+										<h4 className='font-bold mt-2'>Usuario del cliente</h4>
 										<div className='flex flex-col gap-1 mt-[7px]'>
 											<div className='flex flex-col gap-[8px]'>
 												<label
@@ -297,16 +305,12 @@ export function AddClientForm(): JSX.Element {
 													<label
 														htmlFor='contraseñaCliente'
 														className='text-[#828282]'
-													>
-														Introduce el documento del cliente, este será la
-														contraseña con la cual el usuario entrará a la
-														página para reservar el turno.
-													</label>
+													></label>
 													<Field
 														type='text'
 														name='contraseñaCliente'
 														className='border border-solid border-[#828282] w-[318px] p-[5px] rounded-md'
-														placeholder='DNI del cliente'
+														placeholder='Contraseña'
 													/>
 												</div>
 												<div className='flex h-[7px]'>
@@ -319,13 +323,13 @@ export function AddClientForm(): JSX.Element {
 											</div>
 										</div>
 									</div>
-									<div className='w-[466px]'>
+									<div className='w-[466px] '>
 										<div className='  mb-[2px]'>
 											<div className='flex flex-col gap-1'>
 												<div className='flex flex-col gap-[8px]'>
 													<label
 														htmlFor='confirmarContraseñaCliente'
-														className=' font-bold '
+														className='mt-7 font-bold '
 													>
 														Confirmar contraseña
 													</label>
@@ -333,7 +337,7 @@ export function AddClientForm(): JSX.Element {
 														type='text'
 														name='confirmarContraseñaCliente'
 														className='border border-solid border-[#828282] w-[318px] p-[5px] rounded-md'
-														placeholder='DNI del cliente'
+														placeholder='Contraseña'
 													/>
 												</div>
 												<div className='flex h-[7px]'>
@@ -349,7 +353,7 @@ export function AddClientForm(): JSX.Element {
 								</section>
 							</section>
 
-							<footer className='flex mb-5 mt-10 w-[60rem] justify-between text-[13px] font-bold text-[#F8F9FA] ml-[42px]'>
+							<footer className='flex mb-5 mt-5 w-[60rem] justify-between text-[13px] font-bold text-[#F8F9FA] ml-[42px]'>
 								<Link
 									to='/home'
 									className='bg-[#7445C7] h-[38px] px-2 rounded-lg flex items-center justify-center '
