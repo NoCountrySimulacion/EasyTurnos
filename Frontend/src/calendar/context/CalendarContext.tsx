@@ -155,6 +155,9 @@ export const CalendarProvider = ({ children }: CalendarProviderProps) => {
 					icon: 'success',
 					title: 'Turno creado',
 					text: 'El turno se ha creado correctamente.'
+				}).then(() => {
+					// Recarga la página
+					window.location.reload()
 				})
 			} catch (error) {
 				console.error('Error creating appointment:', error)
@@ -191,6 +194,9 @@ export const CalendarProvider = ({ children }: CalendarProviderProps) => {
 					icon: 'success',
 					title: 'Turno creado',
 					text: 'El turno se ha creado correctamente.'
+				}).then(() => {
+					// Recarga la página
+					window.location.reload()
 				})
 			} catch (error) {
 				console.error('Error creating appointment:', error)
