@@ -4,8 +4,8 @@ import '@material/web/textfield/outlined-text-field.js'
 import { useNavigate } from 'react-router-dom'
 import {
 	CloseEyePassword,
-	FacebookLogo,
-	GoogleLogo,
+	/* 	FacebookLogo,
+	GoogleLogo, */
 	OpenEyePassword
 } from '../icons/Icons'
 import { ErrorMessage, Formik, FormikHelpers } from 'formik'
@@ -52,9 +52,9 @@ export default function Login(): React.ReactElement {
 	) => {
 		if (event.key === 'Enter') {
 			if (event.currentTarget.name === 'userEmail') {
-				document.getElementById(id + 'password')?.focus() 
+				document.getElementById(id + 'password')?.focus()
 			} else if (event.currentTarget.name === 'userPassword') {
-				submitForm() 
+				submitForm()
 			}
 		}
 	}
@@ -205,14 +205,14 @@ export default function Login(): React.ReactElement {
 									</button>
 								</p>
 							</div>
-							<div className='flex w-full justify-center items-start gap-3 mt-14'>
+							{/* 							<div className='flex w-full justify-center items-start gap-3 mt-14'>
 								<div className='border border-solid border-[#FD8847] pl-[5.5rem] pr-[5rem] pt-[.7rem] pb-[.7rem]'>
 									<FacebookLogo width={25} height={25} />
 								</div>
 								<div className='border border-solid border-[#FD8847] pl-[5rem] pr-[5rem] pt-[.7rem] pb-[.7rem]'>
 									<GoogleLogo width={25} height={25} />
 								</div>
-							</div>
+							</div> */}
 						</form>
 					)}
 				</Formik>

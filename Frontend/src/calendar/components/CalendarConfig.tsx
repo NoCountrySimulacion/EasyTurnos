@@ -14,6 +14,18 @@ interface CalendarConfigProps {
 	onConfigChange: (slots: any[]) => void
 }
 
+interface NumberDotProps {
+	num: string
+}
+
+function NumberDot({ num }: NumberDotProps): React.ReactElement {
+	return (
+		<figure className='w-[24px] h-[24.5px] pb-[0.5px] flex flex-col justify-center items-center rounded-[24px] border border-[#7445C7] bg-[#D3CAFF] text-[#313131] text-[12px] font-semibold leading-[24px]'>
+			{num}
+		</figure>
+	)
+}
+
 const MySwal = withReactContent(Swal)
 
 const CalendarConfig: React.FC<CalendarConfigProps> = ({ onConfigChange }) => {
@@ -85,14 +97,14 @@ const CalendarConfig: React.FC<CalendarConfigProps> = ({ onConfigChange }) => {
 			MySwal.fire({
 				icon: 'success',
 				title: '¡Configuración eliminada!',
-				text: 'Se han eliminado todos los slots correctamente.',
+				text: 'Se han eliminado todos los slots correctamente.'
 			})
 		} catch (error) {
 			console.error('Error al eliminar todos los slots:', error)
 			MySwal.fire({
 				icon: 'error',
 				title: 'Error al eliminar slots',
-				text: 'Hubo un error al intentar eliminar todos los slots.',
+				text: 'Hubo un error al intentar eliminar todos los slots.'
 			})
 		}
 	}
@@ -103,17 +115,20 @@ const CalendarConfig: React.FC<CalendarConfigProps> = ({ onConfigChange }) => {
 
 	return (
 		<div className='p-4'>
-			<h2 className='text-lg font-bold mb-4'>Configuración del Calendario</h2>
-			<select
-				value={interval}
-				onChange={handleIntervalChange}
-				className='p-2 border rounded-md mb-4'
-			>
-				<option value={15}>15 minutos</option>
-				<option value={30}>30 minutos</option>
-				<option value={60}>1 hora</option>
-				<option value={120}>2 horas</option>
-			</select>
+			<h2 className='text-xl font-bold mb-4'>Configuración del Calendario</h2>
+			<div>
+				<h3 className=' mb-2 font-roboto text-[#828282]'>Duración</h3>
+				<select
+					value={interval}
+					onChange={handleIntervalChange}
+					className='p-2 border rounded-md mb-4'
+				>
+					<option value={15}>15 minutos</option>
+					<option value={30}>30 minutos</option>
+					<option value={60}>1 hora</option>
+					<option value={120}>2 horas</option>
+				</select>
+			</div>
 			<section>
 				<section className='flex gap-4'>
 					<div className='flex flex-col'>
@@ -150,8 +165,31 @@ const CalendarConfig: React.FC<CalendarConfigProps> = ({ onConfigChange }) => {
 							}}
 							onChange={handleTimeRangeChange}
 						/>
-						<div className='text-sm text-center mt-4'>
+						<div className='text-sm text-center mt-5'>
 							El rango horario es: {formatHourRange(timeRange)}
+						</div>
+						<div className='mt-10'>
+							<h3 className='mb-10 font-roboto text-[#828282] text-[20px]'>
+								Para Configurar tu calendario
+							</h3>
+							<ol className='font-roboto text-[#828282] flex flex-col gap-8 pl-3'>
+								<li className='flex items-center gap-2 '>
+									<NumberDot num='1' />
+									<span>Elige Cuanto durará tu Cita.</span>
+								</li>
+								<li className='flex items-center gap-2 '>
+									<NumberDot num='2' />
+									<span>Seleciona el rango horario.</span>
+								</li>
+								<li className='flex items-center gap-2 '>
+									<NumberDot num='3' />
+									<span>Seleciona el rango de días en el més.</span>
+								</li>
+								<li className='flex items-center gap-2 '>
+									<NumberDot num='4' />
+									<span>Guarda la Configuración.</span>
+								</li>
+							</ol>
 						</div>
 					</div>
 					<div className='flex flex-col'>

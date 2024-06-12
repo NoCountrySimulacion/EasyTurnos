@@ -17,7 +17,7 @@ export function AppointmentsList(): React.ReactElement {
 					{filterAppointmentsList.data.map(appointment => (
 						<AppointmentCard
 							key={appointment.id}
-							name={appointment.name}
+							name={appointment.firstName}
 							startDate={appointment.startDate}
 							endDate={appointment.endDate}
 							speciality={appointment.speciality}
