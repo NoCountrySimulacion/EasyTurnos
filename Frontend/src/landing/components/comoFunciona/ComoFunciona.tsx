@@ -22,13 +22,14 @@ export default function ComoFunciona(): JSX.Element {
 	const [expanded, setExpanded] = useState<string | false>(false)
 
 	const handleChange =
-		(panel: string) => (_event: React.ChangeEvent<object>, isExpanded: boolean) => {
-			setExpanded(isExpanded ? panel : false)
-		}
+		(panel: string) =>
+			(_event: React.ChangeEvent<object>, isExpanded: boolean) => {
+				setExpanded(isExpanded ? panel : false)
+			}
 
 	return (
-		<div className='flex flex-col md:flex-row gap-4 p-4 px-20 h-[500px]'>
-			<div className='w-full md:w-1/2 space-y-4 flex flex-col gap-2'>
+		<div className='justify-center flex flex-col md:flex-row gap-4 p-4 px-20 h-[500px]'>
+			<div className=' text-center w-full md:w-1/2 space-y-4 flex flex-col gap-2'>
 				<Typography>
 					<h1 className='text-4xl font-montserrat font-semibold'>
 						¡En 4 pasos, tus clientes pueden reservar su turno!
@@ -116,7 +117,7 @@ export default function ComoFunciona(): JSX.Element {
 					</AccordionDetails>
 				</Accordion>
 			</div>
-			<div className='hidden md:block md:w-1/2 bg-gray-400 h-[510px]' />
+			{/* 	<div className='hidden md:block md:w-1/2 bg-gray-400 h-[510px]' /> */}
 		</div>
 	)
 }
