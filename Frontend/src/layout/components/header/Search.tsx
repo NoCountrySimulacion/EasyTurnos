@@ -75,7 +75,7 @@ export function Search(): React.ReactElement {
 				to={
 					decodedToken?.role === 'Professional'
 						? '/professional/add-client'
-						: '/professionals'
+						: '/client/calendar'
 				}
 				className='bg-[#7445C7] text-[#F8F9FA] flex items-center justify-center gap-[10px] h-[38px] min-w-[161px] rounded-lg text-[13px] font-bold hover:bg-purple-600'
 			>
