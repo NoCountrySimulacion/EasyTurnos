@@ -6,10 +6,12 @@ export function ScheduleAppointmentButton(): JSX.Element {
 	const { decodedToken } = useAuth()
 	const isProfessional = decodedToken?.role === 'Professional'
 
-	const destination = isProfessional ? '/professional/calendar' : '/client/calendar'
+	const destination = isProfessional
+		? '/professional/calendar'
+		: '/client/calendar'
 
 	return (
-		<button className='bg-[#7445C7] text-[#F8F9FA] flex items-center justify-center gap-[10px] h-[38px] w-[161px] rounded-lg text-[13px] font-bold'>
+		<button className='bg-[#7445C7] text-[#F8F9FA] flex items-center justify-center gap-[10px] h-[38px] w-[161px] rounded-lg text-[13px] font-bold hover:bg-purple-600 transition duration-300 ease-in-out'>
 			<CalendarIcon height={18} width={18} />
 			<NavLink to={destination}>
 				<span>Agendar Turno</span>

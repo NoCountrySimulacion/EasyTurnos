@@ -103,7 +103,7 @@ export function Sidemenu(): JSX.Element {
 					{principalMenu.map(item => (
 						<div
 							key={item.name}
-							className={`w-[80%] ml-3 rounded-[16px] ${selectedPage === item.name ? 'bg-[#D3CAFF] border border-solid border-[#7445C7]' : 'hover:bg-purple-100'}`}
+							className={`w-[80%] ml-3 rounded-[16px] ${selectedPage === item.name ? 'bg-[#D3CAFF] border border-solid border-[#7445C7]' : 'hover:bg-purple-100 transition duration-300 ease-in-out'}`}
 						>
 							<Link
 								to={item.to}
@@ -141,7 +141,7 @@ export function Sidemenu(): JSX.Element {
 
 				<div className='flex flex-row justify-center items-center mt-[10px]'>
 					<button
-						className='flex flex-row justify-center p-1 bg-[#7445C7] rounded-md w-[290px] hover:bg-purple-600'
+						className='flex flex-row justify-center p-1 bg-[#7445C7] rounded-md w-[290px] hover:bg-purple-600 transition duration-300 ease-in-out'
 						onClick={handleLogout}
 					>
 						<Logout width={24} height={24} />

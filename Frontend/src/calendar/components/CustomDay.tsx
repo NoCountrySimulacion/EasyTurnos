@@ -62,7 +62,7 @@ const CustomDay: React.FC<CustomDayProps> = props => {
 						color: '#FFF'
 					}),
 				...(day.isSame(hoveredDay, 'day') && {
-					backgroundColor: 'rgba(116, 69, 199, 0.04)'
+					backgroundColor: 'rgba(147, 51, 234)'
 				})
 			}}
 		/>

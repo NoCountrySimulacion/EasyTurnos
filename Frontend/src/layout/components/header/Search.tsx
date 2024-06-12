@@ -77,7 +77,7 @@ export function Search(): React.ReactElement {
 						? '/professional/add-client'
 						: '/client/calendar'
 				}
-				className='bg-[#7445C7] text-[#F8F9FA] flex items-center justify-center gap-[10px] h-[38px] min-w-[161px] rounded-lg text-[13px] font-bold hover:bg-purple-600'
+				className='bg-[#7445C7] text-[#F8F9FA] flex items-center justify-center gap-[10px] h-[38px] min-w-[161px] rounded-lg text-[13px] font-bold hover:bg-purple-600 transition duration-300 ease-in-out'
 			>
 				{decodedToken?.role === 'Professional' ? (
 					<AddClientIcon height={18} width={18} />
