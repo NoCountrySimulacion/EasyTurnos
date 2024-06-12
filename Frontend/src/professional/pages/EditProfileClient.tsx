@@ -2,12 +2,12 @@ import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { UserProfile, Edit } from '../components/icons/Icons'
 import { Link, useParams } from 'react-router-dom'
 import { useAuth } from '../../auth/hooks/useAuth'
-import { useClientData } from '../hooks/useClientData'
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { useEffect, useState } from 'react'
 import dayjs, { Dayjs } from 'dayjs'
 import { updateClient } from '../../services/api/clientServices'
+import { useClientDataProfessional } from '../hooks/useClientDataProfessional'
 
 export interface FormValuesEditClient {
 	nombre: string
@@ -35,7 +35,7 @@ export function EditProfileClient(): JSX.Element {
 		// professionalData,
 		// decodedToken
 	} = useAuth()
-	const { clientData, loading, error } = useClientData(
+	const { clientData, loading, error } = useClientDataProfessional(
 		params.clientId || '',
 		user?.token || ''
 	)
@@ -105,6 +105,11 @@ export function EditProfileClient(): JSX.Element {
 						} else if (!/^\d{10}$/.test(values.tel)) {
 							errors.tel = 'El teléfono debe tener 10 números'
 						}
+						if (!values.contraseñaCliente) {
+							errors.contraseñaCliente =
+								'La contraseña del cliente es requerida'
+						}
+
 
 						return errors
 					}}
