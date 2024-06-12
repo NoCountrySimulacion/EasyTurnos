@@ -17,6 +17,7 @@ function TableClient() {
 	const { professionalClients, isThereProfessionalClients } =
 		useProfessionalClients()
 	const { filterClients } = useSearch()
+	console.log(professionalClients)
 
 	const filteredProfessionalClients = professionalClients?.data.length
 		? filterClients(professionalClients)

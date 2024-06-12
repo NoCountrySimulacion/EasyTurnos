@@ -1,4 +1,3 @@
-/* eslint-disable indent */
 import { createContext, useState } from 'react'
 import {
 	ClientAppointmentList,
