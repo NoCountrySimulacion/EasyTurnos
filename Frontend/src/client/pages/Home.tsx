@@ -54,7 +54,9 @@ export function HomeClient(): React.ReactElement {
 					Tus turnos
 				</h2>
 				{loading ? (
-					<LoadingIcon />
+					<div className='w-full flex justify-center'>
+						<LoadingIcon />
+					</div>
 				) : isThereAppointments ? (
 					<AppointmentsList />
 				) : (

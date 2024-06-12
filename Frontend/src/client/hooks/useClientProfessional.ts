@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useAuth } from '../../auth/hooks/useAuth'
 import { ProfessionalsByClient } from '../../services/typescript/interface'
-import { getProfessionalByClient } from '../../services/api/professional'
+import { getProfessionalsByClient } from '../../services/api/professional'
 import { useSearch } from '../../layout/hooks/useSearch'
 
 export const useClientProfessional = () => {
@@ -19,15 +19,16 @@ export const useClientProfessional = () => {
 				setLoading(true)
 				setError(null)
 				if (!decodedToken) return
-				getProfessionalByClient(decodedToken).then(data =>
-					setClientProfessional(data)
-				)
+				const data = await getProfessionalsByClient(decodedToken)
+				setClientProfessional(data)
 			} catch (error) {
 				setError((error as Error).message)
 				console.log('Getting professional by client error:', error)
+			} finally {
+				setLoading(false)
 			}
 		}
-		fetchClientProfessional
+		fetchClientProfessional()
 		return setQuery('')
 	}, [decodedToken])
 

@@ -49,6 +49,10 @@ function TableClient({
 		'&:last-child td, &:last-child th': { border: 0 }
 	})
 
+	function capitalizeFirstLetter(string: string): string {
+		return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase()
+	}
+
 	return (
 		<>
 			{filteredProfessionals?.data.length ? (
@@ -57,7 +61,7 @@ function TableClient({
 						<Table>
 							<TableHead>
 								<CustomTableRow>
-									<CustomTableCellHeader>
+									<CustomTableCellHeader className='whitespace-nowrap'>
 										Nombre del profesional
 									</CustomTableCellHeader>
 									<CustomTableCellHeader>Especialidad</CustomTableCellHeader>
@@ -72,11 +76,12 @@ function TableClient({
 										className={index % 2 == 0 ? 'bg-[#F7F6FE]' : 'bg-white'}
 									>
 										<CustomTableCell className='w-[25%]'>
-											{row.firstName} {row.lastName}
+											{capitalizeFirstLetter(row.firstName)}{' '}
+											{capitalizeFirstLetter(row.lastName)}
 										</CustomTableCell>
 
 										<CustomTableCell className='w-[20%]'>
-											{row.specialty}
+											{row.specialty || 'Sin especialidad'}
 										</CustomTableCell>
 										<CustomTableCellTel className='w-[25%]'>
 											{row.phoneNumber}
@@ -109,7 +114,7 @@ export default function Professionals() {
 		<section className='h-full w-full flex flex-col font-montserrat px-10 gap-6 '>
 			<section className='mb-[100px]'>
 				{loading ? (
-					<div>
+					<div className='flex justify-center'>
 						<LoadingIcon />
 					</div>
 				) : isThereClientProfessional ? (

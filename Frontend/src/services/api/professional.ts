@@ -1,4 +1,7 @@
-import { ApiResponseProfesional, DecodedToken } from '../../auth/typescript/interface'
+import {
+	ApiResponseProfesional,
+	DecodedToken
+} from '../../auth/typescript/interface'
 import { FormValuesEdit } from '../../professional/pages/EditProfile'
 import {
 	ApiResponse,
@@ -14,7 +17,7 @@ const BASE_PROFESSIONAL_CLIENTS_URL =
 const BASE_GET_PROFESIONAL =
 	'https://easyturnos.somee.com/api/Professional/GetById/'
 
-export async function getProfessionalByClient(
+export async function getProfessionalsByClient(
 	decodedToken: DecodedToken
 ): Promise<ProfessionalsByClient> {
 	try {
@@ -122,7 +125,7 @@ export async function getProfessionalData(
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
-					Authorization: `Bearer ${token}` 
+					Authorization: `Bearer ${token}`
 				}
 			}
 		)
