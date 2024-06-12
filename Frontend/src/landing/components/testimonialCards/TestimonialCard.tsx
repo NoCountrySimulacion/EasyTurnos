@@ -17,7 +17,7 @@ const TestimonialCard: React.FC<Testimonial> = ({
 					alt={author}
 					className='w-10 h-10 rounded-full mr-4'
 				/>
-				<div>
+				<div className='text-start'>
 					<p className='text-sm font-medium'>{author}</p>
 					<p className='text-sm text-gray-500'>{description}</p>
 				</div>

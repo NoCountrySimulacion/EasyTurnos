@@ -2,12 +2,9 @@ import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { Edit } from '../components/icons/Icons'
 import { Link } from 'react-router-dom'
 import { createClientForProfessional } from '../../services/api/professionalClient' // Adjust the import path as necessary
-
 import { DatePicker } from '@mui/x-date-pickers'
-import { TextField } from '@mui/material'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-
 import { useAuth } from '../../auth/hooks/useAuth'
 
 interface FormValues {
@@ -111,33 +108,33 @@ export function AddClientForm(): JSX.Element {
 						return errors
 					}}
 					onSubmit={async (values, { setSubmitting, resetForm }) => {
-						if (decodedToken) {
-							// Add this check
-							try {
-								const newClientData = {
-									birthDate: values.birthDate!.toISOString(), // Ensure birthDate is not null
-									registrationRequest: {
-										firstName: values.nombre,
-										lastName: values.apellido,
-										email: values.mail,
-										phoneNumber: values.tel,
-										password: values.contraseñaCliente,
-										confirmPassword: values.confirmarContraseñaCliente
-									}
+						try {
+							const newClientData = {
+								birthDate: values.birthDate
+									? new Date(values.birthDate).toISOString()
+									: null,
+								registrationRequest: {
+									firstName: values.nombre,
+									lastName: values.apellido,
+									email: values.mail,
+									phoneNumber: values.tel,
+									password: values.contraseñaCliente,
+									confirmPassword: values.confirmarContraseñaCliente
 								}
+							}
 
+							if (decodedToken) {
 								await createClientForProfessional(decodedToken, newClientData)
 								alert('Cliente creado con éxito')
 								resetForm()
-							} catch (error) {
-								console.error('Error creating client:', error)
+							} else {
+								console.error('Decoded token is null')
 								alert('Error al crear el cliente')
-							} finally {
-								setSubmitting(false)
 							}
-						} else {
-							console.error('No token found')
-							alert('No se pudo encontrar el token')
+						} catch (error) {
+							console.error('Error creating client:', error)
+							alert('Error al crear el cliente')
+						} finally {
 							setSubmitting(false)
 						}
 					}}
@@ -183,19 +180,13 @@ export function AddClientForm(): JSX.Element {
 									</div>
 								</div>
 
-								<div className='flex flex-col gap-1'>
+								<div className='flex flex-col gap-1 w-1/6'>
 									<div className='flex flex-col gap-[8px]'>
 										<label htmlFor='birthDate'>Fecha de Nacimiento</label>
 										<LocalizationProvider dateAdapter={AdapterDayjs}>
 											<DatePicker
 												value={values.birthDate}
 												onChange={date => setFieldValue('birthDate', date)}
-												renderInput={params => (
-													<TextField
-														{...params}
-														className='border border-solid border-[#828282] w-[318px] p-[5px] rounded-md'
-													/>
-												)}
 											/>
 										</LocalizationProvider>
 									</div>

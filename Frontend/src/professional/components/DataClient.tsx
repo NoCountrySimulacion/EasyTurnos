@@ -1,26 +1,29 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
 import { IconProfile } from '../../layout/Icons/IconsProfile'
-import { useClientData } from '../hooks/useClientData'
 import { useAuth } from '../../auth/hooks/useAuth'
 import { ScheduleAppointmentButton } from './ScheduleAppointmentButton'
 import { Link } from 'react-router-dom'
+import { useClientDataProfessional } from '../hooks/useClientDataProfessional'
 
 export function DataClient(): React.ReactElement {
 	const params = useParams<{ clientId?: string }>()
 	const { user } = useAuth()
-	const { clientData, loading, error } = useClientData(
+	const { clientData, loading, error } = useClientDataProfessional(
 		params.clientId || '',
 		user?.token || ''
 	)
 
-	if (loading) {
-		return <div>Loading...</div>
-	}
+	if (loading)
+		return (
+			<div className='flex items-center justify-center h-full min-h-screen'>
+				<div className='w-10 h-10 border-4 border-dashed rounded-full animate-spin border-gray-800'></div>
+				<p className='ml-4'>Cargando...</p>
+			</div>
+		)
 
-	if (error) {
-		return <div>Error: {error}</div>
-	}
+	if (error) return <p>Error: {error}</p>
+
 
 	// Función para calcular la edad del cliente
 	const calculateAge = (birthdate: string): number => {
@@ -71,7 +74,7 @@ export function DataClient(): React.ReactElement {
 					</span>
 				</div>
 				<div>
-					<Link to={'/professional/edit-profile-client'}>
+					<Link to={`/professional/edit-profile-client/${clientData?.id}`}>
 						<div className='w-36 h-[38px] mb-4 p-2.5 bg-violet-700 rounded-lg justify-center items-center gap-2.5 inline-flex cursor-pointer hover:bg-purple-600 transition duration-300 ease-in-out'>
 							<div className="text-white text-[13px] font-bold font-['Montserrat'] leading-[18.20px]">
 								Editar cliente

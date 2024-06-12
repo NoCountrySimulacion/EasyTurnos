@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import { createContext, useEffect, useState } from 'react'
 import {
-	
 	getProfessionalData,
 	updateProfessionalUserService
 } from '../../services/api/professional'
@@ -12,7 +11,6 @@ import {
 	DecodedToken,
 	ProfessionalData
 } from '../typescript/interface'
-import { createContext, useEffect, useState } from 'react'
 import { FormValuesEdit } from '../../professional/pages/EditProfile'
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -21,7 +19,6 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 	const [user, setUser] = useState<UserLogged | null>(null)
 	const [professionalData, setProfessionalData] =
 		useState<ProfessionalData | null>(null)
-
 	const [isSignIn, setIsSignIn] = useState<boolean>(false)
 	const [decodedToken, setDecodedToken] = useState<DecodedToken | null>(null)
 	const [error, setError] = useState<string | null>(null)
@@ -37,6 +34,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 				lastName: storedLastName ?? ''
 			})
 			decodeAndSetToken(storedToken)
+			setIsSignIn(true)
 		}
 	}, [])
 
@@ -45,9 +43,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 			;(async () => {
 				try {
 					decodedToken.role = 'Professional'
-					const response = await getProfessionalData(
-						decodedToken
-					)
+					const response = await getProfessionalData(decodedToken)
 					setProfessionalData(response)
 					console.log('mis datos guardados:', professionalData)
 				} catch (error) {
@@ -98,6 +94,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 	const isUserSignedIn = (): boolean => {
 		return !!localStorage.getItem('token')
 	}
+
 	const registerUser = async (
 		firstName: string,
 		lastName: string,
@@ -125,6 +122,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 			})
 			loginUser(email, password)
 			decodeAndSetToken(response.token)
+			setIsSignIn(true)
 		} catch (err: unknown) {
 			if (err instanceof Error) {
 				setError(err.message)
@@ -137,7 +135,6 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 	}
 
 	const updateProfessionalUser = async (data: FormValuesEdit) => {
-
 		try {
 			console.log('Token viejo: ', decodedToken)
 			console.log('Actualizando datos...')
@@ -148,6 +145,19 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 			)
 			console.log('Respuesta del servicio en json:', response)
 			alert('Se actualizo con exito')
+
+			// Actualiza el localStorage y el estado del usuario
+			localStorage.setItem('firstName', data.nombre)
+			localStorage.setItem('lastName', data.apellido)
+			const storedToken = localStorage.getItem('token')
+			if (storedToken) {
+				console.log('Actualizando los datos en el local....', data.nombre)
+				setUser({
+					token: storedToken,
+					firstName: data.nombre,
+					lastName: data.apellido
+				})
+			}
 		} catch (error) {
 			setError('Error updating professional data')
 			console.error('Error updating professional data:', error)
@@ -167,6 +177,10 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 		} catch (error) {
 			console.error('Error decoding token:', error)
 		}
+	}
+
+	const isUserSignedIn = (): boolean => {
+		return !!localStorage.getItem('token')
 	}
 
 	const authContextValue: AuthContextType = {

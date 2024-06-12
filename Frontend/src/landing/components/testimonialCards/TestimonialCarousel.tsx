@@ -31,7 +31,7 @@ const TestimonialCarousel: React.FC = () => {
 				modules={[Autoplay]}
 			>
 				{testimonials.map((testimonial, index) => (
-					<SwiperSlide key={index} className='p-6'>
+					<SwiperSlide key={index} className='p-6 text-center'>
 						<TestimonialCard {...testimonial} />
 					</SwiperSlide>
 				))}

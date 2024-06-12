@@ -8,7 +8,7 @@ import Clientes from '../landing/components/clientes/Clientes'
 import SignUpModal from '../auth/components/form/SingUpModal'
 import LoginOptionsModal from '../auth/components/form/LoginOptionsModal'
 import LoginModal from '../auth/components/form/LoginModal'
-import Calendar from '../calendar/pages/Calendar'
+
 import Clients from '../professional/pages/Clients'
 import { AddClientForm } from '../professional/pages/AddClientForm'
 import { UserViewInd } from '../professional/pages/UserViewInd'
@@ -22,6 +22,7 @@ import { Profile } from '../layout/pages/Profile'
 import { EditProfile } from '../professional/pages/EditProfile'
 import { EditProfileClient } from '../professional/pages/EditProfileClient'
 import { DataClient } from '../professional/components/DataClient'
+import Calendar from '../calendar/pages/Calendar'
 
 export default function AppRoutes() {
 	const { isUserSignedIn, decodedToken } = useAuth()
@@ -60,14 +61,14 @@ export default function AppRoutes() {
 								/>
 								<Route path='/profile' element={<Profile />} />
 								<Route path='/professional/data-client/:clientId' element={<DataClient />} />
-								<Route path='/professional/edit-profile-client' element={<EditProfileClient />} />
+								<Route path='/professional/edit-profile-client/:clientId' element={<EditProfileClient />} />
 							</>
 						) : (
 							<>
 								<Route path='/home' element={<HomeClient />} />
 								<Route path='/professionals' element={<Professionals />} />
 								<Route path='/my-appointments' element={<Appointments />} />
-								<Route path='/calendar' element={<Calendar />} />
+								<Route path='/client/calendar' element={<Calendar />} />
 								<Route path='/profile' element={<Profile />} />
 
 							</>

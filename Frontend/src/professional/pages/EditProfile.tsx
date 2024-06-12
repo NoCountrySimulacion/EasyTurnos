@@ -15,7 +15,7 @@ export interface FormValuesEdit {
 }
 
 export function EditProfile(): JSX.Element {
-	const { user, updateProfessionalUser, logout, decodedToken } = useAuth()
+	const { updateProfessionalUser, logout, decodedToken } = useAuth()
 	const navigate = useNavigate()
 
 	if (!decodedToken) {
@@ -64,8 +64,8 @@ export function EditProfile(): JSX.Element {
 				</div>
 				<Formik
 					initialValues={{
-						nombre: user?.firstName || '',
-						apellido: user?.lastName || '',
+						nombre: professionalData?.firstName || '',
+						apellido: professionalData?.lastName || '',
 						especialidad: professionalData?.speciality || '',
 						ubicacion: '',
 						tel: professionalData?.phoneNumber || '',
@@ -89,8 +89,9 @@ export function EditProfile(): JSX.Element {
 					onSubmit={(values, { setSubmitting }) => {
 						console.log('Valores pasados a func en contexto:', values)
 						updateProfessionalUser(values)
+						
 						setSubmitting(false)
-						if (values.mail !== decodedToken?.email) {
+						if (values.mail !== '') {
 							setTimeout(() => {
 								logout()
 								navigate('/')
