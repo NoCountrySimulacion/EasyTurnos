@@ -7,19 +7,31 @@ import { useSearch } from '../../layout/hooks/useSearch'
 export const useClientProfessional = () => {
 	const { decodedToken } = useAuth()
 	const { setQuery } = useSearch()
+	const [loading, setLoading] = useState(false)
+	const [error, setError] = useState<string | null>(null)
 
 	const [clientProfessional, setClientProfessional] =
 		useState<ProfessionalsByClient | null>(null)
 
 	useEffect(() => {
-		if (!decodedToken) return
-		getProfessionalByClient(decodedToken).then(data =>
-			setClientProfessional(data)
-		)
-		return setQuery(null)
+		const fetchClientProfessional = async () => {
+			try {
+				setLoading(true)
+				setError(null)
+				if (!decodedToken) return
+				getProfessionalByClient(decodedToken).then(data =>
+					setClientProfessional(data)
+				)
+			} catch (error) {
+				setError((error as Error).message)
+				console.log('Getting professional by client error:', error)
+			}
+		}
+		fetchClientProfessional
+		return setQuery('')
 	}, [decodedToken])
 
 	const isThereClientProfessional = clientProfessional?.data.length
 
-	return { clientProfessional, isThereClientProfessional }
+	return { clientProfessional, isThereClientProfessional, loading, error }
 }

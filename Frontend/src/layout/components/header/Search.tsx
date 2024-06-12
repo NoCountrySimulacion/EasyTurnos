@@ -7,11 +7,13 @@ import {
 } from '../../../professional/components/icons/Icons'
 import { NavLink, useLocation } from 'react-router-dom'
 import { useSearch } from '../../hooks/useSearch'
+import { useState, useEffect } from 'react'
 
 export function Search(): React.ReactElement {
 	const { decodedToken } = useAuth()
 	const location = useLocation()
-	const { handleSubmit } = useSearch()
+	const { handleSubmit, query } = useSearch()
+	const [searchValue, setSearchValue] = useState('')
 
 	const getTitle = () => {
 		switch (location.pathname) {
@@ -30,6 +32,13 @@ export function Search(): React.ReactElement {
 		}
 	}
 
+	useEffect(() => {
+		setSearchValue(query)
+	}, [location, query])
+
+	const handleInputChange = event => {
+		setSearchValue(event.target.value)
+	}
 
 	return (
 		<header className='flex gap-[22px] items-center pt-[20px] pb-[15px] px-[30px] w-full shadow-search rounded-b-2xl'>
@@ -37,8 +46,11 @@ export function Search(): React.ReactElement {
 				{getTitle()}
 			</h1>
 			<form
-				className='relative w-full h-[65px] gap-[18px]  rounded-[26px] shadow-search '
-				onSubmit={handleSubmit}
+				className='relative w-full h-[65px] gap-[18px] rounded-[26px] shadow-search'
+				onSubmit={e => {
+					handleSubmit(e)
+					setSearchValue('')
+				}}
 			>
 				<div className='flex items-center h-full ml-[19px] gap-[10px]'>
 					<button className='relative' type='submit'>
@@ -48,6 +60,8 @@ export function Search(): React.ReactElement {
 						id='search'
 						name='search'
 						type='text'
+						value={searchValue}
+						onChange={handleInputChange}
 						placeholder={
 							decodedToken?.role === 'Professional'
 								? 'Buscar cliente'

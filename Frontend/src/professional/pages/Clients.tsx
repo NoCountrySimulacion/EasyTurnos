@@ -10,18 +10,17 @@ import {
 import { ScheduleAppointmentButton } from '../components/ScheduleAppointmentButton'
 import { UnsubscribeButton } from '../components/UnsubscribeButton'
 import { styled } from '@mui/system'
-import { useProfessionalClients } from '../hooks/useProfessionalClients'
 import { useSearch } from '../../layout/hooks/useSearch'
 import { ClientButton } from '../components/ClientButton'
-function TableClient() {
-	const { professionalClients, isThereProfessionalClients } =
-		useProfessionalClients()
-	const { filterClients } = useSearch()
+import { LoadingIcon } from '../../shared/components/Icons'
+import { ClientsByProfessional } from '../../services/typescript/interface'
+import { useProfessionalClients } from '../hooks/useProfessionalClients'
 
-	const filteredProfessionalClients = professionalClients?.data.length
-		? filterClients(professionalClients)
-		: professionalClients
-
+function TableClient({
+	filteredProfessionalClients
+}: {
+	filteredProfessionalClients: ClientsByProfessional | null
+}) {
 	const CustomTableCell = styled(TableCell)({
 		borderBottom: 'none',
 		fontFamily: 'Roboto, sans-serif',
@@ -46,7 +45,7 @@ function TableClient() {
 
 	return (
 		<>
-			{isThereProfessionalClients ? (
+			{filteredProfessionalClients?.data.length ? (
 				<Paper elevation={0}>
 					<TableContainer>
 						<Table>
@@ -62,12 +61,11 @@ function TableClient() {
 								{filteredProfessionalClients?.data.map((row, index) => (
 									<CustomTableRow
 										key={index}
-										className={index % 2 == 0 ? 'bg-[#F7F6FE]' : 'bg-white'}
+										className={index % 2 === 0 ? 'bg-[#F7F6FE]' : 'bg-white'}
 									>
 										<CustomTableCell className='w-[15%]'>
 											<span>{row.firstName}</span>
 										</CustomTableCell>
-
 										<CustomTableCell className='w-[15%]'>
 											<span>{row.lastName}</span>
 										</CustomTableCell>
@@ -88,8 +86,8 @@ function TableClient() {
 					</TableContainer>
 				</Paper>
 			) : (
-				<section className='flex justify-center '>
-					<h1 className='text-4xl font-montserrat'>Aún no tienes clientes</h1>
+				<section className='flex justify-center'>
+					<h1 className='text-4xl font-montserrat'>Sin resultados</h1>
 				</section>
 			)}
 		</>
@@ -97,10 +95,30 @@ function TableClient() {
 }
 
 export default function Clients() {
+	const { professionalClients, isThereProfessionalClients, loading } =
+		useProfessionalClients()
+	const { filterClients } = useSearch()
+
+	const filteredProfessionalClients = professionalClients?.data.length
+		? filterClients(professionalClients)
+		: professionalClients
+
 	return (
-		<section className='h-full w-full flex flex-col font-montserrat px-10 gap-6 '>
+		<section className='h-full w-full flex flex-col font-montserrat px-10 gap-6'>
 			<section className='mb-[100px]'>
-				<TableClient />
+				{loading ? (
+					<div className='w-full flex justify-center'>
+						<LoadingIcon />
+					</div>
+				) : isThereProfessionalClients ? (
+					<TableClient
+						filteredProfessionalClients={filteredProfessionalClients}
+					/>
+				) : (
+					<section className='flex justify-center'>
+						<h1 className='text-4xl font-montserrat'>Aún no tienes clientes</h1>
+					</section>
+				)}
 			</section>
 		</section>
 	)

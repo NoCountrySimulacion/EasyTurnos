@@ -1,4 +1,5 @@
 import { useAuth } from '../../auth/hooks/useAuth'
+import { LoadingIcon } from '../../shared/components/Icons'
 import { useAppointments } from '../../shared/hooks/useAppointments'
 import { AppointmentsList } from '../components/AppointmentsList'
 import { WithoutAppointments } from '../components/WhitoutAppointments'
@@ -17,7 +18,7 @@ function NumberDot({ num }: NumberDotProps): React.ReactElement {
 
 export function HomeClient(): React.ReactElement {
 	const { user } = useAuth()
-	const { isThereAppointments } = useAppointments()
+	const { isThereAppointments, loading } = useAppointments()
 
 	return (
 		<section className=' h-full flex flex-col px-10  gap-10'>
@@ -52,7 +53,13 @@ export function HomeClient(): React.ReactElement {
 				<h2 className='font-montserrat text-[28px] leading-[42px] font-semibold'>
 					Tus turnos
 				</h2>
-				{isThereAppointments ? <AppointmentsList /> : <WithoutAppointments />}
+				{loading ? (
+					<LoadingIcon />
+				) : isThereAppointments ? (
+					<AppointmentsList />
+				) : (
+					<WithoutAppointments />
+				)}
 			</section>
 		</section>
 	)

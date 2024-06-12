@@ -4,12 +4,13 @@ import { AppointmentsList } from '../components/AppointmentsList'
 import { WithoutAppointments } from '../components/WithoutAppointments'
 import { useAuth } from '../../auth/hooks/useAuth'
 import { useAppointments } from '../../shared/hooks/useAppointments'
+import { LoadingIcon } from '../../shared/components/Icons'
 
 function Home(): React.ReactElement {
 	const now = DateTime.now()
 	const formattedDate = now.setLocale('es').toFormat("cccc, dd 'de' LLLL")
 	const { user } = useAuth()
-	const { isThereAppointments } = useAppointments()
+	const { isThereAppointments, loading } = useAppointments()
 
 	return (
 		<section className=' h-full flex flex-col font-montserrat px-10 gap-6 '>
@@ -22,7 +23,15 @@ function Home(): React.ReactElement {
 					Hoy {formattedDate}.
 				</h2>
 			</section>
-			{!isThereAppointments ? <AppointmentsList /> : <WithoutAppointments />}
+			{loading ? (
+				<div className='w-full flex justify-center'>
+					<LoadingIcon />
+				</div>
+			) : !isThereAppointments ? (
+				<AppointmentsList />
+			) : (
+				<WithoutAppointments />
+			)}
 		</section>
 	)
 }

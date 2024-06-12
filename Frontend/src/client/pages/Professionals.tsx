@@ -13,16 +13,16 @@ import { ScheduleAppointmentButton } from '../../professional/components/Schedul
 import { UnsubscribeButton } from '../../professional/components/UnsubscribeButton'
 import { useSearch } from '../../layout/hooks/useSearch'
 import { useClientProfessional } from '../hooks/useClientProfessional'
+import { LoadingIcon } from '../../shared/components/Icons'
+import { ProfessionalsByClient } from '../../services/typescript/interface'
 
-function TableClient() {
+function TableClient({
+	clientProfessional
+}: {
+	clientProfessional: ProfessionalsByClient | null
+}) {
 	const { filterProfessionals } = useSearch()
-	const { clientProfessional, isThereClientProfessional } =
-		useClientProfessional()
 
-	// console.log(
-	// 	'Estos son los profesionales que llegan del fetch: ',
-	// 	clientProfessional
-	// )
 	const filteredProfessionals = clientProfessional?.data.length
 		? filterProfessionals(clientProfessional)
 		: clientProfessional
@@ -51,7 +51,7 @@ function TableClient() {
 
 	return (
 		<>
-			{isThereClientProfessional ? (
+			{filteredProfessionals?.data.length ? (
 				<Paper elevation={0}>
 					<TableContainer>
 						<Table>
@@ -95,9 +95,7 @@ function TableClient() {
 				</Paper>
 			) : (
 				<section className='flex justify-center '>
-					<h1 className='text-4xl font-montserrat'>
-						Aún no tienes profesionales
-					</h1>
+					<h1 className='text-4xl font-montserrat'>Sin resultados</h1>
 				</section>
 			)}
 		</>
@@ -105,10 +103,24 @@ function TableClient() {
 }
 
 export default function Professionals() {
+	const { clientProfessional, isThereClientProfessional, loading } =
+		useClientProfessional()
 	return (
 		<section className='h-full w-full flex flex-col font-montserrat px-10 gap-6 '>
 			<section className='mb-[100px]'>
-				<TableClient />
+				{loading ? (
+					<div>
+						<LoadingIcon />
+					</div>
+				) : isThereClientProfessional ? (
+					<TableClient clientProfessional={clientProfessional} />
+				) : (
+					<section className='flex justify-center '>
+						<h1 className='text-4xl font-montserrat'>
+							Aún no tienes profesionales
+						</h1>
+					</section>
+				)}
 			</section>
 		</section>
 	)
