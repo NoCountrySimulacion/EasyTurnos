@@ -1,3 +1,5 @@
+import { NavLink } from 'react-router-dom'
+
 export default function Banner(): JSX.Element {
 	return (
 		<div className='w-full h-[500px] relative rounded-[7.14px]'>
@@ -20,11 +22,11 @@ export default function Banner(): JSX.Element {
 				</div>
 				<div className='w-[340px] h-[90px] p-2.5 flex-col gap-3 flex '>
 					<span className="w-[230px] h-[60px] p-2.5 bg-[#E69C58] rounded-xl shadow border-b border-black justify-center items-center inline-flex cursor-pointer text-black text-[19px] font-bold font-['Montserrat']">
-						Agenda ahora
+						<NavLink to='/register'>Agenda Ahora</NavLink>
 					</span>
 				</div>
 			</div>
-			<div className="w-1/2 h-full absolute right-0"></div>
+			<div className='w-1/2 h-full absolute right-0'></div>
 		</div>
 	)
 

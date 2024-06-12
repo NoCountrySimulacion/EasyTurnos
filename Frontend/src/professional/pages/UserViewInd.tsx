@@ -2,9 +2,12 @@
 import { useState } from 'react'
 import { Calendar, IconGeneral } from '../components/icons/Icons'
 import { Link } from 'react-router-dom'
+import { useAuth } from '../../auth/hooks/useAuth'
 
 export function UserViewInd(): JSX.Element {
 	const [turno] = useState(false)
+
+	const { user } = useAuth()
 
 	return (
 		<main className='ml-4 mt-2'>
@@ -12,7 +15,7 @@ export function UserViewInd(): JSX.Element {
 				<div className='flex items-center content-center gap-4 border shadow-2xl'>
 					<IconGeneral width={160} height={167} />
 					<h2 className='font-montserrat font-[600] text-[26px] w-[300px]'>
-						Nombre y apellido del cliente
+						Informacion sobre {user?.firstName} {user?.lastName}
 					</h2>
 				</div>
 			</section>

@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom'
 import Logo from '../navbar/Logo'
 import {
 	FacebookLogoSocial,
@@ -24,14 +25,17 @@ export default function Footer(): JSX.Element {
 								<WhatsappLogoSocial />
 								<YoutubeLogoSocial />
 							</div>
-							<address id='contacto' className=' flex flex-col justify-center items-center w-1/3'>
+							<address
+								id='contacto'
+								className=' flex flex-col justify-center items-center w-1/3'
+							>
 								<span>+34 627 531265</span>
 								<span>+54 341 6679525</span>
 								<span>contacto@turnosonline.app</span>
 							</address>
 						</div>
 						<div className=' h-[50px] text-center pt-5 font-baloo'>
-							<p className='' >Turnos Online 2024 ©</p>
+							<p className=''>Turnos Online 2024 ©</p>
 							<span>Developed by </span>
 							<span>S15-22-t-csharp-react</span>
 						</div>
