@@ -76,14 +76,14 @@ export interface Appointment {
 	clientId: string
 }
 
-export interface ClientAppointmentList {
-	data: Omit<Appointment[], 'clientId'>
+export interface ProfessionalAppointmentList {
+	data: Omit<Appointment[], 'speciality'>
 	success: boolean
 	message: string
 }
 
-export interface ProfessionalAppointmentList {
-	data: Omit<Appointment[], 'speciality'>
+export interface ClientAppointmentList {
+	data: Omit<Appointment[], 'clientId'>
 	success: boolean
 	message: string
 }
@@ -97,8 +97,6 @@ export interface ClientData {
 	lastName: string
 }
 
-
-
 export interface ApiResponse {
 	data: ClientData
 	success: boolean
@@ -106,20 +104,20 @@ export interface ApiResponse {
 }
 
 export interface ApiUpdateProfessionalData {
-	firstName: string;
-	lastName: string;
-	speciality: string;
-	description: string;
-	location: string;
-	phoneNumber: string;
-	newEmail: string;
+	firstName: string
+	lastName: string
+	speciality: string
+	description: string
+	location: string
+	phoneNumber: string
+	newEmail: string
 }
 
 export interface ApiUpdateClientData {
-	firstName: string;
-	lastName: string;
-	phoneNumber: string;
-	email: string;
-	password: string;
+	firstName: string
+	lastName: string
+	phoneNumber: string
+	email: string
+	password: string
 	birthDate: Date | null | string
 }

@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import { createContext, useState } from 'react'
 import {
 	ClientAppointmentList,
@@ -13,6 +14,8 @@ export const searchContext = createContext<SearchValueProps>(
 
 export function SearchProvider({ children }: { children: React.ReactNode }) {
 	const [query, setQuery] = useState<FormDataEntryValue | null>(null)
+	const [todayAppointmentsCount, setTodayAppointmentsCount] =
+		useState<number>(0)
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
@@ -22,6 +25,11 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
 		setQuery(search)
 	}
 
+	function capitalizeFirstLetter(string: string | undefined): string {
+		if (typeof string !== 'string') return ''
+		return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase()
+	}
+
 	const filterClientsAppointmentsList = (
 		valueToFilter: ClientAppointmentList
 	): ClientAppointmentList => {
@@ -29,29 +37,40 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
 			return valueToFilter
 		}
 
-		const newValueToFilter = {
-			...valueToFilter,
-			data: valueToFilter.data.filter(value => {
-				if (typeof query === 'string') {
-					return value.name === ''
-						? `${value.firstName} ${value.lastName}`
-						: value.name
-				}
-				return false
-			})
+		const today = new Date()
+		today.setHours(0, 0, 0, 0)
+
+		const isSameDay = (dateString: string) => {
+			const date = new Date(dateString)
+			date.setHours(0, 0, 0, 0)
+			return date.getTime() === today.getTime()
 		}
 
-		return query === null
-			? newValueToFilter
-			: {
-					...newValueToFilter,
-					data: newValueToFilter.data.filter(value => {
-						if (typeof query === 'string') {
-							return value.name.toLowerCase().includes(query.toLowerCase())
-						}
-						return false
-					})
-				}
+		const filteredData = valueToFilter.data.filter(value => {
+			const matchesDate = isSameDay(value.startDate) || isSameDay(value.endDate)
+
+			if (typeof query === 'string') {
+				const nameToCheck =
+					value.name === ''
+						? `${capitalizeFirstLetter(value.firstName)}{' '} ${capitalizeFirstLetter(value.lastName)}`
+						: value.name
+				return (
+					matchesDate && nameToCheck.toLowerCase().includes(query.toLowerCase())
+				)
+			}
+
+			return matchesDate
+		})
+
+		const filteredList = {
+			...valueToFilter,
+			data: filteredData
+		}
+		console.log('FilterData: ,', filteredData.length)
+
+		setTodayAppointmentsCount(filteredData.length)
+
+		return filteredList
 	}
 
 	const filterClients = (
@@ -130,6 +149,7 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
 				query,
 				setQuery,
 				handleSubmit,
+				todayAppointmentsCount,
 				filterClientsAppointmentsList,
 				filterClients,
 				filterProfessionalsAppointmentsList,

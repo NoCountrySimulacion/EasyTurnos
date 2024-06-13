@@ -14,6 +14,7 @@ export interface SearchValueProps {
 	query: FormDataEntryValue | null
 	setQuery: React.Dispatch<React.SetStateAction<FormDataEntryValue | null>>
 	handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void
+	todayAppointmentsCount: number
 	filterClientsAppointmentsList: (
 		valueToFilter: ClientAppointmentList
 	) => ClientAppointmentList

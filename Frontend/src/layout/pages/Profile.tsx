@@ -69,7 +69,10 @@ export function Profile(): React.ReactElement {
 			) &&
 			decodedToken?.professionalId
 		) {
-			const result = deleteProfessional(user?.token, decodedToken?.professionalId)
+			const result = deleteProfessional(
+				user?.token,
+				decodedToken?.professionalId
+			)
 				.then(() => {
 					alert('Su cuenta ha sido eliminada correctamente.')
 					// Redirigir o realizar cualquier otra acción necesaria después de eliminar al cliente
@@ -81,13 +84,18 @@ export function Profile(): React.ReactElement {
 			console.log(result)
 		}
 	}
+	function capitalizeFirstLetter(string: string | undefined): string {
+		if (typeof string !== 'string') return ''
+		return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase()
+	}
 
 	return (
 		<div>
 			<div className='flex flex-row items-center justify-around h-full min-h-10 shadow-md gap-8 p-5'>
 				<IconProfile width={150} height={150} />
 				<h1 className='text-4xl font-bold'>
-					{user?.firstName + ' ' + user?.lastName}
+					{capitalizeFirstLetter(user?.firstName)}{' '}
+					{capitalizeFirstLetter(user?.lastName)}
 				</h1>
 				<div className='w-1/3'></div>
 			</div>
@@ -135,8 +143,10 @@ export function Profile(): React.ReactElement {
 						</Link>
 						<div className='flex items-end justify-end'>
 							<div className='w-36 h-[38px] p-2.5 bg-rose-700 rounded-lg justify-center items-center gap-2.5 inline-flex cursor-pointer hover:bg-red-500 transition duration-300 ease-in-out'>
-								<div className="text-white text-[13px] font-bold font-['Montserrat'] leading-[18.20px]"
-								onClick={handleDeleteProfessional}>
+								<div
+									className="text-white text-[13px] font-bold font-['Montserrat'] leading-[18.20px]"
+									onClick={handleDeleteProfessional}
+								>
 									Dar de baja
 								</div>
 							</div>

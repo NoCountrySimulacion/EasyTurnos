@@ -110,7 +110,6 @@ export function EditProfileClient(): JSX.Element {
 								'La contraseña del cliente es requerida'
 						}
 
-
 						return errors
 					}}
 					onSubmit={(values, { setSubmitting }) => {
@@ -276,7 +275,7 @@ export function EditProfileClient(): JSX.Element {
 							<footer className='flex mb-5 mt-10 w-[60rem] justify-between text-[13px] font-bold text-[#F8F9FA] ml-[42px]'>
 								<Link
 									to='/home'
-									className='bg-[#7445C7] h-[38px] px-2 rounded-lg flex items-center justify-center '
+									className='bg-[#7445C7] h-[38px] px-2 rounded-lg flex items-center justify-center transition duration-300 ease-in-out hover:bg-purple-600 '
 								>
 									<span>Volver</span>
 								</Link>
@@ -284,7 +283,7 @@ export function EditProfileClient(): JSX.Element {
 									<Link to={'/profile'}>
 										<button
 											type='button'
-											className='bg-[#BC4141] p-2 rounded-[4px] h-[38px] '
+											className='bg-[#BC4141] p-2 rounded-[4px] h-[38px] transition duration-300 ease-in-out hover:bg-red-600'
 										>
 											Cancelar
 										</button>
@@ -292,7 +291,7 @@ export function EditProfileClient(): JSX.Element {
 									<button
 										type='submit'
 										disabled={isSubmitting}
-										className='bg-[#02A95C] p-2 rounded-[4px] h-[38px]'
+										className='bg-green-600 p-2 rounded-[4px] h-[38px] transition duration-300 ease-in-out hover:bg-[#37b95e]'
 									>
 										Modificar datos
 									</button>

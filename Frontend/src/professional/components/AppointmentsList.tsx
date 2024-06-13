@@ -8,13 +8,12 @@ import { CalendarIcon } from './icons/Icons'
 
 export function AppointmentsList(): React.ReactElement {
 	const { appointmentList } = useAppointments()
-	const { filterClientsAppointmentsList } = useSearch()
+	const { filterClientsAppointmentsList, todayAppointmentsCount } = useSearch()
 
 	const filterAppointmentsList: ProfessionalAppointmentList = appointmentList
 		? filterClientsAppointmentsList(appointmentList)
 		: { data: [], success: false, message: 'No data available' }
-
-	console.log(filterAppointmentsList)
+	console.log('Today Appointments Count:', todayAppointmentsCount)
 
 	return (
 		<section className='w-full flex flex-col gap-[52px] mb-[56px]'>
@@ -23,11 +22,7 @@ export function AppointmentsList(): React.ReactElement {
 					to='/professional/calendar'
 					className='w-full text-center shadow-search text-[33px] font-bold leading-[56px] rounded-[15px] py-[15px] hover:bg-[#D3CAFF] transition duration-300 hover:border hover:border-[#7445C7]'
 				>
-					Para el día de hoy tienes{' '}
-					{appointmentList && appointmentList.data
-						? appointmentList.data.length
-						: 0}{' '}
-					citas.
+					Para el día de hoy tienes {todayAppointmentsCount} citas.
 				</Link>
 			</header>
 			<section>
