@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react'
 import dayjs, { Dayjs } from 'dayjs'
 import { updateClient } from '../../services/api/clientServices'
 import { useClientDataProfessional } from '../hooks/useClientDataProfessional'
+import Swal from 'sweetalert2'
 
 export interface FormValuesEditClient {
 	nombre: string
@@ -113,8 +114,6 @@ export function EditProfileClient(): JSX.Element {
 						return errors
 					}}
 					onSubmit={(values, { setSubmitting }) => {
-						console.log('Valores pasados a func en contexto:', values)
-						alert('Se actualizaron los datos del cliente')
 						if (params.clientId && values) {
 							updateClient(
 								user?.token,
@@ -123,7 +122,11 @@ export function EditProfileClient(): JSX.Element {
 								values
 							)
 						}
-						alert('Se actualizaron los datos del cliente')
+						Swal.fire({
+							icon: 'success',
+							title: 'Cliente editado',
+							text: 'Se ha editado los datos del Cliente con exito.'
+						})
 
 						setSubmitting(false)
 					}}

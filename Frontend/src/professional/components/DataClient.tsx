@@ -6,6 +6,7 @@ import { ScheduleAppointmentButton } from './ScheduleAppointmentButton'
 import { Link } from 'react-router-dom'
 import { useClientDataProfessional } from '../hooks/useClientDataProfessional'
 import { deleteClient } from '../../services/api/clientServices'
+import Swal from 'sweetalert2'
 
 export function DataClient(): React.ReactElement {
 	const navigate = useNavigate()
@@ -41,21 +42,42 @@ export function DataClient(): React.ReactElement {
 	}
 
 	const handleDeleteClient = () => {
-		if (
-			window.confirm(
-				'¿Estás seguro de que quieres dar de baja a este cliente?'
-			) &&
-			clientData?.id
-		) {
-			deleteClient(user?.token, decodedToken?.professionalId, clientData?.id)
-				.then(() => {
-					alert('El cliente ha sido eliminado correctamente.')
-					// Redirigir o realizar cualquier otra acción necesaria después de eliminar al cliente
-					navigate('/professional/clients')
-				})
-				.catch(error => {
-					alert('Error al eliminar el cliente: ' + error.message)
-				})
+		if (clientData?.id) {
+			Swal.fire({
+				title: '¿Estás seguro?',
+				text: 'Esta acción no se puede deshacer',
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Sí, eliminar cliente',
+				cancelButtonText: 'Cancelar'
+			}).then(result => {
+				if (result.isConfirmed) {
+					deleteClient(
+						user?.token,
+						decodedToken?.professionalId,
+						clientData?.id
+					)
+						.then(() => {
+							Swal.fire({
+								icon: 'success',
+								title: 'Cliente eliminado',
+								text: 'El cliente ha sido eliminado con éxito.'
+							})
+							navigate('/professional/clients')
+						})
+						.catch(error => {
+							Swal.fire({
+								icon: 'error',
+								title: 'Error',
+								text: 'No se pudo eliminar al cliente: ' + error.message
+							})
+						})
+				} else if (result.dismiss === Swal.DismissReason.cancel) {
+					Swal.fire('Cancelado', 'No se ha eliminado al cliente.', 'info')
+				}
+			})
 		}
 	}
 

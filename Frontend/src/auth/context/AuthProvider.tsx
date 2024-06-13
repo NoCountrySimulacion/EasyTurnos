@@ -13,6 +13,7 @@ import {
 	ProfessionalData
 } from '../typescript/interface'
 import { FormValuesEdit } from '../../professional/pages/EditProfile'
+import Swal from 'sweetalert2'
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
@@ -145,7 +146,11 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 				data
 			)
 			console.log('Respuesta del servicio en json:', response)
-			alert('Se actualizo con exito')
+			Swal.fire({
+				icon: 'success',
+				title: 'Datos actualizados',
+				text: 'Los datos de su perfil han sido actualizados con exito.'
+			})
 
 			// Actualiza el localStorage y el estado del usuario
 			localStorage.setItem('firstName', data.nombre)

@@ -6,6 +6,7 @@ import { DatePicker } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { useAuth } from '../../auth/hooks/useAuth'
+import Swal from 'sweetalert2'
 
 interface FormValues {
 	nombre: string
@@ -150,15 +151,28 @@ export function AddClientForm(): JSX.Element {
 
 							if (decodedToken) {
 								await createClientForProfessional(decodedToken, newClientData)
-								alert('Cliente creado con éxito')
+								Swal.fire({
+									icon: 'success',
+									title: 'Cliente creado',
+									text: 'Se creo el Cliente con exito.'
+								})
+
 								resetForm()
 							} else {
 								console.error('Decoded token is null')
-								alert('Error al crear el cliente')
+								Swal.fire({
+									icon: 'error',
+									title: 'Error',
+									text: 'No se pudo crear el cliente, intente mas tarde.'
+								})
 							}
 						} catch (error) {
 							console.error('Error creating client:', error)
-							alert('Error al crear el cliente')
+							Swal.fire({
+								icon: 'error',
+								title: 'Error',
+								text: 'No se pudo crear el cliente, intente mas tarde.'
+							})
 						} finally {
 							setSubmitting(false)
 						}
@@ -307,7 +321,7 @@ export function AddClientForm(): JSX.Element {
 														className='text-[#828282]'
 													></label>
 													<Field
-														type='text'
+														type='password'
 														name='contraseñaCliente'
 														className='border border-solid border-[#828282] w-[318px] p-[5px] rounded-md'
 														placeholder='Contraseña'
@@ -334,7 +348,7 @@ export function AddClientForm(): JSX.Element {
 														Confirmar contraseña
 													</label>
 													<Field
-														type='text'
+														type='password'
 														name='confirmarContraseñaCliente'
 														className='border border-solid border-[#828282] w-[318px] p-[5px] rounded-md'
 														placeholder='Contraseña'

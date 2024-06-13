@@ -21,8 +21,6 @@ export async function updateClient(
 	}
 
 	try {
-		console.log('La url:', url)
-		console.log('El json que se envia:', apiData)
 		const response = await fetch(url, {
 			method: 'PUT',
 			headers: {
@@ -31,7 +29,6 @@ export async function updateClient(
 			},
 			body: JSON.stringify(apiData)
 		})
-		console.log('La api respondio: ', response)
 		if (!response.ok) {
 			throw new Error('Error al actualizar los datos del cliente')
 		}

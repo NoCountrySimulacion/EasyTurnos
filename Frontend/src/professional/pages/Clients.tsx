@@ -76,7 +76,7 @@ function TableClient({
 											<div className='flex gap-[20.75px] justify-start'>
 												<ScheduleAppointmentButton />
 												<ClientButton clientId={row.id} />
-												<UnsubscribeButton />
+												<UnsubscribeButton clientId={row.id} />
 											</div>
 										</CustomTableCell>
 									</CustomTableRow>
