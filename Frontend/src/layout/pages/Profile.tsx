@@ -40,7 +40,7 @@ export function Profile(): React.ReactElement {
 		return (
 			<div className='flex items-center justify-center h-full min-h-screen'>
 				<div className='w-10 h-10 border-4 border-dashed rounded-full animate-spin border-gray-800'></div>
-				<p className='ml-4'>Loading...</p>
+				<p className='ml-4'>Cargando...</p>
 			</div>
 		)
 	}
