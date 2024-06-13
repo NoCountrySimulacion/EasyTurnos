@@ -47,10 +47,13 @@ export function AppointmentsList(): React.ReactElement {
 			</section>
 
 			<footer>
-				<button className='bg-[#7445C7] text-[#F8F9FA] flex items-center justify-center gap-[10px] h-[38px] w-full rounded-lg text-[13px] font-bold leading-[18.2px] hover:bg-purple-600 transition duration-300 ease-in-out'>
+				<Link
+					to='/professional/calendar'
+					className='bg-[#7445C7] text-[#F8F9FA] flex items-center justify-center gap-[10px] h-[38px] w-full rounded-lg text-[13px] font-bold leading-[18.2px] hover:bg-purple-600 transition duration-300 ease-in-out'
+				>
 					<CalendarIcon height={18} width={18} />
 					<span>Agendar Turno</span>
-				</button>
+				</Link>
 			</footer>
 		</section>
 	)
