@@ -20,6 +20,12 @@ namespace Core
             services.AddScoped<IClientService, ClientService>();
             services.AddScoped<IRecordService, RecordService>();
 
+            //Appointment
+            services.AddScoped<IAppointmentService, AppointmentService>();
+
+            // Authentication
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
+          
             // Validation Behavior
             services.AddTransient(typeof(IValidationBehavior<>), typeof(ValidationBehavior<>));
 

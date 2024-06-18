@@ -1,16 +1,17 @@
 ﻿using Domain.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 using Utilities.Enums;
 
 namespace Infrastructure.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
     {
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
         }
-        
+
         public DbSet<Professional> Professionals { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<ProfessionalClient> ProfessionalClients { get; set; }
@@ -23,18 +24,8 @@ namespace Infrastructure.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<ProfessionalClient>()
-                .HasKey(pc => new { pc.ProfessionalId, pc.ClientId });
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-            modelBuilder.Entity<ProfessionalClient>()
-                .HasOne(pc => pc.Professional)
-                .WithMany(p => p.ProfessionalClients)
-                .HasForeignKey(pc => pc.ProfessionalId);
-
-            modelBuilder.Entity<ProfessionalClient>()
-                .HasOne(pc => pc.Client)
-                .WithMany(c => c.ProfessionalClients)
-                .HasForeignKey(pc => pc.ClientId);
 
             //Records
             modelBuilder.Entity<Record>()
@@ -51,28 +42,6 @@ namespace Infrastructure.Data
             modelBuilder.Entity<Appointment>()
                 .Property(a => a.Id)
                 .HasDefaultValueSql("NEWID()");
-
-            modelBuilder.Entity<Appointment>()
-                .Property(a => a.Date)
-                .HasDefaultValueSql("CONVERT(date, GETDATE())")
-                .HasConversion(
-                    v => v.ToString("dd/MM/yyyy"),
-                    v => DateTime.ParseExact(v, "dd/MM/yyyy", null)
-                );
-
-            modelBuilder.Entity<Appointment>()
-                .Property(a => a.SlotDate)
-                // TODO: Validate the need for HasConversion, HasColumnType should work.
-                // .HasColumnType("date")
-                .HasConversion(
-                    v => v.ToString("dd/MM/yyyy"),
-                    v => DateTime.ParseExact(v, "dd/MM/yyyy", null)
-                )
-                .IsRequired();
-
-            modelBuilder.Entity<Appointment>()
-                .Property(a => a.Status)
-                .HasDefaultValue(Status.Pending);
 
             modelBuilder.Entity<Appointment>()
                 .HasOne(p => p.Professional)
