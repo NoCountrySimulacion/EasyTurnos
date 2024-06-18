@@ -20,6 +20,8 @@ namespace Core
             services.AddScoped<IClientService, ClientService>();
             //Appointment
             services.AddScoped<IAppointmentService, AppointmentService>();
+            //Payment
+            services.AddScoped<IPaymentService, PaymentService>();
 
             // Authentication
             services.AddScoped<IAuthenticationService, AuthenticationService>();

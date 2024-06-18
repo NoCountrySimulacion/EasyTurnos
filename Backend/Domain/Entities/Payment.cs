@@ -6,9 +6,7 @@ namespace Domain.Entities
     {
         public decimal Amount { get; set; }
         public PaymentMethod PaymentMethod { get; set; }
-        //FK
         public Guid AppointmentId { get; set; }
-        //Navigation property
         public Appointment Appointment { get; set; }
     }
 }
