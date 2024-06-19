@@ -10,6 +10,13 @@ namespace Core.Validators
 {
     public class PaymentAddValidator : AbstractValidator<PaymentAddDto>
     {
+        public PaymentAddValidator()
+        {
+            RuleFor(p => p.Amount)
+                .GreaterThan(0).WithMessage("Amount must be greater than zero.");
 
+            RuleFor(p => p.PaymentMethod)
+                .IsInEnum().WithMessage("Invalid payment method.");
+        } 
     }
 }
