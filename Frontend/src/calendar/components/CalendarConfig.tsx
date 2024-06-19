@@ -43,7 +43,6 @@ const CalendarConfig: React.FC<CalendarConfigProps> = ({ onConfigChange }) => {
 		startDate: undefined,
 		endDate: undefined
 	})
-	const [slots, setSlots] = useState<any[]>([])
 
 	const handleTimeRangeChange = (values: number[]) => {
 		setTimeRange(values)

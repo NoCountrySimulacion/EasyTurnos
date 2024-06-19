@@ -20,9 +20,6 @@ import { ConfigSlot } from '../typescript/interface'
 const CalendarProfesional: React.FC = () => {
 	const {
 		selectedDate,
-		hoveredDay,
-		setHoveredDay,
-		slots,
 		selectedSlots,
 		selectedSlot,
 		handleDateChange,
@@ -95,17 +92,17 @@ const CalendarProfesional: React.FC = () => {
 											margin: '5px'
 										}
 									}}
-									slotProps={{
-										day: () => ({
-											selectedDay: selectedDate,
-											hoveredDay,
-											onPointerEnter: (day: moment.Moment) =>
-												setHoveredDay(day),
-											onPointerLeave: () => setHoveredDay(null),
-											slots,
-											appointments // Pasamos todos los appointments al componente CustomDay
-										})
-									}}
+									// slotProps={{
+									// 	day: () => ({
+									// 		selectedDay: selectedDate,
+									// 		hoveredDay,
+									// 		onPointerEnter: (day: moment.Moment) =>
+									// 			setHoveredDay(day),
+									// 		onPointerLeave: () => setHoveredDay(null),
+									// 		slots,
+									// 		appointments // Pasamos todos los appointments al componente CustomDay
+									// 	})
+									// }}
 								/>
 							</div>
 							<div className='p-4 flex flex-col gap-2'>
