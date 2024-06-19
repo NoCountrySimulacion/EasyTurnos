@@ -11,6 +11,7 @@ import CustomDay from '../components/CustomDay'
 import { useCalendar } from '../hook/useCalendar'
 import clsx from 'clsx'
 import { ConfigSlot } from '../typescript/interface'
+import { DayCalendarProps } from '@mui/x-date-pickers/internals'
 
 const CalendarClient: React.FC = () => {
 	const {
@@ -21,7 +22,9 @@ const CalendarClient: React.FC = () => {
 		handleCreateClientAppointment,
 		appointments,
 		clientProfessional,
-		handleClientDeleteAppointment
+		handleClientDeleteAppointment,
+		setHoveredDay,
+		hoveredDay
 	} = useCalendar()
 	const [tabIndex, setTabIndex] = useState(0)
 	const [selectedSlotForConfirmation, setSelectedSlotForConfirmation] =
@@ -69,7 +72,7 @@ const CalendarClient: React.FC = () => {
 									onChange={handleDateChange}
 									showDaysOutsideCurrentMonth
 									displayWeekNumber
-									slots={CustomDay as DateCalendarSlots<Moment>} //Arreglado a maso meno
+									slots={{ day: CustomDay } as DateCalendarSlots<Moment>} //Arreglado a maso meno
 									sx={{
 										'& .MuiPickersDay-root': {
 											width: 60,
@@ -80,17 +83,18 @@ const CalendarClient: React.FC = () => {
 											margin: '5px'
 										}
 									}}
-									// slotProps={{
-									// 	day: () => ({
-									// 		selectedDay: selectedDate,
-									// 		hoveredDay,
-									// 		onPointerEnter: (day: moment.Moment) =>
-									// 			setHoveredDay(day),
-									// 		onPointerLeave: () => setHoveredDay(null),
-									// 		slots: availableSlots,
-									// 		appointments
-									// 	})
-									// }}
+									slotProps={{
+										day: () =>
+											({
+												selectedDay: selectedDate,
+												hoveredDay,
+												onPointerEnter: (day: moment.Moment) =>
+													setHoveredDay(day),
+												onPointerLeave: () => setHoveredDay(null),
+												slots: availableSlots,
+												appointments
+											}) as unknown as DayCalendarProps<Moment>
+									}}
 								/>
 							</div>
 							<div className='p-4 flex flex-col gap-2'>

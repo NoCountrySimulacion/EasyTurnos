@@ -15,6 +15,7 @@ import clsx from 'clsx'
 import SlotModal from '../components/SlotModal'
 import { useCalendar } from '../hook/useCalendar' // Importamos el hook useCalendar
 import { ConfigSlot } from '../typescript/interface'
+import { DayCalendarProps } from '@mui/x-date-pickers/internals'
 /* import { useProfessionalClients } from '../../professional/hooks/useProfessionalClients' */
 
 const CalendarProfesional: React.FC = () => {
@@ -29,7 +30,10 @@ const CalendarProfesional: React.FC = () => {
 		handleDeleteSlot,
 		appointments,
 		professionalClients,
-		handleDeleteAppointment
+		handleDeleteAppointment,
+		slots,
+		setHoveredDay,
+		hoveredDay
 	} = useCalendar() // Usamos el hook useCalendar para acceder al contexto del calendario
 
 	const [tabIndex, setTabIndex] = useState(0)
@@ -81,7 +85,7 @@ const CalendarProfesional: React.FC = () => {
 									onChange={handleDateChange}
 									showDaysOutsideCurrentMonth
 									displayWeekNumber
-									slots={CustomDay as DateCalendarSlots<Moment>}
+									slots={{ day: CustomDay } as DateCalendarSlots<Moment>}
 									sx={{
 										'& .MuiPickersDay-root': {
 											width: 60,
@@ -92,17 +96,18 @@ const CalendarProfesional: React.FC = () => {
 											margin: '5px'
 										}
 									}}
-									// slotProps={{
-									// 	day: () => ({
-									// 		selectedDay: selectedDate,
-									// 		hoveredDay,
-									// 		onPointerEnter: (day: moment.Moment) =>
-									// 			setHoveredDay(day),
-									// 		onPointerLeave: () => setHoveredDay(null),
-									// 		slots,
-									// 		appointments // Pasamos todos los appointments al componente CustomDay
-									// 	})
-									// }}
+									slotProps={{
+										day: () =>
+											({
+												selectedDay: selectedDate,
+												hoveredDay,
+												onPointerEnter: (day: moment.Moment) =>
+													setHoveredDay(day),
+												onPointerLeave: () => setHoveredDay(null),
+												slots,
+												appointments // Pasamos todos los appointments al componente CustomDay
+											}) as unknown as DayCalendarProps<Moment>
+									}}
 								/>
 							</div>
 							<div className='p-4 flex flex-col gap-2'>
