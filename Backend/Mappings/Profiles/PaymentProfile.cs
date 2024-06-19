@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Domain.Entities;
 using DTOs.Appointment;
+using DTOs.Payment;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,8 @@ namespace Mappings.Profiles
     {
         public PaymentProfile()
         {
-
+            CreateMap<PaymentAddDto, Payment>();
+            CreateMap<Payment, PaymentGetDto>();
         }
 
     }
