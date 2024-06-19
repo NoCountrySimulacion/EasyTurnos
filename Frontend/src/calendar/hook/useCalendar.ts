@@ -1,7 +1,7 @@
 import { useContext } from 'react'
-import { CalendarContext, CalendarContextProps } from '../context/CalendarContext'
+import { CalendarContext } from '../context/CalendarContext'
 
-export const useCalendar = (): CalendarContextProps => {
+export const useCalendar = () => {
 	const context = useContext(CalendarContext)
 
 	if (!context) {

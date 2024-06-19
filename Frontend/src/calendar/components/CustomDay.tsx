@@ -20,12 +20,12 @@ const CustomDay: React.FC<CustomDayProps> = props => {
 	} = props
 
 	const { decodedToken } = useAuth()
-	console.log(decodedToken)
+
 	const { clientProfessional } = useCalendar()
 	const isProfessional = decodedToken?.role === 'Professional'
 
 	// Determinar los slots a usar dependiendo del rol
-	const slotsToUse = isProfessional ? slots : clientProfessional?.data[0]?.slots
+	const slotsToUse = isProfessional ? slots : clientProfessional?.data[0].slots //add ConfigSlot
 
 	const isDayWithSlot = slotsToUse
 		? slotsToUse.some(slot => moment(slot.startDate).isSame(day, 'day'))
@@ -38,6 +38,7 @@ const CustomDay: React.FC<CustomDayProps> = props => {
 		: false
 
 	const handlePointerEnter: PointerEnterHandler = (event, day) => {
+		if (typeof onPointerEnter !== 'function') return
 		onPointerEnter(event, day)
 	}
 

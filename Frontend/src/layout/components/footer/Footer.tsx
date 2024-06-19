@@ -1,4 +1,3 @@
-import { NavLink } from 'react-router-dom'
 import Logo from '../navbar/Logo'
 import {
 	FacebookLogoSocial,

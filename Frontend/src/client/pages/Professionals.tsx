@@ -93,7 +93,7 @@ function TableClient({
 													<ScheduleAppointmentButton />
 												</NavLink>
 
-												<UnsubscribeButton />
+												<UnsubscribeButton clientId={row.id} />
 											</div>
 										</CustomTableCell>
 									</CustomTableRow>

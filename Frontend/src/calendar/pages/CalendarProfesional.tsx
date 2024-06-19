@@ -1,9 +1,10 @@
+/* eslint-disable indent */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
-import { DateCalendar } from '@mui/x-date-pickers'
-import moment from 'moment'
+import { DateCalendar, DateCalendarSlots } from '@mui/x-date-pickers'
+import moment, { Moment } from 'moment'
 import 'moment/locale/es'
 import { FaTrash } from 'react-icons/fa'
 import { Tabs, Tab } from '@mui/material'
@@ -13,6 +14,7 @@ import CalendarConfig from '../components/CalendarConfig'
 import clsx from 'clsx'
 import SlotModal from '../components/SlotModal'
 import { useCalendar } from '../hook/useCalendar' // Importamos el hook useCalendar
+import { ConfigSlot } from '../typescript/interface'
 /* import { useProfessionalClients } from '../../professional/hooks/useProfessionalClients' */
 
 const CalendarProfesional: React.FC = () => {
@@ -28,7 +30,6 @@ const CalendarProfesional: React.FC = () => {
 		handleSlotClick,
 		handleCreateAppointment,
 		handleDeleteSlot,
-		setShowConfirmButton,
 		appointments,
 		professionalClients,
 		handleDeleteAppointment
@@ -39,19 +40,20 @@ const CalendarProfesional: React.FC = () => {
 	console.log('profesionalClients', professionalClients)
 	const handleModalClose = () => {
 		setModalOpen(false)
-		setShowConfirmButton(false)
 	}
 
 	const handleSlotClickWrapper = (slot: any) => {
 		handleSlotClick(slot)
 		setModalOpen(true)
 	}
-	
 
-	const handleConfirmAppointment = (title: string, selectedClientID: string) => {
+	const handleConfirmAppointment = (
+		title: string,
+		selectedClientID: string
+	) => {
 		if (selectedSlot) {
 			handleCreateAppointment(selectedClientID, title)
-			
+
 			setModalOpen(false)
 		}
 	}
@@ -59,8 +61,8 @@ const CalendarProfesional: React.FC = () => {
 	// Filtrar los appointments por el día seleccionado
 	const filteredAppointments = appointments
 		? appointments.filter(appointment =>
-			moment(appointment.startDate).isSame(selectedDate, 'day')
-		)
+				moment(appointment.startDate).isSame(selectedDate, 'day')
+			)
 		: []
 
 	return (
@@ -82,7 +84,7 @@ const CalendarProfesional: React.FC = () => {
 									onChange={handleDateChange}
 									showDaysOutsideCurrentMonth
 									displayWeekNumber
-									slots={{ day: CustomDay }}
+									slots={CustomDay as DateCalendarSlots<Moment>}
 									sx={{
 										'& .MuiPickersDay-root': {
 											width: 60,
@@ -94,7 +96,7 @@ const CalendarProfesional: React.FC = () => {
 										}
 									}}
 									slotProps={{
-										day: _ownerState => ({
+										day: () => ({
 											selectedDay: selectedDate,
 											hoveredDay,
 											onPointerEnter: (day: moment.Moment) =>
@@ -110,7 +112,7 @@ const CalendarProfesional: React.FC = () => {
 								<div className='flex flex-col gap-2'>
 									<h3 className='text-lg font-bold'>Horarios Disponibles</h3>
 									{selectedSlots.length > 0 ? (
-										selectedSlots.map((slot, index) => (
+										selectedSlots.map((slot: ConfigSlot, index: number) => (
 											<div
 												key={index}
 												className={clsx(
