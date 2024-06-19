@@ -10,7 +10,7 @@ import {
 	AuthProviderProps,
 	UserLogged,
 	DecodedToken,
-	ProfessionalData
+	ApiResponseProfesional
 } from '../typescript/interface'
 import { FormValuesEdit } from '../../professional/pages/EditProfile'
 import Swal from 'sweetalert2'
@@ -20,7 +20,7 @@ export const AuthContext = createContext<AuthContextType | undefined>(undefined)
 export default function AuthProvider({ children }: AuthProviderProps) {
 	const [user, setUser] = useState<UserLogged | null>(null)
 	const [professionalData, setProfessionalData] =
-		useState<ProfessionalData | null>(null)
+		useState<ApiResponseProfesional | null>(null)
 	const [isSignIn, setIsSignIn] = useState<boolean>(false)
 	const [decodedToken, setDecodedToken] = useState<DecodedToken | null>(null)
 	const [error, setError] = useState<string | null>(null)
@@ -184,8 +184,6 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 			console.error('Error decoding token:', error)
 		}
 	}
-
-
 
 	const authContextValue: AuthContextType = {
 		user,
