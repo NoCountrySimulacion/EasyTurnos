@@ -39,14 +39,17 @@ export interface ClientsByProfessional {
 }
 
 interface availableSlot {
-	availableSlot: string
+	end: string
+	startDate: string
+	endDate: string
+	id: string
 }
 
 interface ProfessionalData {
 	id: string
 	specialty: string
 	description: string
-	slots?: availableSlot[]
+	slots: availableSlot[]
 	firstName: string
 	lastName: string
 	phoneNumber: string
@@ -59,7 +62,7 @@ export interface Professional {
 }
 
 export interface ProfessionalsByClient {
-	data: Omit<ProfessionalData[], 'slots'>
+	data: ProfessionalData[]
 	success: boolean
 	message: string
 }

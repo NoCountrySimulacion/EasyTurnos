@@ -2,7 +2,6 @@ import Swal from 'sweetalert2'
 import { deleteClient } from '../../services/api/clientServices'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../auth/hooks/useAuth'
-import { navigate } from 'react-router-dom';
 
 export function UnsubscribeButton({
 	clientId

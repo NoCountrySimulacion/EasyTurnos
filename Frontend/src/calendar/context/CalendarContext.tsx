@@ -15,9 +15,7 @@ import {
 import { useClientProfessional } from '../../client/hooks/useClientProfessional'
 
 // Creamos el contexto con un valor inicial vacío
-export const CalendarContext = createContext<CalendarContextProps | undefined>(
-	undefined
-)
+export const CalendarContext = createContext<CalendarContextProps | null>(null) // change undefined to null
 
 // Proveedor del contexto que envuelve la aplicación
 interface CalendarProviderProps {
@@ -170,10 +168,9 @@ export const CalendarProvider = ({ children }: CalendarProviderProps) => {
 		}
 	}
 
-	const handleCreateClientAppointment = async (title: string) => {
+	const handleCreateClientAppointment = async () => {
 		if (selectedSlot && decodedToken && clientProfessional) {
 			const appointmentData = {
-				name: title,
 				startDate: selectedSlot.startDate,
 				endDate: selectedSlot.endDate
 			}
@@ -249,7 +246,6 @@ export const CalendarProvider = ({ children }: CalendarProviderProps) => {
 			setAppointments(appointments.filter(appointment => appointment.id !== id))
 			Swal.fire({
 				icon: 'success',
-				title: 'Turno eliminado',
 				text: 'El turno se ha eliminado correctamente.'
 			})
 			const deletedAppointment = appointments.find(

@@ -1,14 +1,16 @@
+/* eslint-disable indent */
 import React, { useState } from 'react'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
-import { DateCalendar } from '@mui/x-date-pickers'
-import moment from 'moment'
+import { DateCalendar, DateCalendarSlots } from '@mui/x-date-pickers'
+import moment, { Moment } from 'moment'
 import 'moment/locale/es'
 import { Tabs, Tab } from '@mui/material'
 import '../styles/calendar.css'
 import CustomDay from '../components/CustomDay'
 import { useCalendar } from '../hook/useCalendar'
 import clsx from 'clsx'
+import { ConfigSlot } from '../typescript/interface'
 
 const CalendarClient: React.FC = () => {
 	const {
@@ -21,13 +23,13 @@ const CalendarClient: React.FC = () => {
 		handleCreateClientAppointment,
 		appointments,
 		clientProfessional,
-		handleClientDeleteAppointment,
+		handleClientDeleteAppointment
 	} = useCalendar()
 	const [tabIndex, setTabIndex] = useState(0)
 	const [selectedSlotForConfirmation, setSelectedSlotForConfirmation] =
-		useState<any | null>(null)
+		useState<ConfigSlot | null>(null)
 
-	const handleSlotClickWrapper = (slot: any) => {
+	const handleSlotClickWrapper = (slot: ConfigSlot) => {
 		handleSlotClick(slot)
 		setSelectedSlotForConfirmation(slot)
 	}
@@ -41,13 +43,13 @@ const CalendarClient: React.FC = () => {
 
 	const filteredAppointments = appointments
 		? appointments.filter(appointment =>
-			moment(appointment.startDate).isSame(selectedDate, 'day')
-		)
+				moment(appointment.startDate).isSame(selectedDate, 'day')
+			)
 		: []
 
 	// Filtrar slots según la fecha seleccionada
 	const availableSlots =
-		clientProfessional?.data[0]?.slots.filter(slot =>
+		clientProfessional?.data[0].slots.filter(slot =>
 			moment(slot.startDate).isSame(selectedDate, 'day')
 		) || []
 
@@ -69,7 +71,7 @@ const CalendarClient: React.FC = () => {
 									onChange={handleDateChange}
 									showDaysOutsideCurrentMonth
 									displayWeekNumber
-									slots={{ day: CustomDay }}
+									slots={CustomDay as DateCalendarSlots<Moment>} //Arreglado a maso meno
 									sx={{
 										'& .MuiPickersDay-root': {
 											width: 60,
@@ -81,7 +83,7 @@ const CalendarClient: React.FC = () => {
 										}
 									}}
 									slotProps={{
-										day: _ownerState => ({
+										day: () => ({
 											selectedDay: selectedDate,
 											hoveredDay,
 											onPointerEnter: (day: moment.Moment) =>
