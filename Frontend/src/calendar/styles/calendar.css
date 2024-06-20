@@ -27,6 +27,12 @@
 	height: 800px !important;
 }
 
+.css-1xuxf2l {
+    display: block;
+    position: relative;
+    overflow: visible; 
+    min-height: 240px;
+}
 
 
 .MuiDayCalendar-weekNumber{
