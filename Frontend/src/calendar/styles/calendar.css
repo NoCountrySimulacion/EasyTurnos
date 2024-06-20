@@ -30,7 +30,7 @@
 .css-1xuxf2l {
     display: block;
     position: relative;
-    overflow: visible; 
+    overflow: visible !important; 
     min-height: 240px;
 }
 
