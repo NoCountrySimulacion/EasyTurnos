@@ -21,21 +21,20 @@ namespace Core.Services
             _logger = logger;
         }
 
-        public async Task<ServiceResponse<List<RecordGetDto>>> AddRecord(RecordAddDto addRecord, Guid professionalId)
+        public async Task<ServiceResponse<bool>> AddRecord(RecordAddDto addRecord, Guid professionalId)
         {
-            var serviceResponse = new ServiceResponse<List<RecordGetDto>>();
+            var serviceResponse = new ServiceResponse<bool>();
 
             try
             {
                 var newRecord = _mapper.Map<Record>(addRecord);
                 newRecord.ProfessionalId = professionalId;
-                newRecord.ClientId = addRecord.ClientId;               
+                newRecord.ClientId = addRecord.ClientId;
                 await _recordRepository.Insert(newRecord);
                 await _recordRepository.SaveChangesAsync();
 
-                var dbRecords = await _recordRepository.GetAllRecords(professionalId, newRecord.ClientId);
-
-                serviceResponse.Data = dbRecords;
+                serviceResponse.Data = true;
+                serviceResponse.Message = "New record added successfully";
             }
             catch (Exception ex)
             {
@@ -47,24 +46,73 @@ namespace Core.Services
             return serviceResponse;
         }
 
-        public Task<ServiceResponse<List<RecordGetDto>>> DeleteRecord(Guid recordId)
+        public async Task<ServiceResponse<bool>> DeleteRecord(Guid professionalId, Guid recordId)
         {
-            throw new NotImplementedException();
+            var serviceResponse = new ServiceResponse<bool>();
+
+            try
+            {
+                await _recordRepository.DeleteRecord(professionalId, recordId);
+                await _recordRepository.SaveChangesAsync();
+
+                serviceResponse.Data = true;
+                serviceResponse.Message = "Record deleted successfully";
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+                _logger.LogError(ex, ex.Message);
+            }
+
+            return serviceResponse;
         }
 
-        public Task<ServiceResponse<List<RecordGetDto>>> GetAllRecords(Guid professionalId, Guid clientId)
+        public async Task<ServiceResponse<List<RecordGetDto>>> GetAllRecords(Guid professionalId, Guid clientId)
         {
-            throw new NotImplementedException();
+            var serviceResponse = new ServiceResponse<List<RecordGetDto>>();
+
+            try
+            {
+                serviceResponse.Data = await _recordRepository.GetAllRecords(professionalId, clientId);
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+                _logger.LogError(ex, ex.Message);
+            }
+
+            return serviceResponse;
         }
 
-        public Task<ServiceResponse<RecordGetDto>> GetRecordById(Guid recordId)
+        public async Task<ServiceResponse<bool>> UpdateRecord(Guid recordId, RecordUpdateDto updatedRecord)
         {
-            throw new NotImplementedException();
-        }
+            var serviceResponse = new ServiceResponse<bool>();
 
-        public Task<ServiceResponse<List<RecordGetDto>>> UpdateRecord(Guid recordId, RecordUpdateDto updateRecord)
-        {
-            throw new NotImplementedException();
+            try
+            {
+                var dbRecord = await _recordRepository.GetById(recordId);
+
+                if (dbRecord == null)
+                {
+                    throw new Exception($"Record Id '{recordId}' was not found.");
+                }
+
+                _mapper.Map(updatedRecord, dbRecord);
+
+                await _recordRepository.SaveChangesAsync();
+
+                serviceResponse.Data = true;
+                serviceResponse.Message = "Record updated successfully";
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+                _logger.LogError(ex, ex.Message);
+            }
+            return serviceResponse;
         }
     }
 }

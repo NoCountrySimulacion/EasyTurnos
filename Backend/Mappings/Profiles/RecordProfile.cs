@@ -10,7 +10,7 @@ namespace Mappings.Profiles
         {
             CreateMap<RecordAddDto, Record>();
             CreateMap<Record, RecordGetDto>();
-            CreateMap<RecordUpdateDto, Record>().ReverseMap();
+            CreateMap<RecordUpdateDto, Record>();
         }
     }
 }

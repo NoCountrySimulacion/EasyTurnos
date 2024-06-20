@@ -19,6 +19,20 @@ namespace Infrastructure.Repositories
             _mapper = mapper;
         }
 
+        public async Task<bool> DeleteRecord(Guid professionalId, Guid recordId)
+        {
+            var dbRecord = await Entities
+                .Where(e => e.Id == recordId && e.ProfessionalId == professionalId)
+                .FirstOrDefaultAsync();
+
+            if (dbRecord != null)
+            {
+                Entities.Remove(dbRecord);
+            }
+
+            return true;
+        }
+
         public async Task<List<RecordGetDto>> GetAllRecords(Guid professionalId, Guid clientId)
         {
             return await GetAll()

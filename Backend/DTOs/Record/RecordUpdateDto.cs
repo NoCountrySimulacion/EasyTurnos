@@ -2,8 +2,7 @@
 {
     public class RecordUpdateDto
     {
-        public DateTime Date { get; set; }
+        public Guid Id { get; set; }
         public string Description { get; set; }
-        public Guid ClientId { get; set; }
     }
 }

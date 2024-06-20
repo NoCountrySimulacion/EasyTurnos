@@ -6,5 +6,6 @@ namespace Infrastructure.Repositories.Interfaces
     public interface IRecordRepository : IGenericRepository<Record, Guid>
     {
         public new Task<List<RecordGetDto>> GetAllRecords(Guid professionalId, Guid clientId);
+        public new Task<bool> DeleteRecord(Guid professionalId, Guid recordId);
     }
 }
