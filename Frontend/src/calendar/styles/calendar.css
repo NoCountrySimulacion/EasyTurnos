@@ -44,6 +44,7 @@
 .MuiDateCalendar-root {
 	width: 100% !important;
 	height: 500px;
+	overflow: visible !important;
 }
 
 .css-1hs8ns0-MuiDateCalendar-root {
