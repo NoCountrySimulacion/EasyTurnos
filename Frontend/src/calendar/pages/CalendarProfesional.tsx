@@ -65,6 +65,28 @@ const CalendarProfesional: React.FC = () => {
 				moment(appointment.startDate).isSame(selectedDate, 'day')
 			)
 		: []
+		// Funcion formateadora de dias de la semana
+	const customDayOfWeekFormatter = (date: Moment): string => {
+		const dayOfWeek = date.format('dd') // Obtener el nombre completo del día de la semana en inglés
+		switch (dayOfWeek) {
+		case 'Mo':
+			return 'L'
+		case 'Tu':
+			return 'M'
+		case 'We':
+			return 'M'
+		case 'Th':
+			return 'J'
+		case 'Fr':
+			return 'V'
+		case 'Sa':
+			return 'S'
+		case 'Su':
+			return 'D'
+		default:
+			return dayOfWeek
+		}
+	}
 
 	return (
 		<LocalizationProvider dateAdapter={AdapterMoment}>
@@ -81,6 +103,7 @@ const CalendarProfesional: React.FC = () => {
 						<div className='flex gap-4 h-screen'>
 							<div className='shadow-md w-3/4 h-[550px] rounded-lg p-2'>
 								<DateCalendar
+									dayOfWeekFormatter={customDayOfWeekFormatter}
 									value={selectedDate}
 									onChange={handleDateChange}
 									showDaysOutsideCurrentMonth

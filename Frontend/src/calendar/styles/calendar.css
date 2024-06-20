@@ -7,7 +7,10 @@
 	justify-content: center;
 	border-radius: 10px;
 }
+.MuiDayCalendar-weekDayLabel{
+	justify-content: space-evenly !important;
 
+}
 .MuiPickersDay-root {
 	width: 36px;
 	height: 36px;

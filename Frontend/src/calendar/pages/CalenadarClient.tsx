@@ -1,4 +1,3 @@
-/* eslint-disable indent */
 import React, { useState } from 'react'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
@@ -12,6 +11,7 @@ import { useCalendar } from '../hook/useCalendar'
 import clsx from 'clsx'
 import { ConfigSlot } from '../typescript/interface'
 import { DayCalendarProps } from '@mui/x-date-pickers/internals'
+import { esES } from '@mui/x-date-pickers/locales'
 
 const CalendarClient: React.FC = () => {
 	const {
@@ -44,8 +44,8 @@ const CalendarClient: React.FC = () => {
 
 	const filteredAppointments = appointments
 		? appointments.filter(appointment =>
-				moment(appointment.startDate).isSame(selectedDate, 'day')
-			)
+			moment(appointment.startDate).isSame(selectedDate, 'day')
+		)
 		: []
 
 	// Filtrar slots según la fecha seleccionada
@@ -54,8 +54,36 @@ const CalendarClient: React.FC = () => {
 			moment(slot.startDate).isSame(selectedDate, 'day')
 		) || []
 
+	// Funcion formateadora de dias de la semana
+	const customDayOfWeekFormatter = (date: Moment): string => {
+		const dayOfWeek = date.format('dd') // Obtener el nombre completo del día de la semana en inglés
+		switch (dayOfWeek) {
+		case 'Mo':
+			return 'L'
+		case 'Tu':
+			return 'M'
+		case 'We':
+			return 'M'
+		case 'Th':
+			return 'J'
+		case 'Fr':
+			return 'V'
+		case 'Sa':
+			return 'S'
+		case 'Su':
+			return 'D'
+		default:
+			return dayOfWeek
+		}
+	}
+
 	return (
-		<LocalizationProvider dateAdapter={AdapterMoment}>
+		<LocalizationProvider
+			dateAdapter={AdapterMoment}
+			localeText={
+				esES.components.MuiLocalizationProvider.defaultProps.localeText
+			}
+		>
 			<div className='h-screen px-20'>
 				<Tabs
 					value={tabIndex}
@@ -68,11 +96,12 @@ const CalendarClient: React.FC = () => {
 						<div className='flex gap-4 h-screen'>
 							<div className='shadow-md w-3/4 h-[550px] rounded-lg p-2'>
 								<DateCalendar
+									dayOfWeekFormatter={customDayOfWeekFormatter}
 									value={selectedDate}
 									onChange={handleDateChange}
 									showDaysOutsideCurrentMonth
 									displayWeekNumber
-									slots={{ day: CustomDay } as DateCalendarSlots<Moment>} //Arreglado a maso meno
+									slots={{ day: CustomDay } as DateCalendarSlots<Moment>}
 									sx={{
 										'& .MuiPickersDay-root': {
 											width: 60,
