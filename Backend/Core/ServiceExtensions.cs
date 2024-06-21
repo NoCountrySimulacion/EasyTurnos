@@ -18,6 +18,8 @@ namespace Core
             services.AddScoped<IProfessionalService, ProfessionalService>();
             services.AddScoped<ISlotService, SlotService>();
             services.AddScoped<IClientService, ClientService>();
+            services.AddScoped<IRecordService, RecordService>();
+
             //Appointment
             services.AddScoped<IAppointmentService, AppointmentService>();
 
