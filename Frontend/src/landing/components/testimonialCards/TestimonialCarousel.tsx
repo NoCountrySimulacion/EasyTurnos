@@ -8,7 +8,7 @@ import { Autoplay } from 'swiper/modules'
 
 const TestimonialCarousel: React.FC = () => {
 	return (
-		<div>
+		<div className='max-w-[1240px]'>
 			<Swiper
 				spaceBetween={10}
 				slidesPerView={3}

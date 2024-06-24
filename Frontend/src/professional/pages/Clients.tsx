@@ -15,6 +15,10 @@ import { ClientButton } from '../components/ClientButton'
 import { LoadingIcon } from '../../shared/components/Icons'
 import { ClientsByProfessional } from '../../services/typescript/interface'
 import { useProfessionalClients } from '../hooks/useProfessionalClients'
+import { useMediaQuery } from '../../shared/hooks/useMediaQuery'
+import { NavLink } from 'react-router-dom'
+import { AddClientIcon, CalendarIcon } from '../components/icons/Icons'
+import { useAuth } from '../../auth/hooks/useAuth'
 
 function TableClient({
 	filteredProfessionalClients
@@ -98,16 +102,18 @@ export default function Clients() {
 	const { professionalClients, isThereProfessionalClients, loading } =
 		useProfessionalClients()
 	const { filterClients } = useSearch()
+	const { decodedToken } = useAuth()
 
 	const filteredProfessionalClients = professionalClients?.data.length
 		? filterClients(professionalClients)
 		: professionalClients
 
+	const isSmallScreen = useMediaQuery('(max-width: 764px)')
 	return (
-		<section className='h-full w-full flex flex-col font-montserrat px-10 gap-6'>
-			<section className='mb-[100px]'>
+		<section className='w-full flex flex-col font-montserrat gap-10 px-10 max-sm:px-5 mb-[50px] relative'>
+			<section>
 				{loading ? (
-					<div className='w-full flex justify-center'>
+					<div className='w-fullflex justify-center items-center'>
 						<LoadingIcon />
 					</div>
 				) : isThereProfessionalClients ? (
@@ -120,6 +126,27 @@ export default function Clients() {
 					</section>
 				)}
 			</section>
+			{isSmallScreen && (
+				<NavLink
+					to={
+						decodedToken?.role === 'Professional'
+							? '/professional/add-client'
+							: '/client/calendar'
+					}
+					className='bg-[#7445C7] w-[166px] mx-auto text-[#F8F9FA] flex items-center justify-center gap-[10px] h-[38px] px-2 rounded-lg text-[13px] font-bold '
+				>
+					{decodedToken?.role === 'Professional' ? (
+						<AddClientIcon height={24} width={22} />
+					) : (
+						<CalendarIcon height={24} width={22} />
+					)}
+					<span>
+						{decodedToken?.role === 'Professional'
+							? 'Agregar cliente'
+							: 'Agendar turno'}
+					</span>
+				</NavLink>
+			)}
 		</section>
 	)
 }

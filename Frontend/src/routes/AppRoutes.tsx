@@ -1,10 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Home from '../professional/pages/Home'
 import Landing from '../landing/pages/Landing'
-import LaoutLanding from '../layout/pages/LayoutLanding'
-import Planes from '../landing/components/planos/Planes'
-import ComoFunciona from '../landing/components/comoFunciona/ComoFunciona'
-import Clientes from '../landing/components/clientes/Clientes'
+import LayoutLanding from '../layout/pages/LayoutLanding'
 import SignUpModal from '../auth/components/form/SingUpModal'
 import LoginOptionsModal from '../auth/components/form/LoginOptionsModal'
 import LoginModal from '../auth/components/form/LoginModal'
@@ -29,19 +26,17 @@ export default function AppRoutes() {
 	return (
 		<BrowserRouter>
 			<Routes>
-				<Route element={<LaoutLanding />}>
+				<Route element={<LayoutLanding />}>
 					<Route
 						path='/'
 						element={
 							isUserSignedIn() ? <Navigate to='/home' replace /> : <Landing />
 						}
-					/>
-					<Route path='/comofunciona' element={<ComoFunciona />} />
-					<Route path='/planes' element={<Planes />} />
-					<Route path='/clientes' element={<Clientes />} />
-					<Route path='/login' element={<LoginModal />} />
-					<Route path='/loginOptions' element={<LoginOptionsModal />} />
-					<Route path='/register' element={<SignUpModal />} />
+					>
+						<Route path='/login' element={<LoginModal />} />
+						<Route path='/register' element={<SignUpModal />} />
+						<Route path='/loginOptions' element={<LoginOptionsModal />} />
+					</Route>
 				</Route>
 				<Route element={<ProtectedRoutes canActivate={isUserSignedIn()} />}>
 					<Route element={<LayoutApp />}>
@@ -50,7 +45,10 @@ export default function AppRoutes() {
 								<Route path='/home' element={<Home />} />
 								<Route path='/professional/calendar' element={<Calendar />} />
 								<Route path='/professional/clients' element={<Clients />} />
-								<Route path='/professional/clients-views' element={<UserViewInd />} />
+								<Route
+									path='/professional/clients-views'
+									element={<UserViewInd />}
+								/>
 								<Route
 									path='/professional/add-client'
 									element={<AddClientForm />}
@@ -60,8 +58,14 @@ export default function AppRoutes() {
 									element={<EditProfile />}
 								/>
 								<Route path='/profile' element={<Profile />} />
-								<Route path='/professional/data-client/:clientId' element={<DataClient />} />
-								<Route path='/professional/edit-profile-client/:clientId' element={<EditProfileClient />} />
+								<Route
+									path='/professional/data-client/:clientId'
+									element={<DataClient />}
+								/>
+								<Route
+									path='/professional/edit-profile-client/:clientId'
+									element={<EditProfileClient />}
+								/>
 							</>
 						) : (
 							<>
@@ -70,7 +74,6 @@ export default function AppRoutes() {
 								<Route path='/my-appointments' element={<Appointments />} />
 								<Route path='/client/calendar' element={<Calendar />} />
 								<Route path='/profile' element={<Profile />} />
-
 							</>
 						)}
 					</Route>

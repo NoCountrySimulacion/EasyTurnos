@@ -26,7 +26,7 @@ const Map: React.FC = () => {
 		<MapContainer
 			center={[-34.6037, -58.3816]}
 			zoom={4}
-			className='w-full h-96'
+			className='w-full h-96 '
 		>
 			<TileLayer
 				url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'

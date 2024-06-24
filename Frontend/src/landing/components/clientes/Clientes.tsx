@@ -7,8 +7,8 @@ import { FaUsers } from 'react-icons/fa'
 
 const Clientes: React.FC = () => {
 	return (
-		<div className='flex flex-col items-center py-12'>
-			<h2 className='text-5xl font-montserrat font-semibold mb-4'>
+		<div className='flex flex-col items-center py-12 '>
+			<h2 className='text-4xl font-montserrat font-semibold mb-4 text-center'>
 				Nuestros Clientes
 			</h2>
 			<p className='text-center mb-12'>
@@ -16,7 +16,7 @@ const Clientes: React.FC = () => {
 				estética, médicos, peluqueros, etc. que decidieron automatizar su agenda
 				y que HOY son clientes de Tu Reserva Online.
 			</p>
-			<div className='w-full px-20'>
+			<div className='w-full px-2 md:px-10 xl:px-20 relative z-10'>
 				<div className='w-full bg-[#444] h-12 flex justify-between items-center px-4 text-white'>
 					<div className='flex gap-2 items-center'>
 						<FaUsers className='text-2xl' />

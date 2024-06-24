@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import React, { useState } from 'react'
 import {
 	Accordion,
@@ -23,13 +24,13 @@ export default function ComoFunciona(): JSX.Element {
 
 	const handleChange =
 		(panel: string) =>
-			(_event: React.ChangeEvent<object>, isExpanded: boolean) => {
-				setExpanded(isExpanded ? panel : false)
-			}
+		(_event: React.ChangeEvent<object>, isExpanded: boolean) => {
+			setExpanded(isExpanded ? panel : false)
+		}
 
 	return (
-		<div className='justify-center flex flex-col md:flex-row gap-4 p-4 px-20 h-[500px]'>
-			<div className=' text-center w-full md:w-1/2 space-y-4 flex flex-col gap-2'>
+		<div className='justify-center flex flex-col md:flex-row gap-4 p-4 min-w-[300px] h-[500px] '>
+			<div className=' text-center w-full  space-y-4 flex flex-col gap-2 max-w-[680px]'>
 				<Typography>
 					<h1 className='text-4xl font-montserrat font-semibold'>
 						¡En 4 pasos, tus clientes pueden reservar su turno!

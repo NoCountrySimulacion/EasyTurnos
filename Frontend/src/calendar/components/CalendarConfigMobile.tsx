@@ -9,26 +9,34 @@ import { generateSlots } from '../utils/utils'
 import { createSlot, deleteAllSlots } from '../../services/api/slots'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+// import Accordion from '@mui/material/Accordion'
+// import AccordionDetails from '@mui/material/AccordionDetails'
+// import AccordionSummary from '@mui/material/AccordionSummary'
+// import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
+// import { Button, Popover, Typography } from '@mui/material'
+// import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state'
 
 interface CalendarConfigProps {
 	onConfigChange: (slots: any[]) => void
 }
 
-interface NumberDotProps {
-	num: string
-}
+// interface NumberDotProps {
+// 	num: string
+// }
 
-function NumberDot({ num }: NumberDotProps): React.ReactElement {
-	return (
-		<figure className='w-[24px] h-[24.5px] pb-[0.5px] flex flex-col justify-center items-center rounded-[24px] border border-[#7445C7] bg-[#D3CAFF] text-[#313131] text-[12px] font-semibold leading-[24px]'>
-			{num}
-		</figure>
-	)
-}
+// function NumberDot({ num }: NumberDotProps): React.ReactElement {
+// 	return (
+// 		<figure className='w-[24px] h-[24.5px] pb-[0.5px] flex flex-col justify-center items-center rounded-[24px] border border-[#7445C7] bg-[#D3CAFF] text-[#313131] text-[12px] font-semibold leading-[24px]'>
+// 			{num}
+// 		</figure>
+// 	)
+// }
 
 const MySwal = withReactContent(Swal)
 
-const CalendarConfig: React.FC<CalendarConfigProps> = ({ onConfigChange }) => {
+const CalendarConfigMobile: React.FC<CalendarConfigProps> = ({
+	onConfigChange
+}) => {
 	const defaultStartHour = 1
 	const defaultEndHour = 23
 	const [timeRange, setTimeRange] = useState<number[]>([
@@ -114,31 +122,70 @@ const CalendarConfig: React.FC<CalendarConfigProps> = ({ onConfigChange }) => {
 
 	return (
 		<div className='p-4'>
-			<h2 className='text-xl font-bold mb-4'>Configuración del Calendario</h2>
-			<div>
-				<h3 className=' mb-2 font-roboto text-[#828282]'>Duración</h3>
-				<select
-					value={interval}
-					onChange={handleIntervalChange}
-					className='p-2 border rounded-md mb-4'
-				>
-					<option value={15}>15 minutos</option>
-					<option value={30}>30 minutos</option>
-					<option value={60}>1 hora</option>
-					<option value={120}>2 horas</option>
-				</select>
+			<div className='w-[90%]'>
+				{/* <Accordion>
+					<AccordionSummary
+						expandIcon={<ArrowDropDownIcon />}
+						aria-controls='panel1-content'
+						id='panel1-header'
+					>
+						<Typography>
+							<h3 className='text-lg font-bold'>
+								Como configurar tu calendario
+							</h3>
+						</Typography>
+					</AccordionSummary>
+
+					<AccordionDetails>
+						<Typography>
+							<div className=''>
+								<ol className='font-roboto text-[#828282] flex flex-col gap-8 pl-3'>
+									<li className='flex items-center gap-2 '>
+										<NumberDot num='1' />
+										<span>Elige cuanto durará tu cita.</span>
+									</li>
+									<li className='flex items-center gap-2 '>
+										<NumberDot num='2' />
+										<span>Seleciona el rango horario.</span>
+									</li>
+									<li className='flex items-center gap-2 '>
+										<NumberDot num='3' />
+										<span>Seleciona el rango de días en el més.</span>
+									</li>
+									<li className='flex items-center gap-2 '>
+										<NumberDot num='4' />
+										<span>Guarda la configuración.</span>
+									</li>
+								</ol>
+							</div>
+						</Typography>
+					</AccordionDetails>
+				</Accordion> */}
 			</div>
+			<h2 className='text-xl font-bold my-4'>Configuración del calendario</h2>
 			<section>
-				<section className='flex gap-4'>
-					<div className='flex flex-col min-h-[420px]'>
+				<h3 className=' mb-2 font-roboto text-[#828282]'>Duración</h3>
+				<section className='flex gap-4 '>
+					<select
+						value={interval}
+						onChange={handleIntervalChange}
+						className='p-2 border rounded-md mb-4 h-10'
+					>
+						<option value={15}>15 minutos</option>
+						<option value={30}>30 minutos</option>
+						<option value={60}>1 hora</option>
+						<option value={120}>2 horas</option>
+					</select>
+
+					<div className='flex flex-col items-center '>
 						<Slider
-							className='w-64 mt-2'
+							className='w-56 mt-2 '
 							value={timeRange}
 							min={defaultStartHour}
 							max={defaultEndHour}
 							step={1}
 							withTracks={true}
-							thumbClassName='bg-[#7445C7] h-6 w-6 rounded-full text-white flex items-center justify-center text-xs -translate-y-2'
+							thumbClassName='bg-[#7445C7] h-6 w-6 rounded-full text-white flex items-center justify-center text-xs -translate-y-2 '
 							renderTrack={(props, { index }) => {
 								let className = 'h-2 rounded '
 								if (index === 0) {
@@ -167,51 +214,28 @@ const CalendarConfig: React.FC<CalendarConfigProps> = ({ onConfigChange }) => {
 						<div className='text-sm text-center mt-5'>
 							El rango horario es: {formatHourRange(timeRange)}
 						</div>
-						<div className='mt-10'>
-							<h3 className='mb-10 font-roboto text-[#828282] text-[20px]'>
-								Para Configurar tu calendario
-							</h3>
-							<ol className='font-roboto text-[#828282] flex flex-col gap-8 pl-3'>
-								<li className='flex items-center gap-2 '>
-									<NumberDot num='1' />
-									<span>Elige Cuanto durará tu Cita.</span>
-								</li>
-								<li className='flex items-center gap-2 '>
-									<NumberDot num='2' />
-									<span>Seleciona el rango horario.</span>
-								</li>
-								<li className='flex items-center gap-2 '>
-									<NumberDot num='3' />
-									<span>Seleciona el rango de días en el més.</span>
-								</li>
-								<li className='flex items-center gap-2 '>
-									<NumberDot num='4' />
-									<span>Guarda la Configuración.</span>
-								</li>
-							</ol>
-						</div>
-					</div>
-					<div className='flex flex-col'>
-						<DateRange
-							ranges={[
-								{
-									startDate: selectedRange.startDate || new Date(),
-									endDate: selectedRange.endDate,
-									key: 'selection'
-								}
-							]}
-							onChange={handleDateRangeChange}
-							moveRangeOnFirstSelection={false}
-							retainEndDateOnFirstSelection={true}
-							rangeColors={['#7445C7']}
-						/>
-						<div className='text-sm text-center mt-5'>
-							Rango de fechas: {selectedRange.startDate?.toLocaleDateString()} -{' '}
-							{selectedRange.endDate?.toLocaleDateString()}
-						</div>
 					</div>
 				</section>
-				<div className='pt-10'>
+				<div className='flex flex-col items-center'>
+					<DateRange
+						ranges={[
+							{
+								startDate: selectedRange.startDate || new Date(),
+								endDate: selectedRange.endDate,
+								key: 'selection'
+							}
+						]}
+						onChange={handleDateRangeChange}
+						moveRangeOnFirstSelection={false}
+						retainEndDateOnFirstSelection={true}
+						rangeColors={['#7445C7']}
+					/>
+					<div className='text-sm text-center mt-5'>
+						Rango de fechas: {selectedRange.startDate?.toLocaleDateString()} -{' '}
+						{selectedRange.endDate?.toLocaleDateString()}
+					</div>
+				</div>
+				<div className='mt-4 pt-36 max-md:pt-10 flex flex-col gap-3 items-start justify-center'>
 					<button
 						className='px-4 py-2 bg-[#7445C7] text-white rounded hover:bg-blue-600'
 						onClick={handleSendConfig}
@@ -219,10 +243,10 @@ const CalendarConfig: React.FC<CalendarConfigProps> = ({ onConfigChange }) => {
 						Guardar Configuración
 					</button>
 					<button
-						className='px-4 py-2 ml-4 bg-red-500 text-white rounded hover:bg-red-600'
+						className='px-4 py-2  bg-red-500 text-white rounded hover:bg-red-600'
 						onClick={handleDeleteAllSlots}
 					>
-						Reiniciar Configuración
+						Reiniciar configuración
 					</button>
 				</div>
 			</section>
@@ -230,4 +254,4 @@ const CalendarConfig: React.FC<CalendarConfigProps> = ({ onConfigChange }) => {
 	)
 }
 
-export default CalendarConfig
+export default CalendarConfigMobile

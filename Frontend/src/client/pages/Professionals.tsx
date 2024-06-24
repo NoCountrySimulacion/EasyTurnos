@@ -62,8 +62,8 @@ function TableClient({
 						<Table>
 							<TableHead>
 								<CustomTableRow>
-									<CustomTableCellHeader className='whitespace-nowrap'>
-										Nombre del profesional
+									<CustomTableCellHeader className='sm:whitespace-nowrap'>
+										Profesional
 									</CustomTableCellHeader>
 									<CustomTableCellHeader>Especialidad</CustomTableCellHeader>
 									<CustomTableCellHeader>Teléfono</CustomTableCellHeader>
@@ -76,12 +76,12 @@ function TableClient({
 										key={index}
 										className={index % 2 == 0 ? 'bg-[#F7F6FE]' : 'bg-white'}
 									>
-										<CustomTableCell className='w-[25%]'>
+										<CustomTableCell className='w-[25%] '>
 											{capitalizeFirstLetter(row.firstName)}{' '}
 											{capitalizeFirstLetter(row.lastName)}
 										</CustomTableCell>
 
-										<CustomTableCell className='w-[20%]'>
+										<CustomTableCell className='w-[20%] '>
 											{row.specialty || 'Sin especialidad'}
 										</CustomTableCell>
 										<CustomTableCellTel className='w-[25%]'>
@@ -115,7 +115,7 @@ export default function Professionals() {
 	const { clientProfessional, isThereClientProfessional, loading } =
 		useClientProfessional()
 	return (
-		<section className='h-full w-full flex flex-col font-montserrat px-10 gap-6 '>
+		<section className='h-full w-full flex flex-col font-montserrat px-10 max-sm:px-5 gap-6 '>
 			<section className='mb-[100px]'>
 				{loading ? (
 					<div className='flex justify-center'>

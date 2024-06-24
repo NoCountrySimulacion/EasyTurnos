@@ -8,6 +8,7 @@ import {
 import { NavLink, useLocation } from 'react-router-dom'
 import { useSearch } from '../../hooks/useSearch'
 import { useState, useEffect } from 'react'
+import { useMediaQuery } from '../../../shared/hooks/useMediaQuery'
 
 export function Search(): React.ReactElement {
 	const { decodedToken } = useAuth()
@@ -40,11 +41,14 @@ export function Search(): React.ReactElement {
 		setSearchValue(event.target.value)
 	}
 
+	const isMediaScreen = useMediaQuery('(max-width: 1024px)')
+
 	return (
-		<header className='flex gap-[22px] items-center pt-[20px] pb-[15px] px-[30px] w-full shadow-search rounded-b-2xl'>
+		<header className='flex gap-[22px] items-center pt-[20px] pb-[15px] px-[30px] max-lg:px-2 w-full shadow-search rounded-b-2xl'>
 			<h1 className='text-[48px] font-semibold font-montserrat whitespace-nowrap'>
-				{getTitle()}
+				{isMediaScreen || getTitle()}
 			</h1>
+
 			<form
 				className='relative w-full h-[65px] gap-[18px] rounded-[26px] shadow-search'
 				onSubmit={e => {
@@ -67,7 +71,7 @@ export function Search(): React.ReactElement {
 								? 'Buscar cliente'
 								: 'Buscar profesional'
 						}
-						className='h-[30px] w-full focus-visible: outline-none'
+						className='h-[30px] w-full focus-visible:outline-none overflow-ellipsis '
 					/>
 				</div>
 			</form>

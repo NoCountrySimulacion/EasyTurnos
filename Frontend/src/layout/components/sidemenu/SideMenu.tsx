@@ -86,7 +86,7 @@ export function Sidemenu(): JSX.Element {
 			: principalMenuClient
 
 	return (
-		<aside className='h-screen sticky top-0 bg-[#fff] text-[#000] font-mono w-[325px] shadow-md shadow-black'>
+		<section className='fixed top-0 left-0 h-screen bg-[#fff] text-[#000] font-mono w-[325px] shadow-md shadow-black'>
 			<nav>
 				<div id='logo' className='flex flex-col ml-2 pb-[0px] mb-2 '>
 					<img
@@ -149,6 +149,6 @@ export function Sidemenu(): JSX.Element {
 					</button>
 				</div>
 			</nav>
-		</aside>
+		</section>
 	)
 }

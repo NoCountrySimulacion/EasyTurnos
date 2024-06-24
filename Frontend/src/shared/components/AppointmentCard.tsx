@@ -25,8 +25,10 @@ export function AppointmentCard({
 }: AppointmentCardProps): React.ReactElement {
 	return (
 		<li className='flex gap-[20px] p-[15px] shadow-search rounded-[15px] cursor-pointer'>
-			<ClientImg width={118} height={118} />
-			<div className='h-[129px] flex flex-col justify-between items-start'>
+			<div>
+				<ClientImg width={118} height={118} />
+			</div>
+			<div className='min-h-[129px] flex flex-col justify-between items-start'>
 				<span className=' font-semibold text-[28px] leading-[42px]'>
 					{name}
 				</span>

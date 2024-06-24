@@ -13,13 +13,13 @@ function Home(): React.ReactElement {
 	const { isThereAppointments, loading } = useAppointments()
 
 	return (
-		<section className=' h-full flex flex-col font-montserrat px-10 gap-6 '>
+		<section className=' h-full flex flex-col font-montserrat px-10 max-sm:px-5 gap-6 '>
 			<section className='flex flex-col items-start gap-[18px]'>
 				<h1 className='text-[35px] font-bold leading-[56px]'>
 					Bienvenido a tu espacio,{' '}
 					<span className='capitalize'>{user?.firstName}.</span>
 				</h1>
-				<h2 className='text-[28px] font-bold leading-[56px]'>
+				<h2 className='text-[28px] font-bold leading-[56px] max-sm:pb-5'>
 					Hoy {formattedDate}.
 				</h2>
 			</section>

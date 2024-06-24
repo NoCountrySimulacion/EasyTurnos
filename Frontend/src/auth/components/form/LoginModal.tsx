@@ -4,6 +4,8 @@ import Modal from '@mui/material/Modal'
 import Box from '@mui/material/Box'
 import Login from './Login'
 import { useNavigate } from 'react-router-dom'
+import { useMediaQuery } from '../../../shared/hooks/useMediaQuery'
+import LoginMobile from './LoginMobile'
 
 const LoginModal: React.FC = () => {
 	const location = useLocation()
@@ -16,6 +18,8 @@ const LoginModal: React.FC = () => {
 		navigate('/')
 	}
 
+	const isMobileScreen = useMediaQuery('(max-width: 920px)')
+
 	return (
 		<Modal
 			open={isLoginPage}
@@ -26,9 +30,9 @@ const LoginModal: React.FC = () => {
 		>
 			<Box
 				ref={modalRef}
-				className='flex items-center max-w-[900px] justify-center bg-white p-16 rounded-xl '
+				className='flex items-center max-w-[900px] justify-center bg-white px-16 pt-16 pb-4 max-sm:px-8 rounded-xl max-md:mx-2'
 			>
-				<Login />
+				{isMobileScreen ? <LoginMobile /> : <Login />}
 			</Box>
 		</Modal>
 	)

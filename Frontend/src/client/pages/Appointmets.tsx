@@ -60,13 +60,9 @@ function TableClient({ appointments }: { appointments: Appointment[] | null }) {
 						<Table>
 							<TableHead>
 								<CustomTableRow>
-									<CustomTableCellHeader className='whitespace-nowrap'>
-										Nombre del profesional
-									</CustomTableCellHeader>
-									<CustomTableCellHeader>
-										Hora de Inicio y Fin
-									</CustomTableCellHeader>
-									<CustomTableCellHeader>Día, Mes y Año</CustomTableCellHeader>
+									<CustomTableCellHeader>Profesional</CustomTableCellHeader>
+									<CustomTableCellHeader>Horario</CustomTableCellHeader>
+									<CustomTableCellHeader>Fecha</CustomTableCellHeader>
 									<CustomTableCellHeader></CustomTableCellHeader>
 								</CustomTableRow>
 							</TableHead>
@@ -80,11 +76,11 @@ function TableClient({ appointments }: { appointments: Appointment[] | null }) {
 											{capitalizeFirstLetter(appointment.firstName)}{' '}
 											{capitalizeFirstLetter(appointment.lastName)}
 										</CustomTableCell>
-										<CustomTableCell className='w-[25%]'>
+										<CustomTableCell className='w-[25%] min-w-[120px]'>
 											{formatTime(appointment.startDate)} -{' '}
 											{formatTime(appointment.endDate)}
 										</CustomTableCell>
-										<CustomTableCell className='w-[25%]'>
+										<CustomTableCell className='w-[25%] min-w-[120px]'>
 											{formatDate(appointment.startDate)}
 										</CustomTableCell>
 										<CustomTableCell className='w-[25%]' align='right'>
@@ -117,7 +113,7 @@ export function Appointments() {
 	const { appointmentList, loading } = useAppointments()
 
 	return (
-		<section className='h-full w-full flex flex-col font-montserrat px-10 gap-6 '>
+		<section className='h-full w-full flex flex-col font-montserrat px-10 max-sm:px-5 gap-6 '>
 			<section className='mb-[100px]'>
 				{loading ? (
 					<div className='flex justify-center'>
