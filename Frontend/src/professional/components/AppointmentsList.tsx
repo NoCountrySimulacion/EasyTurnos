@@ -6,6 +6,10 @@ import { AppointmentCard } from '../../shared/components/AppointmentCard'
 import { useAppointments } from '../../shared/hooks/useAppointments'
 import { CalendarIcon } from './icons/Icons'
 
+function capitalizeName(name: string): string {
+	return name.replace(/\b\w/g, char => char.toUpperCase())
+}
+
 export function AppointmentsList(): React.ReactElement {
 	const { appointmentList } = useAppointments()
 	const { filterClientsAppointmentsList, todayAppointmentsCount } = useSearch()
@@ -20,7 +24,7 @@ export function AppointmentsList(): React.ReactElement {
 			<header className='flex justify-between items-center h-[76px]'>
 				<Link
 					to='/professional/calendar'
-					className='w-full text-center shadow-search text-[33px] font-bold leading-[56px] rounded-[15px] py-[15px] hover:bg-[#D3CAFF] transition duration-300 hover:border hover:border-[#7445C7]'
+					className='w-full text-center shadow-search text-[33px] max-sm:text-[30px] font-bold leading-[56px] rounded-[15px] py-[15px] hover:bg-[#D3CAFF] transition duration-300 hover:border hover:border-[#7445C7]'
 				>
 					Para el día de hoy tienes {todayAppointmentsCount} citas.
 				</Link>
@@ -29,15 +33,15 @@ export function AppointmentsList(): React.ReactElement {
 				{filterAppointmentsList &&
 					filterAppointmentsList.data &&
 					filterAppointmentsList.data.length > 0 && (
-						<ul className='grid grid-cols-2 gap-[54px]'>
+						<ul className='grid grid-cols-2 max-xl:grid-cols-1 gap-[54px] max-sm:gap-10'>
 							{filterAppointmentsList.data.map(appointment => (
 								<AppointmentCard
 									key={appointment.id}
-									name={
+									name={capitalizeName(
 										appointment.name
 											? appointment.name
 											: appointment.firstName + ' ' + appointment.lastName
-									}
+									)}
 									startDate={appointment.startDate}
 									endDate={appointment.endDate}
 								/>

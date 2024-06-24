@@ -5,6 +5,8 @@ import Box from '@mui/material/Box'
 import SignUp from './SignUp'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
+import { useMediaQuery } from '../../../shared/hooks/useMediaQuery'
+import SignUpMobile from './SignUpMobile'
 
 const SignUpModal: React.FC = () => {
 	const location = useLocation()
@@ -27,6 +29,8 @@ const SignUpModal: React.FC = () => {
 		})
 	}
 
+	const isMobileScreen = useMediaQuery('(max-width: 920px)')
+
 	return (
 		<Modal
 			open={isRegisterPage}
@@ -37,9 +41,13 @@ const SignUpModal: React.FC = () => {
 		>
 			<Box
 				ref={modalRef}
-				className='bg-white max-w-[900px] px-8 py-8 rounded-xl shadow-lg overflow-auto'
+				className='bg-white max-w-[900px] px-8 py-8 rounded-xl shadow-lg overflow-auto max-md:mx-2 max-sm:px-6 '
 			>
-				<SignUp onRegisterSuccess={handleRegisterSuccess} />
+				{isMobileScreen ? (
+					<SignUpMobile onRegisterSuccess={handleRegisterSuccess} />
+				) : (
+					<SignUp onRegisterSuccess={handleRegisterSuccess} />
+				)}
 			</Box>
 		</Modal>
 	)

@@ -6,10 +6,10 @@ import TestimonialCarousel from '../components/testimonialCards/TestimonialCarou
 
 export default function Landing(): JSX.Element {
 	return (
-		<section className='max-w-[1240px] mx-auto'>
-			<section className='px-20 flex flex-col gap-16'>
-				<section className='flex flex-col gap-12'>
-					<header>
+		<section className='overflow-x-hidden'>
+			<section className='flex flex-col gap-16 items-center'>
+				<section className='flex flex-col gap-12 max-w-[1300px] w-full items-center '>
+					<header className=' text-center max-w-[700px]'>
 						<h1 className='text-4xl font-semibold font-montserrat'>
 							Beneficios de tener Turnos Online
 						</h1>

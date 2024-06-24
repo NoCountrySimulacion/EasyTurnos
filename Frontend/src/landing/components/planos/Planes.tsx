@@ -4,14 +4,14 @@ import { plans } from '../../../landing/components/planos/constants/infoPlanos'
 export default function Planes(): JSX.Element {
 	return (
 		<div className='flex flex-col items-center py-12'>
-			<h2 className='text-5xl font-montserrat font-semibold mb-4'>
+			<h2 className='text-4xl font-montserrat font-semibold mb-4'>
 				Nuestros Planes
 			</h2>
 			<p className='text-center mb-12'>
 				Diseñamos diferentes planes para que puedas encontrar el que mejor se
 				adapte a las necesidades de tu negocio.
 			</p>
-			<div className='flex flex-col md:flex-row justify-center items-center gap-8'>
+			<div className='flex flex-wrap justify-center max-w-[1240px] my-0 mx-auto gap-8'>
 				{plans.map(plan => (
 					<div
 						key={plan.title}

@@ -91,7 +91,7 @@ export function Profile(): React.ReactElement {
 
 	return (
 		<div>
-			<div className='flex flex-row items-center justify-around h-full min-h-10 shadow-md gap-8 p-5'>
+			<div className='flex flex-row items-center h-full min-h-10 shadow-md gap-8 px-10 py-5'>
 				<IconProfile width={150} height={150} />
 				<h1 className='text-4xl font-bold'>
 					{capitalizeFirstLetter(user?.firstName)}{' '}
@@ -134,23 +134,25 @@ export function Profile(): React.ReactElement {
 								{professionalData?.description}
 							</span>
 						</div>
-						<Link to={'/professional/edit-profile-prof'}>
-							<div className='w-36 h-[38px] p-2.5 bg-violet-700 rounded-lg justify-center items-center gap-2.5 inline-flex cursor-pointer hover:bg-purple-600 transition duration-300 ease-in-out'>
-								<div className="text-white text-[13px] font-bold font-['Montserrat'] leading-[18.20px]">
-									Editar perfil
+						<section className='flex items-center gap-5 justify-between'>
+							<Link to={'/professional/edit-profile-prof'}>
+								<div className='w-36 h-[38px] p-2.5 bg-violet-700 rounded-lg justify-center items-center gap-2.5 inline-flex cursor-pointer hover:bg-purple-600 transition duration-300 ease-in-out'>
+									<div className="text-white text-[13px] font-bold font-['Montserrat'] leading-[18.20px]">
+										Editar perfil
+									</div>
+								</div>
+							</Link>
+							<div className='flex items-end justify-end'>
+								<div className='w-36 h-[38px] p-2.5 bg-rose-700 rounded-lg justify-center items-center gap-2.5 inline-flex cursor-pointer hover:bg-red-500 transition duration-300 ease-in-out'>
+									<div
+										className="text-white text-[13px] font-bold font-['Montserrat'] leading-[18.20px]"
+										onClick={handleDeleteProfessional}
+									>
+										Dar de baja
+									</div>
 								</div>
 							</div>
-						</Link>
-						<div className='flex items-end justify-end'>
-							<div className='w-36 h-[38px] p-2.5 bg-rose-700 rounded-lg justify-center items-center gap-2.5 inline-flex cursor-pointer hover:bg-red-500 transition duration-300 ease-in-out'>
-								<div
-									className="text-white text-[13px] font-bold font-['Montserrat'] leading-[18.20px]"
-									onClick={handleDeleteProfessional}
-								>
-									Dar de baja
-								</div>
-							</div>
-						</div>
+						</section>
 					</>
 				) : (
 					<>

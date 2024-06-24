@@ -6,10 +6,8 @@ import Banner from '../../landing/components/banner/Banner'
 
 export default function LayoutLanding(): JSX.Element {
 	return (
-		<div>
-			<header>
-				<Navbar />
-			</header>
+		<div className='max-lg:pb-[90px]'>
+			<Navbar />
 			<main>
 				<section className='mb-12'>
 					<Banner />

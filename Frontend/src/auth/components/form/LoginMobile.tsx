@@ -13,10 +13,10 @@ import * as Yup from 'yup'
 import { registerSchema } from '../../utils/validation'
 import { LoginFormValues } from '../../typescript/interface'
 import { useAuth } from '../../hooks/useAuth'
-//
+
 const { userEmail, userPassword } = registerSchema.fields
 
-export default function Login(): React.ReactElement {
+export default function LoginMobile(): React.ReactElement {
 	const [showPassword, setshowPassword] = useState(false)
 	const id = useId()
 	const navigate = useNavigate()
@@ -60,10 +60,10 @@ export default function Login(): React.ReactElement {
 	}
 
 	return (
-		<div className='flex gap-10 font-montserrat'>
+		<div className='flex gap-10 font-montserrat mb-[2.5rem]'>
 			<div className='w-full max-w-md mx-auto'>
-				<div className='mb-[2.5rem]'>
-					<h2 className='text-[40px] font-semibold text-[#313131]'>
+				<div className=''>
+					<h2 className='text-[40px] font-semibold text-[#313131] text-center'>
 						Iniciar Sesión
 					</h2>
 					<p className='text-gray-500 m-0 p-0 text-[16px]'>
@@ -216,9 +216,6 @@ export default function Login(): React.ReactElement {
 						</form>
 					)}
 				</Formik>
-			</div>
-			<div className='w-[416px] h-[516px]'>
-				<img src='./images/LoginImg.webp' alt='login' />
 			</div>
 		</div>
 	)

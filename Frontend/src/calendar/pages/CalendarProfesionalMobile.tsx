@@ -10,19 +10,19 @@ import { FaTrash } from 'react-icons/fa'
 import { Tabs, Tab, Typography } from '@mui/material'
 import '../styles/calendar.css'
 import CustomDay from '../components/CustomDay'
-import CalendarConfig from '../components/CalendarConfig'
 import clsx from 'clsx'
 import SlotModal from '../components/SlotModal'
 import { useCalendar } from '../hook/useCalendar' // Importamos el hook useCalendar
 import { ConfigSlot } from '../typescript/interface'
 import { DayCalendarProps } from '@mui/x-date-pickers/internals'
+import CalendarConfigMobile from '../components/CalendarConfigMobile'
 /* import { useProfessionalClients } from '../../professional/hooks/useProfessionalClients' */
 import Accordion from '@mui/material/Accordion'
 import AccordionDetails from '@mui/material/AccordionDetails'
 import AccordionSummary from '@mui/material/AccordionSummary'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 
-const CalendarProfesional: React.FC = () => {
+const CalendarProfesionalMobile: React.FC = () => {
 	const {
 		selectedDate,
 		selectedSlots,
@@ -69,32 +69,10 @@ const CalendarProfesional: React.FC = () => {
 				moment(appointment.startDate).isSame(selectedDate, 'day')
 			)
 		: []
-		// Funcion formateadora de dias de la semana
-	const customDayOfWeekFormatter = (date: Moment): string => {
-		const dayOfWeek = date.format('dd') // Obtener el nombre completo del día de la semana en inglés
-		switch (dayOfWeek) {
-		case 'Mo':
-			return 'L'
-		case 'Tu':
-			return 'M'
-		case 'We':
-			return 'M'
-		case 'Th':
-			return 'J'
-		case 'Fr':
-			return 'V'
-		case 'Sa':
-			return 'S'
-		case 'Su':
-			return 'D'
-		default:
-			return dayOfWeek
-		}
-	}
 
 	return (
 		<LocalizationProvider dateAdapter={AdapterMoment}>
-			<div className='h-screen px-20 max-lg:px-5'>
+			<div className='h-screen px-2'>
 				<Tabs
 					value={tabIndex}
 					onChange={(_e, newValue) => setTabIndex(newValue)}
@@ -104,10 +82,9 @@ const CalendarProfesional: React.FC = () => {
 				</Tabs>
 				{tabIndex === 0 && (
 					<div className=''>
-						<div className='flex flex-col gap-4 h-screen w-3/4'>
-							<div className='shadow-md m max-w-[512px] min-h-[550px] rounded-lg p-2'>
+						<div className='flex flex-col gap-4 h-screen '>
+							<div className='shadow-md max-w-[512px] min-h-[550px] rounded-lg py-2'>
 								<DateCalendar
-									dayOfWeekFormatter={customDayOfWeekFormatter}
 									value={selectedDate}
 									onChange={handleDateChange}
 									showDaysOutsideCurrentMonth
@@ -137,7 +114,7 @@ const CalendarProfesional: React.FC = () => {
 									}}
 								/>
 							</div>
-							<div className='pt-4 flex flex-col gap-2  max-w-[512px]'>
+							<div className='p-4 flex flex-col gap-2 max-w-[512px] w-full'>
 								<div className='flex flex-col gap-2'>
 									<Accordion>
 										<AccordionSummary
@@ -154,7 +131,7 @@ const CalendarProfesional: React.FC = () => {
 
 										<AccordionDetails>
 											<Typography>
-												<section className='grid w-full my-0 mx-auto grid-cols-responsive gap-5'>
+												<div className='flex flex-col gap-2'>
 													{selectedSlots.length > 0 ? (
 														selectedSlots.map(
 															(slot: ConfigSlot, index: number) => (
@@ -188,11 +165,9 @@ const CalendarProfesional: React.FC = () => {
 															)
 														)
 													) : (
-														<p className='min-w-[350px]'>
-															No hay horarios disponibles para este día.
-														</p>
+														<p>No hay horarios disponibles para este día.</p>
 													)}
-												</section>
+												</div>
 											</Typography>
 										</AccordionDetails>
 									</Accordion>
@@ -211,7 +186,7 @@ const CalendarProfesional: React.FC = () => {
 
 										<AccordionDetails>
 											<Typography>
-												<section className='grid w-full my-0 mx-auto grid-cols-responsive gap-5'>
+												<div className='flex flex-col gap-2'>
 													{filteredAppointments.length > 0 ? (
 														filteredAppointments.map((appointment, index) => (
 															<div
@@ -243,11 +218,9 @@ const CalendarProfesional: React.FC = () => {
 															</div>
 														))
 													) : (
-														<p className='min-w-[250px]'>
-															No hay turnos para este día.
-														</p>
+														<p>No hay turnos para este día.</p>
 													)}
-												</section>
+												</div>
 											</Typography>
 										</AccordionDetails>
 									</Accordion>
@@ -257,7 +230,7 @@ const CalendarProfesional: React.FC = () => {
 					</div>
 				)}
 				{tabIndex === 1 && (
-					<CalendarConfig onConfigChange={handleConfigChange} />
+					<CalendarConfigMobile onConfigChange={handleConfigChange} />
 				)}
 			</div>
 			{selectedSlot && (
@@ -273,4 +246,4 @@ const CalendarProfesional: React.FC = () => {
 	)
 }
 
-export default CalendarProfesional
+export default CalendarProfesionalMobile

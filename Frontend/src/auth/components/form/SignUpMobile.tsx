@@ -18,7 +18,7 @@ interface SignUpProps {
 	onRegisterSuccess: () => void
 }
 
-function SignUp({ onRegisterSuccess }: SignUpProps): React.ReactElement {
+function SignUpMobile({ onRegisterSuccess }: SignUpProps): React.ReactElement {
 	const [showPassword, setshowPassword] = useState(false)
 	const [showConfirmPassword, setshowConfirmPassword] = useState(false)
 
@@ -55,13 +55,10 @@ function SignUp({ onRegisterSuccess }: SignUpProps): React.ReactElement {
 	}
 
 	return (
-		<section className='flex font-montserrat gap-[60px]'>
-			<section className=' w-1/2 h-auto flex items-center justify-center rounded-lg'>
-				<img src='/images/RegisterImg.webp' alt='registro' />
-			</section>
-			<section className='w-2/3 flex flex-col justify-center'>
+		<section className='flex font-montserrat gap-[60px] '>
+			<section className=' flex flex-col justify-center'>
 				<header>
-					<h2 className='text-[#313131] text-[40px] font-semibold'>
+					<h2 className='text-[#313131] text-[40px] font-semibold text-center'>
 						Comienza ahora
 					</h2>
 					<p className=' mb-2 text-[13px] opacity-75'>
@@ -225,7 +222,7 @@ function SignUp({ onRegisterSuccess }: SignUpProps): React.ReactElement {
 									/>
 								</div>
 							</div>
-							<div className='flex items-center '>
+							<div className='flex items-center'>
 								<input
 									type='checkbox'
 									id={id + 'terms'}
@@ -233,10 +230,10 @@ function SignUp({ onRegisterSuccess }: SignUpProps): React.ReactElement {
 									className='rounded-lg'
 									required
 								/>
-								<small>
+								<small className='ml-2'>
 									<label
 										htmlFor={id + 'terms'}
-										className='ml-2 text-[12px] text-[#313131] font-medium'
+										className=' text-[12px] text-[#313131] font-medium '
 									>
 										Estoy de acuerdo con los{' '}
 										<Link
@@ -248,7 +245,7 @@ function SignUp({ onRegisterSuccess }: SignUpProps): React.ReactElement {
 										y{' '}
 										<Link
 											to='#'
-											className='text-[#FF8682] font-medium text-[12px]'
+											className='text-[#FF8682] font-medium text-[12px] '
 										>
 											Políticas de Privacidad
 										</Link>
@@ -328,4 +325,4 @@ function SignUp({ onRegisterSuccess }: SignUpProps): React.ReactElement {
 	)
 }
 
-export default SignUp
+export default SignUpMobile
