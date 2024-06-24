@@ -23,7 +23,6 @@ export const useClientProfessional = () => {
 				setClientProfessional(data)
 			} catch (error) {
 				setError((error as Error).message)
-				console.log('Getting professional by client error:', error)
 			} finally {
 				setLoading(false)
 			}
