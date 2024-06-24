@@ -90,8 +90,8 @@ export function Sidemenu(): JSX.Element {
 			<nav>
 				<div id='logo' className='flex flex-col ml-2 pb-[0px] mb-2 '>
 					<img
-						src='../../../../public/svgs/Logo_2.svg'
-						alt=''
+						src='/svgs/Logo_2.svg'
+						alt='logo Easy Turnos'
 						className='mt-5 mb-2 w-[90%]'
 					/>
 				</div>

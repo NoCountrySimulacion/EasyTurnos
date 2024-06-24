@@ -7,7 +7,10 @@
 	justify-content: center;
 	border-radius: 10px;
 }
+.MuiDayCalendar-weekDayLabel{
+	justify-content: space-evenly !important;
 
+}
 .MuiPickersDay-root {
 	width: 36px;
 	height: 36px;
@@ -27,6 +30,12 @@
 	height: 800px !important;
 }
 
+.css-1xuxf2l {
+    display: block;
+    position: relative;
+    overflow: visible !important; 
+    min-height: 240px;
+}
 
 
 .MuiDayCalendar-weekNumber{
@@ -44,6 +53,7 @@
 .MuiDateCalendar-root {
 	width: 100% !important;
 	height: 500px;
+	overflow: visible !important;
 }
 
 .css-1hs8ns0-MuiDateCalendar-root {
