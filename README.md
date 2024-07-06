@@ -1,7 +1,8 @@
-  <p align=center>
-    <img src="https://s3-alpha-sig.figma.com/img/8048/08f2/d98d9ed131d8c5d9a0f9eda9bba0d196?Expires=1719187200&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=YIgsnMpX7x494wowKHyao0TFYswcBvB4taGLb0RqBamaI-B4U67BIX~gbHS436XyDaDm8dcjlfue5GcUrYbOKu~8g4CWOumsUUu1KeC9XwYexPNkGbaPyQe9u9lK511xZ4xvo0pp2-1Y3qZAo7-C0LVhbAfeO~IAeNDUEa92WGvwIed2N-lhu0Xc7o9IGX6sPSCn09RoiWTt14a5G25jDu7X00pprjxudnpYC~XBIYF54kB8nhKWirk9MLDl5UJoDaGu-1V8fE02-R-rdFe8bjEI3HOuOtu83dqxAEdEgMgKANh-erC28MN~LqTMqJxovaIJ2fP397eiRvWLbbInag__" width='300px'> 
-  </p>
+<div align='center'>
+	<img src="https://github.com/NoCountrySimulacion/EasyTurnos/assets/145474462/f1ac6f3a-0380-4600-90f2-a926e1b77382"
+</div>
 
+<br/><br/>
 <div align=center>Imagina una plataforma donde los profesionales pueden gestionar su agenda de manera sencilla y eficiente, y sus clientes pueden reservar citas de forma rápida y segura. Eso es exactamente lo que nuestra webapp ofrece..</div>
 
 <br>
